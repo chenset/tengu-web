@@ -57,7 +57,7 @@
              @mousedown="startDrag"
              :style="{ top: position.y + 'px', left: position.x + 'px', right: 'auto', zIndex: isDragging ? 10000 : 1000 }">
             <div class="control-panel-cost">
-                Cost: 100 RMB
+                Cost: 1223.10 RMB
             </div>
         </div>
         <iframe ref="iframe" src="http://192.168.2.147:2828/?folder=/tmp" :class="{ dragging: isDragging }"></iframe>
