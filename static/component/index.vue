@@ -35,9 +35,13 @@
     position: fixed;
     top: 0;
     right: 0;
-    background: rgb(79, 193, 255);
+    width: 180px;
+    height: 27px;
     cursor: move;
     user-select: none;
+    border-radius: 5px;
+    background: rgb(79, 193, 255);
+    color: white;
 }
 .control-panel-cost{
     padding: 4px 10px;
@@ -78,15 +82,28 @@ module.exports = {
 
         document.addEventListener('mousemove', this.onDrag);
         document.addEventListener('mouseup', this.stopDrag);
+        window.addEventListener('resize', this.onWindowResize);
     },
     beforeDestroy() {
         document.removeEventListener('mousemove', this.onDrag);
         document.removeEventListener('mouseup', this.stopDrag);
+        window.removeEventListener('resize', this.onWindowResize);
     },
     methods: {
+        constrainPosition() {
+            // 获取面板的当前尺寸
+            const panel = this.$refs.controlPanel;
+            if (!panel) return;
+
+            const rect = panel.getBoundingClientRect();
+
+            // 限制位置在窗口内
+            this.position.x = Math.max(0, Math.min(this.position.x, window.innerWidth - rect.width));
+            this.position.y = Math.max(0, Math.min(this.position.y, window.innerHeight - rect.height));
+        },
         loadPosition(rect) {
             try {
-                const saved = localStorage.getItem('controlPanelPosition');
+                const saved = localStorage.getItem('__controlPanelPosition');
                 if (saved) {
                     const savedData = JSON.parse(saved);
                     const savedWindowSize = savedData.windowSize;
@@ -117,13 +134,17 @@ module.exports = {
                 this.position.y = 0;
             }
         },
+        onWindowResize() {
+            // 窗口大小改变时，确保面板不超出边界
+            this.constrainPosition();
+        },
         savePosition() {
             try {
                 const data = {
                     position: { x: this.position.x, y: this.position.y },
                     windowSize: { width: window.innerWidth, height: window.innerHeight }
                 };
-                localStorage.setItem('controlPanelPosition', JSON.stringify(data));
+                localStorage.setItem('__controlPanelPosition', JSON.stringify(data));
             } catch (e) {
                 // localStorage 可能被禁用或已满，忽略错误
                 console.warn('Failed to save position to localStorage:', e);
@@ -140,6 +161,9 @@ module.exports = {
                 e.preventDefault();
                 this.position.x = e.clientX - this.dragOffset.x;
                 this.position.y = e.clientY - this.dragOffset.y;
+
+                // 实时限制位置在窗口内
+                this.constrainPosition();
             }
         },
         stopDrag(e) {
