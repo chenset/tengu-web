@@ -72,8 +72,9 @@ module.exports = {
     mounted() {
         const panel = this.$refs.controlPanel;
         const rect = panel.getBoundingClientRect();
-        this.position.x = window.innerWidth - rect.width;
-        this.position.y = 0;
+
+        // 尝试从 localStorage 恢复位置
+        this.loadPosition(rect);
 
         document.addEventListener('mousemove', this.onDrag);
         document.addEventListener('mouseup', this.stopDrag);
@@ -83,6 +84,51 @@ module.exports = {
         document.removeEventListener('mouseup', this.stopDrag);
     },
     methods: {
+        loadPosition(rect) {
+            try {
+                const saved = localStorage.getItem('controlPanelPosition');
+                if (saved) {
+                    const savedData = JSON.parse(saved);
+                    const savedWindowSize = savedData.windowSize;
+                    const savedPos = savedData.position;
+
+                    // 计算相对于窗口的位置比例
+                    const relativeX = savedPos.x / savedWindowSize.width;
+                    const relativeY = savedPos.y / savedWindowSize.height;
+
+                    // 根据当前窗口尺寸计算新位置
+                    let newX = relativeX * window.innerWidth;
+                    let newY = relativeY * window.innerHeight;
+
+                    // 确保面板在可视区域内
+                    newX = Math.max(0, Math.min(newX, window.innerWidth - rect.width));
+                    newY = Math.max(0, Math.min(newY, window.innerHeight - rect.height));
+
+                    this.position.x = newX;
+                    this.position.y = newY;
+                } else {
+                    // 默认位置：右上角
+                    this.position.x = window.innerWidth - rect.width;
+                    this.position.y = 0;
+                }
+            } catch (e) {
+                // localStorage 出错时使用默认位置
+                this.position.x = window.innerWidth - rect.width;
+                this.position.y = 0;
+            }
+        },
+        savePosition() {
+            try {
+                const data = {
+                    position: { x: this.position.x, y: this.position.y },
+                    windowSize: { width: window.innerWidth, height: window.innerHeight }
+                };
+                localStorage.setItem('controlPanelPosition', JSON.stringify(data));
+            } catch (e) {
+                // localStorage 可能被禁用或已满，忽略错误
+                console.warn('Failed to save position to localStorage:', e);
+            }
+        },
         startDrag(e) {
             e.preventDefault();
             this.isDragging = true;
@@ -99,6 +145,8 @@ module.exports = {
         stopDrag(e) {
             if (this.isDragging) {
                 e.preventDefault();
+                // 拖动结束时保存位置
+                this.savePosition();
             }
             this.isDragging = false;
         }
