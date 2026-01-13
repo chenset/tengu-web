@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Example</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="icon" href="/static/icon/icloud-red-128.png" sizes="128x128">
+    <link rel="icon" href="/static/icon/icloud-red-64.png" sizes="64x64">
+    <link rel="icon" href="/static/icon/icloud-red-32.png" sizes="32x32">
+    <link href="/static/app.css?_1" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/static/fontawesome/all.min.css" media="print" onload="this.media='all'">
+    <script src="/static/app.min.js?_1"></script>
+    <script src="/static/app.js?_1"></script> 
+</head>
+
+<body style="height: 100%">
+    <div id="app">
+
+        <!-- 由于原生的 HTML 解析行为的限制，单个闭合标签可能会导致一些例外情况，所以请使用双封闭标签 -->
+        <router-view v-slot="{Component}">
+            <component ref="view" :is="Component" />
+        </router-view>
+
+        <common></common>
+    </div>
+    <script>
+        const version = "1";
+        //由于原生的 HTML 解析行为的限制，单个闭合标签可能会导致一些例外情况，所以请使用双封闭标签
+        const app = Vue.createApp({})
+            .component("common", Vue.defineAsyncComponent(httpVueLoaderVersion('/static/component/common.vue')))
+            .use(VueRouter.createRouter({
+                history: VueRouter.createWebHashHistory(),  // 路由为 Hash 模式
+                routes: [
+                    {
+                        //index
+                        path: '/',
+                        alias: ['/', '/index', '/index/', '/index.html'],
+                        component: Vue.defineAsyncComponent(httpVueLoaderVersion('/static/component/index.vue')),
+                        meta: { title: "Index" },
+                    },
+                    {
+                        //404
+                        path: '/:pathMatch(.*)*',
+                        component: Vue.defineAsyncComponent(httpVueLoaderVersion('/static/component/404.vue')),
+                        meta: { title: "Not Found" },
+                    },
+                ]
+            })).mount("#app")
+        app.$router.beforeEach((to, from, next) => {
+            document.title = to.meta.title;
+            next();
+        });
+
+        function httpVueLoaderVersion(url) {
+            if (url.indexOf("?") > 0) {
+                return httpVueLoader(url + "&v=" + version)
+            }
+            return httpVueLoader(url + "?v=" + version)
+        }
+    </script>
+</body>
+
+</html>

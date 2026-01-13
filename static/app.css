@@ -1,0 +1,225 @@
+/* latin */
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: local('Open Sans Light'), local('OpenSans-Light'), url(./mem5YaGs126MiZpBA-UN_r8OUuhp.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin */
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Open Sans Regular'), local('OpenSans-Regular'), url(./mem8YaGs126MiZpBA-UFVZ0b.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin */
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: local('Open Sans SemiBold'), local('OpenSans-SemiBold'), url(./mem5YaGs126MiZpBA-UNirkOUuhp.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin */
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local('Open Sans Bold'), local('OpenSans-Bold'), url(./mem5YaGs126MiZpBA-UN7rgOUuhp.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -webkit-appearance: none;
+}
+
+body {
+    font-family: 'Open Sans', Helvetica Neue, Arial, sans-serif, Microsoft YaHei;
+    /* color: rgb(116, 117, 118); */
+    color: #111;
+    font-size: 13px;
+    background: rgb(245, 245, 245);
+}
+
+.fad {
+    /*font-size: 11px;*/
+}
+
+small {
+    font-size: 0.9em;
+}
+
+*:focus {
+    outline: none;
+}
+
+::placeholder {
+    color: #d0d0d0;
+}
+
+a {
+    text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 10px 0;
+    font-weight: 300;
+}
+
+h1 small,
+h2 small,
+h3 small {
+    font-size: 0.6em;
+}
+
+h1 {
+    font-size: 30px;
+}
+
+@media only screen and (max-width: 1024px) {
+    h1 {
+        font-size: 24px;
+    }
+}
+
+/*display-ctl*/
+.display-ctl {
+    visibility: hidden;
+}
+
+.display-ctl table {
+    border-collapse: inherit !important;
+}
+
+.main-content {
+    background-color: #fff;
+}
+
+
+li {
+    list-style: none;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.text-ellipsis {
+    width: inherit;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.text-yellowgreen{
+    color: rgb(156, 207, 54);
+}
+.text-blue {
+    color: #409EFF;
+}
+.text-red {
+    color: #F56C6C;
+}
+.text-green {
+    color: #67C23A;
+}
+.text-dim {
+    color: #adadad;
+}
+.text-orange {
+    color: #E6A23C;
+}
+.text-gray {
+    color: #CCC;
+}
+.text-dark {
+    color: #818181;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.lds-dual-ring {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 10000;
+    margin-left: -18px;
+    margin-top: -18px;
+}
+
+.lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 36px;
+    height: 36px;
+    margin: 1px;
+    border-radius: 50%;
+    border-width: 3px;
+    border-style: solid;
+    border-color: #409eff transparent #409eff transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* content highlight */
+.link-words{
+    color: #67C23A;
+}
+.signature-words{
+    color: #409eff;
+}
+.no-interest-words{
+    color: #ed3bb6;
+}
+.e-commerce-words{
+    color: #ff7f00;
+}
+.credit-card-words{
+    color: #F56C6C;
+}
+
+.interest-words,
+.cus-keyword-words {
+    color: #F56C6C;
+}
+
+.cus-keyword-words {
+    background: rgb(253, 225.6, 225.6)
+}
+
+.cus-primary-words {
+    color: #409EFF;
+    background: #d0f1ff;
+}
+/* content highlight */
