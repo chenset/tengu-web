@@ -60,7 +60,7 @@
                 Cost: 100 RMB
             </div>
         </div>
-        <iframe ref="iframe" src="http://192.168.2.147:828/?folder=/tmp" :class="{ dragging: isDragging }"></iframe>
+        <iframe ref="iframe" src="http://192.168.2.147:2828/?folder=/tmp" :class="{ dragging: isDragging }"></iframe>
     </div>
 </template>
 
