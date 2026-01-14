@@ -591,6 +591,8 @@ module.exports = {
                 const result = await response.json();
                 if (result.resultCode === 1 && result.data && result.data.dictOptions) {
                     this.dictOptions = result.data.dictOptions.sort((a, b) => (b.weight || 0) - (a.weight || 0));
+                    // 自动填充默认值
+                    this.applyDefaultValues();
                 } else {
                     alert('加载配置选项失败');
                 }
@@ -599,6 +601,57 @@ module.exports = {
                 alert('加载配置选项失败: ' + error.message);
             } finally {
                 this.loadingDictOptions = false;
+            }
+        },
+        // 应用默认值
+        applyDefaultValues() {
+            this.dictOptions.forEach(dict => {
+                if (dict.defaultOptionsDictValue) {
+                    // 根据dictCode设置对应的formData字段
+                    switch (dict.dictCode) {
+                        case 'regionId':
+                            this.formData.regionId = dict.defaultOptionsDictValue;
+                            break;
+                        case 'vpcId':
+                            this.formData.vpcId = dict.defaultOptionsDictValue;
+                            break;
+                        case 'vSwitchId':
+                            this.formData.vSwitchId = dict.defaultOptionsDictValue;
+                            break;
+                        case 'securityGroupId':
+                            this.formData.securityGroupId = dict.defaultOptionsDictValue;
+                            break;
+                        case 'cpu':
+                            this.formData.cpu = dict.defaultOptionsDictValue;
+                            // CPU改变时需要更新内存选项
+                            this.updateMemoryOptionsForDefaultCpu(dict.defaultOptionsDictValue);
+                            break;
+                        case 'instanceType':
+                            this.formData.instanceType = dict.defaultOptionsDictValue;
+                            break;
+                        case 'spotStrategy':
+                            this.formData.spotStrategy = dict.defaultOptionsDictValue;
+                            break;
+                        case 'restartPolicy':
+                            this.formData.restartPolicy = dict.defaultOptionsDictValue;
+                            break;
+                        case 'imagePullPolicy':
+                            this.container.imagePullPolicy = dict.defaultOptionsDictValue;
+                            break;
+                    }
+                }
+            });
+        },
+        // 为默认CPU更新内存选项
+        updateMemoryOptionsForDefaultCpu(cpuValue) {
+            const cpuDict = this.dictOptions.find(d => d.dictCode === 'cpu');
+            if (cpuDict) {
+                const cpuOption = cpuDict.options.find(o => o.dictValue === cpuValue);
+                if (cpuOption && cpuOption.children && cpuOption.children.length > 0) {
+                    // 自动选择第一个内存选项（weight最高的）
+                    const sortedMemory = cpuOption.children.sort((a, b) => (b.weight || 0) - (a.weight || 0));
+                    this.formData.memory = sortedMemory[0].dictValue;
+                }
             }
         },
         // CPU改变时重置内存
