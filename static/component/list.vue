@@ -120,15 +120,15 @@
         </div>
 
         <!-- 创建实例对话框 -->
-        <div v-if="showCreateDialog" class="fixed z-10 inset-0 overflow-y-auto">
+        <div v-if="showCreateDialog" class="fixed z-50 inset-0 overflow-y-auto">
             <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 <!-- 背景遮罩 -->
-                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="closeCreateDialog">
+                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity z-0" @click="closeCreateDialog">
                 </div>
 
                 <!-- 对话框内容 -->
                 <div
-                    class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+                    class="relative z-10 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="text-lg leading-6 font-medium text-gray-900">创建容器组实例</h3>
@@ -649,18 +649,18 @@ module.exports = {
                 alert('请选择地域');
                 return;
             }
-            if (!this.formData.vpcId) {
-                alert('请选择专有网络');
-                return;
-            }
-            if (!this.formData.vSwitchId) {
-                alert('请选择交换机');
-                return;
-            }
-            if (!this.formData.securityGroupId) {
-                alert('请选择安全组');
-                return;
-            }
+            // if (!this.formData.vpcId) {
+            //     alert('请选择专有网络');
+            //     return;
+            // }
+            // if (!this.formData.vSwitchId) {
+            //     alert('请选择交换机');
+            //     return;
+            // }
+            // if (!this.formData.securityGroupId) {
+            //     alert('请选择安全组');
+            //     return;
+            // }
             if (!this.formData.instanceType) {
                 alert('请选择ECS实例规格');
                 return;
