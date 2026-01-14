@@ -35,7 +35,7 @@
     position: fixed;
     top: 0;
     right: 0;
-    width: 180px;
+    width: 500px;
     height: 27px;
     cursor: move;
     user-select: none;
@@ -57,7 +57,8 @@
              @mousedown="startDrag"
              :style="{ top: position.y + 'px', left: position.x + 'px', right: 'auto', zIndex: isDragging ? 10000 : 1000 }">
             <div class="control-panel-cost">
-                Cost: 1223.10 RMB
+            <!-- 需要展示 cpu/内存/磁盘/网络/时间/成本  -->
+                Cost: 1223.10 RMB 展示 cpu/内存/磁盘/网络（丢包率）/时间/成本  停止按钮
             </div>
         </div>
         <iframe ref="iframe" src="http://192.168.2.147:2828/?folder=/tmp" :class="{ dragging: isDragging }"></iframe>
