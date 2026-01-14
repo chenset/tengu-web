@@ -1,9 +1,5 @@
 <style scoped>
-#menu-list-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+
 </style>
 
 <template>

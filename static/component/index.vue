@@ -36,7 +36,7 @@
     top: 0;
     right: 0;
     width: 500px;
-    height: 27px;
+    /* height: 27px; */
     cursor: move;
     user-select: none;
     border-radius: 5px;
@@ -57,7 +57,7 @@
              ref="controlPanel"
              @mousedown="startDrag"
              :style="{ top: position.y + 'px', left: position.x + 'px', right: 'auto', zIndex: isDragging ? 10000 : 1000 }">
-            <div class="control-panel-cost">
+            <div class="control-panel-cost text-xs">
             <!-- 需要展示 cpu/内存/磁盘/网络/时间/成本  -->
                 Cost: 1223.10 RMB 展示 cpu/内存/磁盘/网络（丢包率）/时间/成本  停止按钮
             </div>
