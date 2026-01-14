@@ -41,6 +41,13 @@
                         meta: { title: "Index" },
                     },
                     {
+                        //list
+                        path: '/list',
+                        alias: ['/list/'],
+                        component: Vue.defineAsyncComponent(httpVueLoaderVersion('/static/component/list.vue')),
+                        meta: { title: "Index" },
+                    },
+                    {
                         //404
                         path: '/:pathMatch(.*)*',
                         component: Vue.defineAsyncComponent(httpVueLoaderVersion('/static/component/404.vue')),
