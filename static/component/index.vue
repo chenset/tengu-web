@@ -42,6 +42,7 @@
     border-radius: 5px;
     background: rgb(79, 193, 255);
     color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.21);
 }
 .control-panel-cost{
     padding: 4px 10px;
