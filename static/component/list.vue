@@ -1,13 +1,12 @@
-<style scoped>
-
-</style>
+<style scoped></style>
 
 <template>
     <div class="container mx-auto p-6">
         <!-- 头部操作栏 -->
         <div class="mb-4 flex justify-between items-center">
             <h1 class="text-2xl font-semibold text-gray-900">容器组管理</h1>
-            <button @click="openCreateDialog" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <button @click="openCreateDialog"
+                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 创建实例
             </button>
         </div>
@@ -18,16 +17,26 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">容器组ID/名称</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">标签</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">用户</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">事件</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">规格</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">所在可用区</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">创建时间</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">安全组/虚拟交换机</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                容器组ID/名称</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                标签</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                用户</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                状态</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                事件</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                规格</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                所在可用区</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                创建时间</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                安全组/虚拟交换机</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                操作</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -37,13 +46,15 @@
                                 <div class="text-sm text-gray-500">{{ item.name }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                <span
+                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                                     {{ item.tag }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.user }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span :class="getStatusClass(item.status)" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
+                                <span :class="getStatusClass(item.status)"
+                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
                                     {{ item.status }}
                                 </span>
                             </td>
@@ -56,8 +67,10 @@
                                 <div class="text-sm text-gray-500">{{ item.vSwitch }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <button @click="viewDetail(item)" class="text-indigo-600 hover:text-indigo-900 mr-3">详情</button>
-                                <button @click="openItem(item)" class="text-green-600 hover:text-green-900 mr-3">打开</button>
+                                <button @click="viewDetail(item)"
+                                    class="text-indigo-600 hover:text-indigo-900 mr-3">详情</button>
+                                <button @click="openItem(item)"
+                                    class="text-green-600 hover:text-green-900 mr-3">打开</button>
                                 <button @click="releaseItem(item)" class="text-red-600 hover:text-red-900">释放</button>
                             </td>
                         </tr>
@@ -69,34 +82,35 @@
             <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
                 <div class="flex-1 flex justify-between sm:hidden">
                     <button @click="prevPage" :disabled="currentPage === 1"
-                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                        class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
                         上一页
                     </button>
                     <button @click="nextPage" :disabled="currentPage === totalPages"
-                            class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                        class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
                         下一页
                     </button>
                 </div>
                 <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                     <div>
                         <p class="text-sm text-gray-700">
-                            显示第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem }}</span> 条，
+                            显示第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
+                            }}</span> 条，
                             共 <span class="font-medium">{{ totalItems }}</span> 条
                         </p>
                     </div>
                     <div>
                         <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
                             <button @click="prevPage" :disabled="currentPage === 1"
-                                    class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                                class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
                                 上一页
                             </button>
                             <button v-for="page in displayPages" :key="page" @click="goToPage(page)"
-                                    :class="page === currentPage ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600' : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'"
-                                    class="relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                :class="page === currentPage ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600' : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'"
+                                class="relative inline-flex items-center px-4 py-2 border text-sm font-medium">
                                 {{ page }}
                             </button>
                             <button @click="nextPage" :disabled="currentPage === totalPages"
-                                    class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                                class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
                                 下一页
                             </button>
                         </nav>
@@ -109,10 +123,12 @@
         <div v-if="showCreateDialog" class="fixed z-10 inset-0 overflow-y-auto">
             <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 <!-- 背景遮罩 -->
-                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="closeCreateDialog"></div>
+                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="closeCreateDialog">
+                </div>
 
                 <!-- 对话框内容 -->
-                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+                <div
+                    class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="text-lg leading-6 font-medium text-gray-900">创建容器组实例</h3>
@@ -123,7 +139,8 @@
 
                         <!-- 加载状态 -->
                         <div v-if="loadingDictOptions" class="text-center py-8">
-                            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+                            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600">
+                            </div>
                             <p class="mt-2 text-sm text-gray-500">加载配置选项中...</p>
                         </div>
 
@@ -135,56 +152,69 @@
                                 <div class="grid grid-cols-1 gap-4">
                                     <!-- 容器组名称 -->
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">容器组名称 <span class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-medium text-gray-700">容器组名称 <span
+                                                class="text-red-500">*</span></label>
                                         <input v-model="formData.containerGroupName" type="text" required
-                                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                               placeholder="请输入容器组名称">
+                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                            placeholder="请输入容器组名称">
                                     </div>
 
                                     <!-- 地域选择 -->
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">地域选择 <span class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-medium text-gray-700">地域选择 <span
+                                                class="text-red-500">*</span></label>
                                         <select v-model="formData.regionId" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                             <option value="">请选择地域</option>
-                                            <option v-for="option in getOptions('regionId')" :key="option.dictValue" :value="option.dictValue">
-                                                {{ option.dictName }} <span v-if="option.remark" class="text-gray-500">({{ option.remark }})</span>
+                                            <option v-for="option in getOptions('regionId')" :key="option.dictValue"
+                                                :value="option.dictValue">
+                                                {{ option.dictName }} <span v-if="option.remark"
+                                                    class="text-gray-500">({{ option.remark }})</span>
                                             </option>
                                         </select>
                                     </div>
 
                                     <!-- 专有网络 -->
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">专有网络 <span class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-medium text-gray-700">专有网络 <span
+                                                class="text-red-500">*</span></label>
                                         <select v-model="formData.vpcId" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                             <option value="">请选择专有网络</option>
-                                            <option v-for="option in getOptions('vpcId')" :key="option.dictValue" :value="option.dictValue">
-                                                {{ option.dictName }} <span v-if="option.remark" class="text-gray-500">({{ option.remark }})</span>
+                                            <option v-for="option in getOptions('vpcId')" :key="option.dictValue"
+                                                :value="option.dictValue">
+                                                {{ option.dictName }} <span v-if="option.remark"
+                                                    class="text-gray-500">({{ option.remark }})</span>
                                             </option>
                                         </select>
                                     </div>
 
                                     <!-- 交换机 -->
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">交换机 <span class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-medium text-gray-700">交换机 <span
+                                                class="text-red-500">*</span></label>
                                         <select v-model="formData.vSwitchId" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                             <option value="">请选择交换机</option>
-                                            <option v-for="option in getOptions('vSwitchId')" :key="option.dictValue" :value="option.dictValue">
-                                                {{ option.dictName }} <span v-if="option.remark" class="text-gray-500">({{ option.remark }})</span>
+                                            <option v-for="option in getOptions('vSwitchId')" :key="option.dictValue"
+                                                :value="option.dictValue">
+                                                {{ option.dictName }} <span v-if="option.remark"
+                                                    class="text-gray-500">({{ option.remark }})</span>
                                             </option>
                                         </select>
                                     </div>
 
                                     <!-- 安全组 -->
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">安全组 <span class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-medium text-gray-700">安全组 <span
+                                                class="text-red-500">*</span></label>
                                         <select v-model="formData.securityGroupId" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                             <option value="">请选择安全组</option>
-                                            <option v-for="option in getOptions('securityGroupId')" :key="option.dictValue" :value="option.dictValue">
-                                                {{ option.dictName }} <span v-if="option.remark" class="text-gray-500">({{ option.remark }})</span>
+                                            <option v-for="option in getOptions('securityGroupId')"
+                                                :key="option.dictValue" :value="option.dictValue">
+                                                {{ option.dictName }} <span v-if="option.remark"
+                                                    class="text-gray-500">({{ option.remark }})</span>
                                             </option>
                                         </select>
                                     </div>
@@ -199,10 +229,12 @@
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700">CPU规格</label>
                                         <select v-model="formData.cpu" @change="onCpuChange"
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                             <option value="">请选择CPU</option>
-                                            <option v-for="option in getOptions('cpu')" :key="option.dictValue" :value="option.dictValue">
-                                                {{ option.dictName }} <span v-if="option.remark" class="text-gray-500">({{ option.remark }})</span>
+                                            <option v-for="option in getOptions('cpu')" :key="option.dictValue"
+                                                :value="option.dictValue">
+                                                {{ option.dictName }} <span v-if="option.remark"
+                                                    class="text-gray-500">({{ option.remark }})</span>
                                             </option>
                                         </select>
                                     </div>
@@ -211,9 +243,10 @@
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700">内存规格</label>
                                         <select v-model="formData.memory" :disabled="!formData.cpu"
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100">
+                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100">
                                             <option value="">请选择内存</option>
-                                            <option v-for="option in memoryOptions" :key="option.dictValue" :value="option.dictValue">
+                                            <option v-for="option in memoryOptions" :key="option.dictValue"
+                                                :value="option.dictValue">
                                                 {{ option.dictName }}
                                             </option>
                                         </select>
@@ -221,44 +254,55 @@
 
                                     <!-- ECS实例规格 -->
                                     <div class="col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700">ECS实例规格 <span class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-medium text-gray-700">ECS实例规格 <span
+                                                class="text-red-500">*</span></label>
                                         <select v-model="formData.instanceType" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                             <option value="">请选择实例规格</option>
-                                            <option v-for="option in getOptions('instanceType')" :key="option.dictValue" :value="option.dictValue">
-                                                {{ option.dictName }} <span v-if="option.remark" class="text-gray-500">({{ option.remark }})</span>
+                                            <option v-for="option in getOptions('instanceType')" :key="option.dictValue"
+                                                :value="option.dictValue">
+                                                {{ option.dictName }} <span v-if="option.remark"
+                                                    class="text-gray-500">({{ option.remark }})</span>
                                             </option>
                                         </select>
                                     </div>
 
                                     <!-- 付费模式 -->
                                     <div class="col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700">付费模式 <span class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-medium text-gray-700">付费模式 <span
+                                                class="text-red-500">*</span></label>
                                         <select v-model="formData.spotStrategy" @change="onSpotStrategyChange" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                             <option value="">请选择付费模式</option>
-                                            <option v-for="option in getOptions('spotStrategy')" :key="option.dictValue" :value="option.dictValue">
-                                                {{ option.dictName }} <span v-if="option.remark" class="text-gray-500">({{ option.remark }})</span>
+                                            <option v-for="option in getOptions('spotStrategy')" :key="option.dictValue"
+                                                :value="option.dictValue">
+                                                {{ option.dictName }} <span v-if="option.remark"
+                                                    class="text-gray-500">({{ option.remark }})</span>
                                             </option>
                                         </select>
                                     </div>
 
                                     <!-- 价格上限（抢占式时显示） -->
                                     <div v-if="formData.spotStrategy === 'SpotWithPriceLimit'" class="col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700">价格上限 <span class="text-red-500">*</span></label>
-                                        <input v-model.number="formData.spotPriceLimit" type="number" step="0.01" min="0" required
-                                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                               placeholder="请输入价格上限（元/小时）">
+                                        <label class="block text-sm font-medium text-gray-700">价格上限 <span
+                                                class="text-red-500">*</span></label>
+                                        <input v-model.number="formData.spotPriceLimit" type="number" step="0.01"
+                                            min="0" required
+                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                            placeholder="请输入价格上限（元/小时）">
                                     </div>
 
                                     <!-- 重启策略 -->
                                     <div class="col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700">重启策略 <span class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-medium text-gray-700">重启策略 <span
+                                                class="text-red-500">*</span></label>
                                         <select v-model="formData.restartPolicy" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                             <option value="">请选择重启策略</option>
-                                            <option v-for="option in getOptions('restartPolicy')" :key="option.dictValue" :value="option.dictValue">
-                                                {{ option.dictName }} <span v-if="option.remark" class="text-gray-500">({{ option.remark }})</span>
+                                            <option v-for="option in getOptions('restartPolicy')"
+                                                :key="option.dictValue" :value="option.dictValue">
+                                                {{ option.dictName }} <span v-if="option.remark"
+                                                    class="text-gray-500">({{ option.remark }})</span>
                                             </option>
                                         </select>
                                     </div>
@@ -271,28 +315,32 @@
                                 <div class="space-y-4 border border-gray-200 rounded-md p-4 bg-gray-50">
                                     <!-- 容器名称 -->
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">容器名称 <span class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-medium text-gray-700">容器名称 <span
+                                                class="text-red-500">*</span></label>
                                         <input v-model="container.name" type="text" required
-                                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                               placeholder="请输入容器名称">
+                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                            placeholder="请输入容器名称">
                                     </div>
 
                                     <!-- 镜像 -->
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">镜像地址 <span class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-medium text-gray-700">镜像地址 <span
+                                                class="text-red-500">*</span></label>
                                         <input v-model="container.image" type="text" required
-                                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                               placeholder="请输入镜像地址">
+                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                            placeholder="请输入镜像地址">
                                     </div>
 
                                     <!-- 镜像拉取策略 -->
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700">镜像拉取策略</label>
                                         <select v-model="container.imagePullPolicy"
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                             <option value="">请选择拉取策略</option>
-                                            <option v-for="option in getOptions('imagePullPolicy')" :key="option.dictValue" :value="option.dictValue">
-                                                {{ option.dictName }} <span v-if="option.remark" class="text-gray-500">({{ option.remark }})</span>
+                                            <option v-for="option in getOptions('imagePullPolicy')"
+                                                :key="option.dictValue" :value="option.dictValue">
+                                                {{ option.dictName }} <span v-if="option.remark"
+                                                    class="text-gray-500">({{ option.remark }})</span>
                                             </option>
                                         </select>
                                     </div>
@@ -301,13 +349,17 @@
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700">启动命令</label>
                                         <div class="space-y-2">
-                                            <div v-for="(cmd, index) in container.command" :key="'cmd-' + index" class="flex gap-2">
+                                            <div v-for="(cmd, index) in container.command" :key="'cmd-' + index"
+                                                class="flex gap-2">
                                                 <input v-model="container.command[index]" type="text"
-                                                       class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                                       placeholder="请输入命令">
-                                                <button type="button" @click="removeCommand(index)" class="px-3 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50">删除</button>
+                                                    class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                                    placeholder="请输入命令">
+                                                <button type="button" @click="removeCommand(index)"
+                                                    class="px-3 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50">删除</button>
                                             </div>
-                                            <button type="button" @click="addCommand" class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+ 添加命令</button>
+                                            <button type="button" @click="addCommand"
+                                                class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+
+                                                添加命令</button>
                                         </div>
                                     </div>
 
@@ -315,13 +367,17 @@
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700">启动参数</label>
                                         <div class="space-y-2">
-                                            <div v-for="(arg, index) in container.args" :key="'arg-' + index" class="flex gap-2">
+                                            <div v-for="(arg, index) in container.args" :key="'arg-' + index"
+                                                class="flex gap-2">
                                                 <input v-model="container.args[index]" type="text"
-                                                       class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                                       placeholder="请输入参数">
-                                                <button type="button" @click="removeArg(index)" class="px-3 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50">删除</button>
+                                                    class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                                    placeholder="请输入参数">
+                                                <button type="button" @click="removeArg(index)"
+                                                    class="px-3 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50">删除</button>
                                             </div>
-                                            <button type="button" @click="addArg" class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+ 添加参数</button>
+                                            <button type="button" @click="addArg"
+                                                class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+
+                                                添加参数</button>
                                         </div>
                                     </div>
 
@@ -329,19 +385,24 @@
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">端口配置</label>
                                         <div class="space-y-2">
-                                            <div v-for="(port, index) in container.ports" :key="'port-' + index" class="flex gap-2">
+                                            <div v-for="(port, index) in container.ports" :key="'port-' + index"
+                                                class="flex gap-2">
                                                 <input v-model.number="port.port" type="number" min="1" max="65535"
-                                                       class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                                       placeholder="端口号">
+                                                    class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                                    placeholder="端口号">
                                                 <select v-model="port.protocol"
-                                                        class="block w-32 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                    <option v-for="option in getOptions('protocol')" :key="option.dictValue" :value="option.dictValue">
+                                                    class="block w-32 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                    <option v-for="option in getOptions('protocol')"
+                                                        :key="option.dictValue" :value="option.dictValue">
                                                         {{ option.dictName }}
                                                     </option>
                                                 </select>
-                                                <button type="button" @click="removePort(index)" class="px-3 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50">删除</button>
+                                                <button type="button" @click="removePort(index)"
+                                                    class="px-3 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50">删除</button>
                                             </div>
-                                            <button type="button" @click="addPort" class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+ 添加端口</button>
+                                            <button type="button" @click="addPort"
+                                                class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+
+                                                添加端口</button>
                                         </div>
                                     </div>
                                 </div>
@@ -352,12 +413,13 @@
                     <!-- 底部按钮 -->
                     <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                         <button @click="submitCreate" :disabled="submitting || loadingDictOptions" type="button"
-                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed">
-                            <span v-if="submitting" class="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></span>
+                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span v-if="submitting"
+                                class="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></span>
                             {{ submitting ? '创建中...' : '创建' }}
                         </button>
                         <button @click="closeCreateDialog" :disabled="submitting" type="button"
-                                class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed">
                             取消
                         </button>
                     </div>
@@ -455,7 +517,13 @@ module.exports = {
         },
         // API基础URL
         apiBaseUrl() {
-            return window.location.origin;
+            // let u = window.location.origin;
+            let u = "http://127.0.0.1:44056"
+
+            if (u.endsWith('/')) {
+                return u.slice(0, -1);
+            }
+            return u;
         }
     },
     mounted() {
