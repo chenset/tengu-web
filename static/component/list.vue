@@ -581,7 +581,7 @@ module.exports = {
         async loadDictOptions() {
             this.loadingDictOptions = true;
             try {
-                const response = await fetch(`${this.apiBaseUrl}/tengu/eci/getContainerGroupDictOptions`, {
+                const response = await fetch(`${this.apiBaseUrl}/tengu/instance/getContainerGroupDictOptions`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -731,7 +731,7 @@ module.exports = {
 
             this.submitting = true;
             try {
-                const response = await fetch(`${this.apiBaseUrl}/tengu/eci/createContainerGroup`, {
+                const response = await fetch(`${this.apiBaseUrl}/tengu/instance/createContainerGroup`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
