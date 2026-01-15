@@ -18,7 +18,7 @@
                     <label class="block text-sm font-medium text-gray-700 mb-1">地域</label>
                     <select v-model="filterParams.regionId" @change="handleFilterChange"
                         class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        <option value="">全部地域</option>
+                        <option value="">-- 全部地域 --</option>
                         <option value="cn-shenzhen">华南1-深圳</option>
                         <option value="cn-beijing">华北2-北京</option>
                         <option value="cn-hangzhou">华东1-杭州</option>
@@ -28,7 +28,7 @@
                     <label class="block text-sm font-medium text-gray-700 mb-1">状态</label>
                     <select v-model="filterParams.containerGroupStatus" @change="handleFilterChange"
                         class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        <option value="">全部状态</option>
+                        <option value="">-- 全部状态 --</option>
                         <option value="Pending">启动中</option>
                         <option value="Running">运行中</option>
                         <option value="Succeeded">运行成功</option>
@@ -104,9 +104,9 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.user }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span :class="getStatusClass(item.status)"
+                                <span :class="getStatusClass(item.containerGroupStatus)"
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
-                                    {{ item.status }}
+                                    {{ item.containerGroupStatus }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.event }}</td>
@@ -632,7 +632,7 @@ module.exports = {
                 name: item.containerGroupName || '',
                 tag: this.formatRegion(item.regionId),
                 user: item.email || '-',
-                status: this.formatStatus(item.containerGroupStatus),
+                containerGroupStatus: this.formatStatus(item.containerGroupStatus),
                 event: '-',
                 spec: this.formatSpec(item.cpu, item.memory, item.instanceType),
                 zone: this.formatRegion(item.regionId),
