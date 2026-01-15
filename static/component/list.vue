@@ -129,8 +129,8 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         <tr v-for="item in this.tableData" :key="item.id" class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">{{ item.id }}</div>
-                                <div class="text-sm text-gray-500">{{ item.name }}</div>
+                                <div class="text-sm font-medium text-gray-900">{{ item.containerGroupId }}</div>
+                                <div class="text-sm text-gray-500">{{ item.containerGroupName }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span
@@ -758,8 +758,9 @@ module.exports = {
         // 格式化表格数据
         formatTableData(rows) {
             return rows.map(item => ({
-                id: item.containerGroupId || '',
-                name: item.containerGroupName || '',
+                id: item.id || '',
+                containerGroupId: item.containerGroupId || '',
+                containerGroupName: item.containerGroupName || '',
                 tag: this.formatRegion(item.regionId),
                 user: item.email || '-',
                 containerGroupStatus: this.formatStatus(item.containerGroupStatus),
@@ -1174,18 +1175,45 @@ module.exports = {
         // 查看详情
         viewDetail(item) {
             console.log('查看详情:', item);
-            alert(`查看详情: ${item.name}`);
+            alert(`查看详情: ${item.containerGroupName}`);
         },
         // 打开
         openItem(item) {
             console.log('打开:', item);
-            alert(`打开: ${item.name}`);
+            alert(`打开: ${item.containerGroupName}`);
         },
         // 释放
-        releaseItem(item) {
-            if (confirm(`确定要释放 ${item.name} 吗?`)) {
-                console.log('释放:', item);
-                alert(`已释放: ${item.name}`);
+        async releaseItem(item) {
+            if (!confirm(`确定要释放 ${item.containerGroupName} 吗?`)) {
+                return;
+            }
+
+            try {
+                
+                console.log(item)
+
+                const response = await fetch(`${this.apiBaseUrl}/tengu/instance/deleteContainerGroup`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: item.id
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.resultCode === 0) {
+                    alert(result.message || '该容器实例记录已被删除');
+                    // 刷新列表
+                    this.loadTableData();
+                } else {
+                    alert('释放失败: ' + (result.message || '未知错误'));
+                }
+            } catch (error) {
+                console.error('释放容器组失败:', error);
+                alert('释放失败: ' + error.message);
             }
         }
     }
