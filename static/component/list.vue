@@ -14,35 +14,69 @@
         <!-- 筛选条件 -->
         <div class="mb-4 bg-white rounded-lg shadow p-4">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- 地域多选 -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">地域（多选）</label>
-                    <select v-model="filterParams.regionIdList" @change="handleFilterChange" multiple
-                        class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        style="min-height: 100px;">
-                        <option value="cn-shenzhen">华南1-深圳</option>
-                        <option value="cn-beijing">华北2-北京</option>
-                        <option value="cn-hangzhou">华东1-杭州</option>
-                    </select>
-                    <p class="mt-1 text-xs text-gray-500">按住 Ctrl/Cmd 键可多选</p>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">地域</label>
+                    <div class="relative" v-click-outside="closeRegionDropdown">
+                        <div @click.stop="toggleRegionDropdown"
+                            class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 bg-white cursor-pointer hover:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm min-h-[38px]">
+                            <div class="flex flex-wrap gap-1">
+                                <span v-for="regionId in filterParams.regionIdList" :key="regionId"
+                                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800">
+                                    {{ getRegionLabel(regionId) }}
+                                    <button type="button" @click.stop="removeRegion(regionId)"
+                                        class="ml-1 inline-flex items-center justify-center w-4 h-4 text-indigo-400 hover:bg-indigo-200 hover:text-indigo-600 rounded-full">
+                                        ×
+                                    </button>
+                                </span>
+                                <span v-if="filterParams.regionIdList.length === 0" class="text-gray-400">请选择地域</span>
+                            </div>
+                        </div>
+                        <div v-if="showRegionDropdown"
+                            class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto"
+                            @click.stop>
+                            <div v-for="option in regionOptions" :key="option.value"
+                                @click="toggleRegion(option.value)"
+                                class="flex items-center px-3 py-2 cursor-pointer hover:bg-gray-100">
+                                <input type="checkbox" :checked="filterParams.regionIdList.includes(option.value)"
+                                    class="h-4 w-4 text-indigo-600 border-gray-300 rounded mr-2 pointer-events-none">
+                                <span class="text-sm text-gray-900">{{ option.label }}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <!-- 状态多选 -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">状态（多选）</label>
-                    <select v-model="filterParams.containerGroupStatusList" @change="handleFilterChange" multiple
-                        class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        style="min-height: 100px;">
-                        <option value="Pending">启动中</option>
-                        <option value="Running">运行中</option>
-                        <option value="Succeeded">运行成功</option>
-                        <option value="Failed">运行失败</option>
-                        <option value="Scheduling">创建中</option>
-                        <option value="ScheduleFailed">创建失败</option>
-                        <option value="Restarting">重启中</option>
-                        <option value="Updating">更新中</option>
-                        <option value="Terminating">终止中</option>
-                        <option value="Expired">过期</option>
-                        <option value="Terminated">已终止</option>
-                    </select>
-                    <p class="mt-1 text-xs text-gray-500">按住 Ctrl/Cmd 键可多选</p>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">状态</label>
+                    <div class="relative" v-click-outside="closeStatusDropdown">
+                        <div @click.stop="toggleStatusDropdown"
+                            class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 bg-white cursor-pointer hover:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm min-h-[38px]">
+                            <div class="flex flex-wrap gap-1">
+                                <span v-for="status in filterParams.containerGroupStatusList" :key="status"
+                                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800">
+                                    {{ getStatusLabel(status) }}
+                                    <button type="button" @click.stop="removeStatus(status)"
+                                        class="ml-1 inline-flex items-center justify-center w-4 h-4 text-indigo-400 hover:bg-indigo-200 hover:text-indigo-600 rounded-full">
+                                        ×
+                                    </button>
+                                </span>
+                                <span v-if="filterParams.containerGroupStatusList.length === 0"
+                                    class="text-gray-400">请选择状态</span>
+                            </div>
+                        </div>
+                        <div v-if="showStatusDropdown"
+                            class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto"
+                            @click.stop>
+                            <div v-for="option in statusOptions" :key="option.value"
+                                @click="toggleStatus(option.value)"
+                                class="flex items-center px-3 py-2 cursor-pointer hover:bg-gray-100">
+                                <input type="checkbox"
+                                    :checked="filterParams.containerGroupStatusList.includes(option.value)"
+                                    class="h-4 w-4 text-indigo-600 border-gray-300 rounded mr-2 pointer-events-none">
+                                <span class="text-sm text-gray-900">{{ option.label }}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex items-end">
                     <button @click="loadTableData"
@@ -496,6 +530,29 @@ module.exports = {
                 regionIdList: [],
                 containerGroupStatusList: []
             },
+            // 下拉菜单状态
+            showRegionDropdown: false,
+            showStatusDropdown: false,
+            // 地域选项
+            regionOptions: [
+                { value: 'cn-shenzhen', label: '华南1-深圳' },
+                { value: 'cn-beijing', label: '华北2-北京' },
+                { value: 'cn-hangzhou', label: '华东1-杭州' }
+            ],
+            // 状态选项
+            statusOptions: [
+                { value: 'Pending', label: '启动中' },
+                { value: 'Running', label: '运行中' },
+                { value: 'Succeeded', label: '运行成功' },
+                { value: 'Failed', label: '运行失败' },
+                { value: 'Scheduling', label: '创建中' },
+                { value: 'ScheduleFailed', label: '创建失败' },
+                { value: 'Restarting', label: '重启中' },
+                { value: 'Updating', label: '更新中' },
+                { value: 'Terminating', label: '终止中' },
+                { value: 'Expired', label: '过期' },
+                { value: 'Terminated', label: '已终止' }
+            ],
             // 创建对话框相关
             showCreateDialog: false,
             loadingDictOptions: false,
@@ -581,7 +638,83 @@ module.exports = {
     },
     beforeDestroy() {
     },
+    directives: {
+        'click-outside': {
+            bind(el, binding, vnode) {
+                el.clickOutsideEvent = function (event) {
+                    // 检查点击是否在元素外部
+                    if (!(el === event.target || el.contains(event.target))) {
+                        binding.value(event);
+                    }
+                };
+                // 使用 setTimeout 确保在当前点击事件完成后再绑定
+                el.__vueClickOutside__ = setTimeout(() => {
+                    document.addEventListener('click', el.clickOutsideEvent);
+                }, 0);
+            },
+            unbind(el) {
+                clearTimeout(el.__vueClickOutside__);
+                document.removeEventListener('click', el.clickOutsideEvent);
+            }
+        }
+    },
     methods: {
+        // 地域多选相关方法
+        toggleRegionDropdown() {
+            this.showRegionDropdown = !this.showRegionDropdown;
+            this.showStatusDropdown = false;
+        },
+        closeRegionDropdown() {
+            this.showRegionDropdown = false;
+        },
+        toggleRegion(value) {
+            const index = this.filterParams.regionIdList.indexOf(value);
+            if (index > -1) {
+                this.filterParams.regionIdList.splice(index, 1);
+            } else {
+                this.filterParams.regionIdList.push(value);
+            }
+            this.handleFilterChange();
+        },
+        removeRegion(value) {
+            const index = this.filterParams.regionIdList.indexOf(value);
+            if (index > -1) {
+                this.filterParams.regionIdList.splice(index, 1);
+                this.handleFilterChange();
+            }
+        },
+        getRegionLabel(value) {
+            const option = this.regionOptions.find(opt => opt.value === value);
+            return option ? option.label : value;
+        },
+        // 状态多选相关方法
+        toggleStatusDropdown() {
+            this.showStatusDropdown = !this.showStatusDropdown;
+            this.showRegionDropdown = false;
+        },
+        closeStatusDropdown() {
+            this.showStatusDropdown = false;
+        },
+        toggleStatus(value) {
+            const index = this.filterParams.containerGroupStatusList.indexOf(value);
+            if (index > -1) {
+                this.filterParams.containerGroupStatusList.splice(index, 1);
+            } else {
+                this.filterParams.containerGroupStatusList.push(value);
+            }
+            this.handleFilterChange();
+        },
+        removeStatus(value) {
+            const index = this.filterParams.containerGroupStatusList.indexOf(value);
+            if (index > -1) {
+                this.filterParams.containerGroupStatusList.splice(index, 1);
+                this.handleFilterChange();
+            }
+        },
+        getStatusLabel(value) {
+            const option = this.statusOptions.find(opt => opt.value === value);
+            return option ? option.label : value;
+        },
         // 加载列表数据
         async loadTableData() {
             this.loading = true;
