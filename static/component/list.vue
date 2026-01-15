@@ -91,7 +91,7 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        <tr v-for="item in paginatedData" :key="item.id" class="hover:bg-gray-50">
+                        <tr v-for="item in this.tableData" :key="item.id" class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-gray-900">{{ item.id }}</div>
                                 <div class="text-sm text-gray-500">{{ item.name }}</div>
@@ -531,10 +531,6 @@ module.exports = {
         totalPages() {
             return Math.ceil(this.totalItems / this.pageSize);
         },
-        // 当前页数据（已由API返回，直接使用tableData）
-        paginatedData() {
-            return this.tableData;
-        },
         // 当前页起始条数
         startItem() {
             return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1;
@@ -587,6 +583,7 @@ module.exports = {
         // 加载列表数据
         async loadTableData() {
             this.loading = true;
+          
             try {
                 const requestBody = {
                     page: this.currentPage,
@@ -610,7 +607,7 @@ module.exports = {
                 });
 
                 const result = await response.json();
-
+                this.tableData = [];// 清空数据以防止旧数据残留
                 if (result.resultCode === 1 && result.data) {
                     this.tableData = this.formatTableData(result.data.rows || []);
                     this.totalItems = result.data.total || 0;
