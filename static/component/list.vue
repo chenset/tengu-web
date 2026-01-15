@@ -15,20 +15,21 @@
         <div class="mb-4 bg-white rounded-lg shadow p-4">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">地域</label>
-                    <select v-model="filterParams.regionId" @change="handleFilterChange"
-                        class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        <option value="">-- 全部地域 --</option>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">地域（多选）</label>
+                    <select v-model="filterParams.regionIdList" @change="handleFilterChange" multiple
+                        class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        style="min-height: 100px;">
                         <option value="cn-shenzhen">华南1-深圳</option>
                         <option value="cn-beijing">华北2-北京</option>
                         <option value="cn-hangzhou">华东1-杭州</option>
                     </select>
+                    <p class="mt-1 text-xs text-gray-500">按住 Ctrl/Cmd 键可多选</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">状态</label>
-                    <select v-model="filterParams.containerGroupStatus" @change="handleFilterChange"
-                        class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        <option value="">-- 全部状态 --</option>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">状态（多选）</label>
+                    <select v-model="filterParams.containerGroupStatusList" @change="handleFilterChange" multiple
+                        class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        style="min-height: 100px;">
                         <option value="Pending">启动中</option>
                         <option value="Running">运行中</option>
                         <option value="Succeeded">运行成功</option>
@@ -41,6 +42,7 @@
                         <option value="Expired">过期</option>
                         <option value="Terminated">已终止</option>
                     </select>
+                    <p class="mt-1 text-xs text-gray-500">按住 Ctrl/Cmd 键可多选</p>
                 </div>
                 <div class="flex items-end">
                     <button @click="loadTableData"
@@ -491,8 +493,8 @@ module.exports = {
             loading: false,
             // 筛选参数
             filterParams: {
-                regionId: '',
-                containerGroupStatus: ''
+                regionIdList: [],
+                containerGroupStatusList: []
             },
             // 创建对话框相关
             showCreateDialog: false,
@@ -591,11 +593,11 @@ module.exports = {
                 };
 
                 // 添加可选筛选条件
-                if (this.filterParams.regionId) {
-                    requestBody.regionId = this.filterParams.regionId;
+                if (this.filterParams.regionIdList && this.filterParams.regionIdList.length > 0) {
+                    requestBody.regionIdList = this.filterParams.regionIdList;
                 }
-                if (this.filterParams.containerGroupStatus) {
-                    requestBody.containerGroupStatus = this.filterParams.containerGroupStatus;
+                if (this.filterParams.containerGroupStatusList && this.filterParams.containerGroupStatusList.length > 0) {
+                    requestBody.containerGroupStatusList = this.filterParams.containerGroupStatusList;
                 }
 
                 const response = await fetch(`${this.apiBaseUrl}/tengu/instance/describeContainerGroupPage`, {
