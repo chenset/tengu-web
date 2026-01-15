@@ -17,7 +17,7 @@
                 <!-- 地域多选 -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">地域</label>
-                    <div class="relative" v-click-outside="closeRegionDropdown">
+                    <div class="relative" ref="regionDropdown">
                         <div @click.stop="toggleRegionDropdown"
                             class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 bg-white cursor-pointer hover:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm min-h-[38px]">
                             <div class="flex flex-wrap gap-1">
@@ -48,7 +48,7 @@
                 <!-- 状态多选 -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">状态</label>
-                    <div class="relative" v-click-outside="closeStatusDropdown">
+                    <div class="relative" ref="statusDropdown">
                         <div @click.stop="toggleStatusDropdown"
                             class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 bg-white cursor-pointer hover:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm min-h-[38px]">
                             <div class="flex flex-wrap gap-1">
@@ -134,7 +134,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span
-                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 tex「方案选单」t-blue-800">
                                     {{ item.tag }}
                                 </span>
                             </td>
@@ -635,30 +635,25 @@ module.exports = {
     },
     mounted() {
         this.loadTableData();
+        // 添加全局点击事件监听器
+        document.addEventListener('click', this.handleClickOutside);
     },
     beforeDestroy() {
-    },
-    directives: {
-        'click-outside': {
-            bind(el, binding, vnode) {
-                el.clickOutsideEvent = function (event) {
-                    // 检查点击是否在元素外部
-                    if (!(el === event.target || el.contains(event.target))) {
-                        binding.value(event);
-                    }
-                };
-                // 使用 setTimeout 确保在当前点击事件完成后再绑定
-                el.__vueClickOutside__ = setTimeout(() => {
-                    document.addEventListener('click', el.clickOutsideEvent);
-                }, 0);
-            },
-            unbind(el) {
-                clearTimeout(el.__vueClickOutside__);
-                document.removeEventListener('click', el.clickOutsideEvent);
-            }
-        }
+        // 移除全局点击事件监听器
+        document.removeEventListener('click', this.handleClickOutside);
     },
     methods: {
+        // 处理点击外部区域
+        handleClickOutside(event) {
+            // 检查地域下拉框
+            if (this.$refs.regionDropdown && !this.$refs.regionDropdown.contains(event.target)) {
+                this.showRegionDropdown = false;
+            }
+            // 检查状态下拉框
+            if (this.$refs.statusDropdown && !this.$refs.statusDropdown.contains(event.target)) {
+                this.showStatusDropdown = false;
+            }
+        },
         // 地域多选相关方法
         toggleRegionDropdown() {
             this.showRegionDropdown = !this.showRegionDropdown;
