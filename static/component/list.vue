@@ -1204,7 +1204,12 @@ module.exports = {
 
                 const result = await response.json();
 
-                if (result.resultCode === 0) {
+
+                if (result.resultCode === 1) {
+                    alert('释放成功！');
+                    // 刷新列表
+                    this.loadTableData();
+                }else if (result.resultCode === 0) {
                     alert(result.message || '该容器实例记录已被删除');
                     // 刷新列表
                     this.loadTableData();
