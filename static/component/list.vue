@@ -1190,8 +1190,6 @@ module.exports = {
 
             try {
                 
-                console.log(item)
-
                 const response = await fetch(`${this.apiBaseUrl}/tengu/instance/deleteContainerGroup`, {
                     method: 'POST',
                     headers: {
