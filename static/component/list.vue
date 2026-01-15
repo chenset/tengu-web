@@ -11,9 +11,60 @@
             </button>
         </div>
 
+        <!-- 筛选条件 -->
+        <div class="mb-4 bg-white rounded-lg shadow p-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">地域</label>
+                    <select v-model="filterParams.regionId" @change="handleFilterChange"
+                        class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="">全部地域</option>
+                        <option value="cn-shenzhen">华南1-深圳</option>
+                        <option value="cn-beijing">华北2-北京</option>
+                        <option value="cn-hangzhou">华东1-杭州</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">状态</label>
+                    <select v-model="filterParams.containerGroupStatus" @change="handleFilterChange"
+                        class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="">全部状态</option>
+                        <option value="Pending">启动中</option>
+                        <option value="Running">运行中</option>
+                        <option value="Succeeded">运行成功</option>
+                        <option value="Failed">运行失败</option>
+                        <option value="Scheduling">创建中</option>
+                        <option value="ScheduleFailed">创建失败</option>
+                        <option value="Restarting">重启中</option>
+                        <option value="Updating">更新中</option>
+                        <option value="Terminating">终止中</option>
+                        <option value="Expired">过期</option>
+                        <option value="Terminated">已终止</option>
+                    </select>
+                </div>
+                <div class="flex items-end">
+                    <button @click="loadTableData"
+                        class="w-full px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                        查询
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <div class="bg-white rounded-lg shadow">
+            <!-- 加载状态 -->
+            <div v-if="loading" class="text-center py-12">
+                <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+                <p class="mt-4 text-sm text-gray-500">加载中...</p>
+            </div>
+
+            <!-- 空状态 -->
+            <div v-else-if="tableData.length === 0" class="text-center py-12">
+                <p class="text-gray-500">暂无数据</p>
+            </div>
+
             <!-- 表格容器 -->
-            <div class="overflow-x-auto">
+            <div v-else class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
@@ -436,6 +487,13 @@ module.exports = {
             currentPage: 1,
             pageSize: 10,
             tableData: [],
+            totalItems: 0,
+            loading: false,
+            // 筛选参数
+            filterParams: {
+                regionId: '',
+                containerGroupStatus: ''
+            },
             // 创建对话框相关
             showCreateDialog: false,
             loadingDictOptions: false,
@@ -469,19 +527,13 @@ module.exports = {
         }
     },
     computed: {
-        // 总条数
-        totalItems() {
-            return this.tableData.length;
-        },
         // 总页数
         totalPages() {
             return Math.ceil(this.totalItems / this.pageSize);
         },
-        // 当前页数据
+        // 当前页数据（已由API返回，直接使用tableData）
         paginatedData() {
-            const start = (this.currentPage - 1) * this.pageSize;
-            const end = start + this.pageSize;
-            return this.tableData.slice(start, end);
+            return this.tableData;
         },
         // 当前页起始条数
         startItem() {
@@ -527,11 +579,116 @@ module.exports = {
         }
     },
     mounted() {
-        this.generateMockData();
+        this.loadTableData();
     },
     beforeDestroy() {
     },
     methods: {
+        // 加载列表数据
+        async loadTableData() {
+            this.loading = true;
+            try {
+                const requestBody = {
+                    page: this.currentPage,
+                    rows: this.pageSize
+                };
+
+                // 添加可选筛选条件
+                if (this.filterParams.regionId) {
+                    requestBody.regionId = this.filterParams.regionId;
+                }
+                if (this.filterParams.containerGroupStatus) {
+                    requestBody.containerGroupStatus = this.filterParams.containerGroupStatus;
+                }
+
+                const response = await fetch(`${this.apiBaseUrl}/tengu/instance/describeContainerGroupPage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                const result = await response.json();
+
+                if (result.resultCode === 1 && result.data) {
+                    this.tableData = this.formatTableData(result.data.rows || []);
+                    this.totalItems = result.data.total || 0;
+                } else {
+                    console.error('加载数据失败:', result);
+                    this.tableData = [];
+                    this.totalItems = 0;
+                }
+            } catch (error) {
+                console.error('加载列表数据失败:', error);
+                alert('加载数据失败: ' + error.message);
+                this.tableData = [];
+                this.totalItems = 0;
+            } finally {
+                this.loading = false;
+            }
+        },
+        // 格式化表格数据
+        formatTableData(rows) {
+            return rows.map(item => ({
+                id: item.containerGroupId || '',
+                name: item.containerGroupName || '',
+                tag: this.formatRegion(item.regionId),
+                user: item.email || '-',
+                status: this.formatStatus(item.containerGroupStatus),
+                event: '-',
+                spec: this.formatSpec(item.cpu, item.memory, item.instanceType),
+                zone: this.formatRegion(item.regionId),
+                createTime: this.formatTime(item.createTime),
+                securityGroup: item.securityGroupId || '-',
+                vSwitch: item.vswitchId || '-',
+                rawData: item // 保存原始数据
+            }));
+        },
+        // 格式化地域
+        formatRegion(regionId) {
+            const regionMap = {
+                'cn-shenzhen': '华南1-深圳',
+                'cn-beijing': '华北2-北京',
+                'cn-hangzhou': '华东1-杭州'
+            };
+            return regionMap[regionId] || regionId;
+        },
+        // 格式化状态
+        formatStatus(status) {
+            const statusMap = {
+                'Pending': '启动中',
+                'Running': '运行中',
+                'Succeeded': '运行成功',
+                'Failed': '运行失败',
+                'Scheduling': '创建中',
+                'ScheduleFailed': '创建失败',
+                'Restarting': '重启中',
+                'Updating': '更新中',
+                'Terminating': '终止中',
+                'Expired': '过期',
+                'Terminated': '已终止'
+            };
+            return statusMap[status] || status;
+        },
+        // 格式化规格
+        formatSpec(cpu, memory, instanceType) {
+            if (cpu && memory) {
+                return `${cpu}核${memory}G`;
+            }
+            return instanceType || '-';
+        },
+        // 格式化时间
+        formatTime(timestamp) {
+            if (!timestamp) return '-';
+            const date = new Date(timestamp);
+            return date.toISOString().slice(0, 19).replace('T', ' ');
+        },
+        // 筛选条件改变
+        handleFilterChange() {
+            this.currentPage = 1;
+            this.loadTableData();
+        },
         // 获取字典选项
         getOptions(dictCode) {
             const dict = this.dictOptions.find(d => d.dictCode === dictCode);
@@ -846,49 +1003,23 @@ module.exports = {
         },
         // 刷新列表
         refreshList() {
-            // 这里可以调用实际的列表查询接口
-            // 目前使用模拟数据，所以重新生成
-            this.tableData = [];
-            this.generateMockData();
             this.currentPage = 1;
-        },
-        // 生成50条模拟数据
-        generateMockData() {
-            const statuses = ['运行中', '已停止', '创建中', '异常'];
-            const zones = ['可用区A', '可用区B', '可用区C'];
-            const specs = ['2核4G', '4核8G', '8核16G', '16核32G'];
-            const events = ['正常', '重启', '升级', '维护'];
-
-            for (let i = 1; i <= 50; i++) {
-                this.tableData.push({
-                    id: `pod-${String(i).padStart(4, '0')}`,
-                    name: `容器组-${i}`,
-                    tag: `标签${i % 5 + 1}`,
-                    user: `user${i % 10 + 1}`,
-                    status: statuses[i % 4],
-                    event: events[i % 4],
-                    spec: specs[i % 4],
-                    zone: zones[i % 3],
-                    createTime: this.getRandomDate(),
-                    securityGroup: `sg-${String(i).padStart(5, '0')}`,
-                    vSwitch: `vsw-${String(i).padStart(5, '0')}`
-                });
-            }
-        },
-        // 生成随机日期
-        getRandomDate() {
-            const start = new Date(2024, 0, 1);
-            const end = new Date();
-            const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-            return date.toISOString().slice(0, 19).replace('T', ' ');
+            this.loadTableData();
         },
         // 根据状态返回不同的样式类
         getStatusClass(status) {
             const classMap = {
                 '运行中': 'bg-green-100 text-green-800',
-                '已停止': 'bg-gray-100 text-gray-800',
-                '创建中': 'bg-yellow-100 text-yellow-800',
-                '异常': 'bg-red-100 text-red-800'
+                '运行成功': 'bg-green-100 text-green-800',
+                '启动中': 'bg-blue-100 text-blue-800',
+                '创建中': 'bg-blue-100 text-blue-800',
+                '重启中': 'bg-blue-100 text-blue-800',
+                '更新中': 'bg-blue-100 text-blue-800',
+                '运行失败': 'bg-red-100 text-red-800',
+                '创建失败': 'bg-red-100 text-red-800',
+                '终止中': 'bg-yellow-100 text-yellow-800',
+                '已终止': 'bg-gray-100 text-gray-800',
+                '过期': 'bg-gray-100 text-gray-800'
             };
             return classMap[status] || 'bg-gray-100 text-gray-800';
         },
@@ -896,17 +1027,22 @@ module.exports = {
         prevPage() {
             if (this.currentPage > 1) {
                 this.currentPage--;
+                this.loadTableData();
             }
         },
         // 下一页
         nextPage() {
             if (this.currentPage < this.totalPages) {
                 this.currentPage++;
+                this.loadTableData();
             }
         },
         // 跳转到指定页
         goToPage(page) {
-            this.currentPage = page;
+            if (this.currentPage !== page) {
+                this.currentPage = page;
+                this.loadTableData();
+            }
         },
         // 查看详情
         viewDetail(item) {
