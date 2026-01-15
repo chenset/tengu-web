@@ -640,7 +640,39 @@ module.exports = {
                             break;
                     }
                 }
+
+                // 处理容器列表的默认值
+                if (dict.dictCode === 'containers' && dict.options && dict.options.length > 0) {
+                    const containerOption = dict.options[0];
+                    if (containerOption.defaultOptionsDictValue) {
+                        this.applyContainerDefaultValues(containerOption.defaultOptionsDictValue);
+                    }
+                }
             });
+        },
+        // 应用容器默认值
+        applyContainerDefaultValues(containerDefaults) {
+            if (containerDefaults.name) {
+                this.container.name = containerDefaults.name;
+            }
+            if (containerDefaults.image) {
+                this.container.image = containerDefaults.image;
+            }
+            if (containerDefaults.imagePullPolicy) {
+                this.container.imagePullPolicy = containerDefaults.imagePullPolicy;
+            }
+            if (containerDefaults.command && Array.isArray(containerDefaults.command)) {
+                this.container.command = [...containerDefaults.command];
+            }
+            if (containerDefaults.args && Array.isArray(containerDefaults.args)) {
+                this.container.args = [...containerDefaults.args];
+            }
+            if (containerDefaults.ports && Array.isArray(containerDefaults.ports)) {
+                this.container.ports = containerDefaults.ports.map(port => ({
+                    port: port.port || null,
+                    protocol: port.protocol || 'TCP'
+                }));
+            }
         },
         // 为默认CPU更新内存选项
         updateMemoryOptionsForDefaultCpu(cpuValue) {
