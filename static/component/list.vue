@@ -638,11 +638,15 @@ module.exports = {
                         case 'imagePullPolicy':
                             this.container.imagePullPolicy = dict.defaultOptionsDictValue;
                             break;
+                        case 'containerGroupName':
+                            this.formData.containerGroupName = dict.defaultOptionsDictValue;
+                            break;
                     }
                 }
 
                 // 处理容器列表的默认值
                 if (dict.dictCode === 'containers' && dict.options && dict.options.length > 0) {
+                    //目前只处理第一个容器的默认值
                     const containerOption = dict.options[0];
                     if (containerOption.defaultOptionsDictValue) {
                         this.applyContainerDefaultValues(containerOption.defaultOptionsDictValue);
