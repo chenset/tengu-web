@@ -162,8 +162,8 @@
                                 <div class="text-sm text-gray-500">{{ item.vSwitch }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <button @click="viewDetail(item)"
-                                    class="text-indigo-600 hover:text-indigo-900 mr-3">详情</button>
+                                <!-- <button @click="viewDetail(item)" -->
+                                    <!-- class="text-indigo-600 hover:text-indigo-900 mr-3">详情</button> -->
                                 <button @click="openItem(item)"
                                     class="text-green-600 hover:text-green-900 mr-3">打开</button>
                                 <button @click="releaseItem(item)" class="text-red-600 hover:text-red-900">释放</button>
