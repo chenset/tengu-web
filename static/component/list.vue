@@ -1211,8 +1211,7 @@ module.exports = {
         },
         // 打开
         openItem(item) {
-            console.log('打开:', item);
-            alert(`打开: ${item.containerGroupName}`);
+            window.open(`${this.apiBaseUrl}/tengu/container/open/redirect?id=${item.id}`, '_blank');
         },
         // 释放
         async releaseItem(item) {
