@@ -106,16 +106,16 @@
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 容器组ID/名称</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                标签</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                用户</th>
+                            <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                标签</th> -->
+                            <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                用户</th> -->
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 订单状态</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 容器状态</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                事件</th>
+                            <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                事件</th> -->
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 规格</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -125,7 +125,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 安全组/虚拟交换机</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                操作</th>
+                                </th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -134,13 +134,13 @@
                                 <div class="text-sm font-medium text-gray-900">{{ item.containerGroupId }}</div>
                                 <div class="text-sm text-gray-500">{{ item.containerGroupName }}</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <!-- <td class="px-6 py-4 whitespace-nowrap">
                                 <span
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 tex「方案选单」t-blue-800">
                                     {{ item.tag }}
                                 </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.user }}</td>
+                            </td> -->
+                            <!-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.user }}</td> -->
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span :class="getStatusClass(item.status)"
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
@@ -153,7 +153,7 @@
                                     {{ item.containerGroupStatus }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.event }}</td>
+                            <!-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.event }}</td> -->
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.spec }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.zone }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.createTime }}</td>
