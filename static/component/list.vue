@@ -1146,9 +1146,11 @@ module.exports = {
 
                 if (result.resultCode === 1) {
                     alert('创建成功！容器组ID: ' + (result.data?.containerGroupId || ''));
-                    this.closeCreateDialog();
                     // 刷新列表
                     this.refreshList();
+                    setTimeout(() => {
+                        this.closeCreateDialog();
+                    }, 200);
                 } else {
                     alert('创建失败: ' + (result.message || '未知错误'));
                 }
