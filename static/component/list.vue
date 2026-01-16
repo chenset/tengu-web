@@ -111,6 +111,8 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 用户</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                订单状态</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 容器状态</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 事件</th>
@@ -139,6 +141,12 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.user }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span :class="getStatusClass(item.status)"
+                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
+                                    {{ item.status }}
+                                </span>
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span :class="getStatusClass(item.containerGroupStatus)"
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
@@ -780,6 +788,7 @@ module.exports = {
                 tag: this.formatRegion(item.regionId),
                 user: item.email || '-',
                 containerGroupStatus: this.formatStatus(item.containerGroupStatus),
+                status:this.formatStatus(item.status),
                 event: '-',
                 spec: this.formatSpec(item.cpu, item.memory, item.instanceType),
                 zone: this.formatRegion(item.regionId),
