@@ -246,6 +246,21 @@
                                             placeholder="请输入容器组名称">
                                     </div>
 
+                                    <!-- 选择通道账号 -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700">通道账号选择 <span
+                                                class="text-red-500">*</span></label>
+                                        <select v-model="formData.channelCode" required
+                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                            <option>请选择通道账号</option>
+                                            <option v-for="option in getOptions('channelCode')" :key="option.dictValue"
+                                                :value="option.dictValue">
+                                                {{ option.dictName }} <span v-if="option.remark"
+                                                    class="text-gray-500">({{ option.remark }})</span>
+                                            </option>
+                                        </select>
+                                    </div>
+
                                     <!-- 地域选择 -->
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700">地域选择 <span
@@ -563,6 +578,7 @@ module.exports = {
                 channelCode: 'ALIYUN-CHEN',
                 containerGroupName: '',
                 regionId: '',
+                channelCode: '',
                 vpcId: '',
                 vSwitchId: '',
                 securityGroupId: '',
@@ -842,6 +858,7 @@ module.exports = {
                 channelCode: 'ALIYUN-CHEN',
                 containerGroupName: '',
                 regionId: '',
+                channelCode: '',
                 vpcId: '',
                 vSwitchId: '',
                 securityGroupId: '',
@@ -897,6 +914,9 @@ module.exports = {
                         case 'regionId':
                             this.formData.regionId = dict.defaultOptionsDictValue;
                             break;
+                        case 'channelCode':
+                            this.formData.channelCode = dict.defaultOptionsDictValue;
+                            break;    
                         case 'vpcId':
                             this.formData.vpcId = dict.defaultOptionsDictValue;
                             break;
@@ -1064,6 +1084,7 @@ module.exports = {
             const requestData = {
                 channelCode: this.formData.channelCode,
                 regionId: this.formData.regionId,
+                channelCode: this.formData.channelCode,
                 containerGroupName: this.formData.containerGroupName,
                 vpcId: this.formData.vpcId,
                 vSwitchId: this.formData.vSwitchId,
