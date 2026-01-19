@@ -534,14 +534,18 @@
                         </button>
 
                         <!-- 单价,价格展示 -->
-                        <p class="mt-3 w-full inline-flex justify-center rounded-md px-4 py-2 text-base font-medium text-orange-400  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        <p class="mt-3 w-full inline-flex justify-center rounded-md text-base font-medium text-orange-400  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                             <span v-if="priceInfo.loading">查询价格中...</span>
-                            <span v-else-if="priceInfo.isRange">
+                            <small v-else-if="priceInfo.isRange">
                                 {{ priceInfo.minPrice }}~{{ priceInfo.maxPrice }} {{ priceInfo.currency }}/秒
-                            </span>
-                            <span v-else>
-                                {{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒
-                            </span>
+                                <br>
+                                {{ priceInfo.minPrice*3600 }}~{{ priceInfo.maxPrice*3600 }} {{ priceInfo.currency }}/小时
+                            </small>
+                            <small v-else>
+                                {{ priceInfo.minPrice*3600 }} {{ priceInfo.currency }}/秒
+                                <br>
+                                {{ priceInfo.minPrice*3600 }} {{ priceInfo.currency }}/小时
+                            </small>
                         </p>
                     </div>
                 </div>
