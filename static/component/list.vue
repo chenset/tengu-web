@@ -460,7 +460,7 @@
                     <div>
                         <p class="text-sm text-gray-700">
                             第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
-                            }}</span> 条，
+                                }}</span> 条，
                             共 <span class="font-medium">{{ totalItems }}</span> 条
                         </p>
                     </div>
@@ -511,282 +511,283 @@
 
                             <!-- 表单内容 -->
                             <form v-else @submit.prevent="submitCreate" class="el-form-container">
-                            <!-- 基础配置 -->
-                            <div class="border-b pb-4">
-                                <h4 class="text-md font-semibold text-gray-700 mb-3">基础配置</h4>
-                                <div class="grid grid-cols-1 gap-4">
-                                    <!-- 容器组名称 -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">容器组名称 <span
-                                                class="text-red-500">*</span></label>
-                                        <input v-model="formData.containerGroupName" type="text" required
-                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                            placeholder="请输入容器组名称">
-                                    </div>
-
-                                    <!-- 选择通道账号 -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">通道账号选择 <span
-                                                class="text-red-500">*</span></label>
-                                        <select v-model="formData.channelCode" required
-                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                            <option>请选择通道账号</option>
-                                            <option v-for="option in getOptions('channelCode')" :key="option.dictValue"
-                                                :value="option.dictValue">
-                                                {{ option.dictName }} <span v-if="option.remark"
-                                                    class="text-gray-500">({{ option.remark }})</span>
-                                            </option>
-                                        </select>
-                                    </div>
-
-                                    <!-- 地域选择 -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">地域选择 <span
-                                                class="text-red-500">*</span></label>
-                                        <select v-model="formData.regionId" required
-                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                            <option value="">请选择地域</option>
-                                            <option v-for="option in getOptions('regionId')" :key="option.dictValue"
-                                                :value="option.dictValue">
-                                                {{ option.dictName }} <span v-if="option.remark"
-                                                    class="text-gray-500">({{ option.remark }})</span>
-                                            </option>
-                                        </select>
-                                    </div>
-
-                                    <!-- 专有网络 -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">专有网络 <span
-                                                class="text-red-500">*</span></label>
-                                        <select v-model="formData.vpcId" required
-                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                            <option value="">请选择专有网络</option>
-                                            <option v-for="option in getOptions('vpcId')" :key="option.dictValue"
-                                                :value="option.dictValue">
-                                                {{ option.dictName }} <span v-if="option.remark"
-                                                    class="text-gray-500">({{ option.remark }})</span>
-                                            </option>
-                                        </select>
-                                    </div>
-
-                                    <!-- 交换机 -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">交换机 <span
-                                                class="text-red-500">*</span></label>
-                                        <select v-model="formData.vSwitchId" required
-                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                            <option value="">请选择交换机</option>
-                                            <option v-for="option in getOptions('vSwitchId')" :key="option.dictValue"
-                                                :value="option.dictValue">
-                                                {{ option.dictName }} <span v-if="option.remark"
-                                                    class="text-gray-500">({{ option.remark }})</span>
-                                            </option>
-                                        </select>
-                                    </div>
-
-                                    <!-- 安全组 -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">安全组 <span
-                                                class="text-red-500">*</span></label>
-                                        <select v-model="formData.securityGroupId" required
-                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                            <option value="">请选择安全组</option>
-                                            <option v-for="option in getOptions('securityGroupId')"
-                                                :key="option.dictValue" :value="option.dictValue">
-                                                {{ option.dictName }} <span v-if="option.remark"
-                                                    class="text-gray-500">({{ option.remark }})</span>
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- 规格配置 -->
-                            <div class="border-b pb-4">
-                                <h4 class="text-md font-semibold text-gray-700 mb-3">规格配置</h4>
-                                <div class="grid grid-cols-2 gap-4">
-                                    <!-- CPU规格 -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">CPU规格</label>
-                                        <select v-model="formData.cpu" @change="onCpuChange"
-                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                            <option value="">请选择CPU</option>
-                                            <option v-for="option in getOptions('cpu')" :key="option.dictValue"
-                                                :value="option.dictValue">
-                                                {{ option.dictName }} <span v-if="option.remark"
-                                                    class="text-gray-500">({{ option.remark }})</span>
-                                            </option>
-                                        </select>
-                                    </div>
-
-                                    <!-- 内存规格（级联） -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">内存规格</label>
-                                        <select v-model="formData.memory" :disabled="!formData.cpu"
-                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100">
-                                            <option value="">请选择内存</option>
-                                            <option v-for="option in memoryOptions" :key="option.dictValue"
-                                                :value="option.dictValue">
-                                                {{ option.dictName }}
-                                            </option>
-                                        </select>
-                                    </div>
-
-                                    <!-- ECS实例规格 -->
-                                    <div class="col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700">ECS实例规格 <span
-                                                class="text-red-500">*</span></label>
-                                        <select v-model="formData.instanceType" required
-                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                            <option value="">请选择实例规格</option>
-                                            <option v-for="option in getOptions('instanceType')" :key="option.dictValue"
-                                                :value="option.dictValue">
-                                                {{ option.dictName }} <span v-if="option.remark"
-                                                    class="text-gray-500">({{ option.remark }})</span>
-                                            </option>
-                                        </select>
-                                    </div>
-
-                                    <!-- 付费模式 -->
-                                    <div class="col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700">付费模式 <span
-                                                class="text-red-500">*</span></label>
-                                        <select v-model="formData.spotStrategy" @change="onSpotStrategyChange" required
-                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                            <option value="">请选择付费模式</option>
-                                            <option v-for="option in getOptions('spotStrategy')" :key="option.dictValue"
-                                                :value="option.dictValue">
-                                                {{ option.dictName }} <span v-if="option.remark"
-                                                    class="text-gray-500">({{ option.remark }})</span>
-                                            </option>
-                                        </select>
-                                    </div>
-
-                                    <!-- 价格上限（抢占式时显示） -->
-                                    <div v-if="formData.spotStrategy === 'SpotWithPriceLimit'" class="col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700">价格上限 <span
-                                                class="text-red-500">*</span></label>
-                                        <input v-model.number="formData.spotPriceLimit" type="number" step="0.01"
-                                            min="0" required
-                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                            placeholder="请输入价格上限（元/小时）">
-                                    </div>
-
-                                    <!-- 重启策略 -->
-                                    <div class="col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700">重启策略 <span
-                                                class="text-red-500">*</span></label>
-                                        <select v-model="formData.restartPolicy" required
-                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                            <option value="">请选择重启策略</option>
-                                            <option v-for="option in getOptions('restartPolicy')"
-                                                :key="option.dictValue" :value="option.dictValue">
-                                                {{ option.dictName }} <span v-if="option.remark"
-                                                    class="text-gray-500">({{ option.remark }})</span>
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- 容器配置 -->
-                            <div>
-                                <h4 class="text-md font-semibold text-gray-700 mb-3">容器配置</h4>
-                                <div class="space-y-4 border border-gray-200 rounded-md p-4 bg-gray-50">
-                                    <!-- 容器名称 -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">容器名称 <span
-                                                class="text-red-500">*</span></label>
-                                        <input v-model="container.name" type="text" required
-                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                            placeholder="请输入容器名称">
-                                    </div>
-
-                                    <!-- 镜像 -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">镜像地址 <span
-                                                class="text-red-500">*</span></label>
-                                        <input v-model="container.image" type="text" required
-                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                            placeholder="请输入镜像地址">
-                                    </div>
-
-                                    <!-- 镜像拉取策略 -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">镜像拉取策略</label>
-                                        <select v-model="container.imagePullPolicy"
-                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                            <option value="">请选择拉取策略</option>
-                                            <option v-for="option in getOptions('imagePullPolicy')"
-                                                :key="option.dictValue" :value="option.dictValue">
-                                                {{ option.dictName }} <span v-if="option.remark"
-                                                    class="text-gray-500">({{ option.remark }})</span>
-                                            </option>
-                                        </select>
-                                    </div>
-
-                                    <!-- 启动命令 -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">启动命令</label>
-                                        <div class="space-y-2">
-                                            <div v-for="(cmd, index) in container.command" :key="'cmd-' + index"
-                                                class="flex gap-2">
-                                                <input v-model="container.command[index]" type="text"
-                                                    class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                                    placeholder="请输入命令">
-                                                <button type="button" @click="removeCommand(index)"
-                                                    class="px-3 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50">删除</button>
-                                            </div>
-                                            <button type="button" @click="addCommand"
-                                                class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+
-                                                添加命令</button>
+                                <!-- 基础配置 -->
+                                <div class="border-b pb-4">
+                                    <h4 class="text-md font-semibold text-gray-700 mb-3">基础配置</h4>
+                                    <div class="grid grid-cols-1 gap-4">
+                                        <!-- 容器组名称 -->
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">容器组名称 <span
+                                                    class="text-red-500">*</span></label>
+                                            <input v-model="formData.containerGroupName" type="text" required
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                                placeholder="请输入容器组名称">
                                         </div>
-                                    </div>
 
-                                    <!-- 启动参数 -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">启动参数</label>
-                                        <div class="space-y-2">
-                                            <div v-for="(arg, index) in container.args" :key="'arg-' + index"
-                                                class="flex gap-2">
-                                                <input v-model="container.args[index]" type="text"
-                                                    class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                                    placeholder="请输入参数">
-                                                <button type="button" @click="removeArg(index)"
-                                                    class="px-3 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50">删除</button>
-                                            </div>
-                                            <button type="button" @click="addArg"
-                                                class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+
-                                                添加参数</button>
+                                        <!-- 选择通道账号 -->
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">通道账号选择 <span
+                                                    class="text-red-500">*</span></label>
+                                            <select v-model="formData.channelCode" required
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                <option>请选择通道账号</option>
+                                                <option v-for="option in getOptions('channelCode')"
+                                                    :key="option.dictValue" :value="option.dictValue">
+                                                    {{ option.dictName }} <span v-if="option.remark"
+                                                        class="text-gray-500">({{ option.remark }})</span>
+                                                </option>
+                                            </select>
                                         </div>
-                                    </div>
 
-                                    <!-- 端口配置 -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">端口配置</label>
-                                        <div class="space-y-2">
-                                            <div v-for="(port, index) in container.ports" :key="'port-' + index"
-                                                class="flex gap-2">
-                                                <input v-model.number="port.port" type="number" min="1" max="65535"
-                                                    class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                                    placeholder="端口号">
-                                                <select v-model="port.protocol"
-                                                    class="block w-32 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                    <option v-for="option in getOptions('protocol')"
-                                                        :key="option.dictValue" :value="option.dictValue">
-                                                        {{ option.dictName }}
-                                                    </option>
-                                                </select>
-                                                <button type="button" @click="removePort(index)"
-                                                    class="px-3 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50">删除</button>
-                                            </div>
-                                            <button type="button" @click="addPort"
-                                                class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+
-                                                添加端口</button>
+                                        <!-- 地域选择 -->
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">地域选择 <span
+                                                    class="text-red-500">*</span></label>
+                                            <select v-model="formData.regionId" required
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                <option value="">请选择地域</option>
+                                                <option v-for="option in getOptions('regionId')" :key="option.dictValue"
+                                                    :value="option.dictValue">
+                                                    {{ option.dictName }} <span v-if="option.remark"
+                                                        class="text-gray-500">({{ option.remark }})</span>
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <!-- 专有网络 -->
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">专有网络 <span
+                                                    class="text-red-500">*</span></label>
+                                            <select v-model="formData.vpcId" required
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                <option value="">请选择专有网络</option>
+                                                <option v-for="option in getOptions('vpcId')" :key="option.dictValue"
+                                                    :value="option.dictValue">
+                                                    {{ option.dictName }} <span v-if="option.remark"
+                                                        class="text-gray-500">({{ option.remark }})</span>
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <!-- 交换机 -->
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">交换机 <span
+                                                    class="text-red-500">*</span></label>
+                                            <select v-model="formData.vSwitchId" required
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                <option value="">请选择交换机</option>
+                                                <option v-for="option in getOptions('vSwitchId')"
+                                                    :key="option.dictValue" :value="option.dictValue">
+                                                    {{ option.dictName }} <span v-if="option.remark"
+                                                        class="text-gray-500">({{ option.remark }})</span>
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <!-- 安全组 -->
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">安全组 <span
+                                                    class="text-red-500">*</span></label>
+                                            <select v-model="formData.securityGroupId" required
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                <option value="">请选择安全组</option>
+                                                <option v-for="option in getOptions('securityGroupId')"
+                                                    :key="option.dictValue" :value="option.dictValue">
+                                                    {{ option.dictName }} <span v-if="option.remark"
+                                                        class="text-gray-500">({{ option.remark }})</span>
+                                                </option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+
+                                <!-- 规格配置 -->
+                                <div class="border-b pb-4">
+                                    <h4 class="text-md font-semibold text-gray-700 mb-3">规格配置</h4>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <!-- CPU规格 -->
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">CPU规格</label>
+                                            <select v-model="formData.cpu" @change="onCpuChange"
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                <option value="">请选择CPU</option>
+                                                <option v-for="option in getOptions('cpu')" :key="option.dictValue"
+                                                    :value="option.dictValue">
+                                                    {{ option.dictName }} <span v-if="option.remark"
+                                                        class="text-gray-500">({{ option.remark }})</span>
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <!-- 内存规格（级联） -->
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">内存规格</label>
+                                            <select v-model="formData.memory" :disabled="!formData.cpu"
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100">
+                                                <option value="">请选择内存</option>
+                                                <option v-for="option in memoryOptions" :key="option.dictValue"
+                                                    :value="option.dictValue">
+                                                    {{ option.dictName }}
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <!-- ECS实例规格 -->
+                                        <div class="col-span-2">
+                                            <label class="block text-sm font-medium text-gray-700">ECS实例规格 <span
+                                                    class="text-red-500">*</span></label>
+                                            <select v-model="formData.instanceType" required
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                <option value="">请选择实例规格</option>
+                                                <option v-for="option in getOptions('instanceType')"
+                                                    :key="option.dictValue" :value="option.dictValue">
+                                                    {{ option.dictName }} <span v-if="option.remark"
+                                                        class="text-gray-500">({{ option.remark }})</span>
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <!-- 付费模式 -->
+                                        <div class="col-span-2">
+                                            <label class="block text-sm font-medium text-gray-700">付费模式 <span
+                                                    class="text-red-500">*</span></label>
+                                            <select v-model="formData.spotStrategy" @change="onSpotStrategyChange"
+                                                required
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                <option value="">请选择付费模式</option>
+                                                <option v-for="option in getOptions('spotStrategy')"
+                                                    :key="option.dictValue" :value="option.dictValue">
+                                                    {{ option.dictName }} <span v-if="option.remark"
+                                                        class="text-gray-500">({{ option.remark }})</span>
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <!-- 价格上限（抢占式时显示） -->
+                                        <div v-if="formData.spotStrategy === 'SpotWithPriceLimit'" class="col-span-2">
+                                            <label class="block text-sm font-medium text-gray-700">价格上限 <span
+                                                    class="text-red-500">*</span></label>
+                                            <input v-model.number="formData.spotPriceLimit" type="number" step="0.01"
+                                                min="0" required
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                                placeholder="请输入价格上限（元/小时）">
+                                        </div>
+
+                                        <!-- 重启策略 -->
+                                        <div class="col-span-2">
+                                            <label class="block text-sm font-medium text-gray-700">重启策略 <span
+                                                    class="text-red-500">*</span></label>
+                                            <select v-model="formData.restartPolicy" required
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                <option value="">请选择重启策略</option>
+                                                <option v-for="option in getOptions('restartPolicy')"
+                                                    :key="option.dictValue" :value="option.dictValue">
+                                                    {{ option.dictName }} <span v-if="option.remark"
+                                                        class="text-gray-500">({{ option.remark }})</span>
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 容器配置 -->
+                                <div>
+                                    <h4 class="text-md font-semibold text-gray-700 mb-3">容器配置</h4>
+                                    <div class="space-y-4 border border-gray-200 rounded-md p-4 bg-gray-50">
+                                        <!-- 容器名称 -->
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">容器名称 <span
+                                                    class="text-red-500">*</span></label>
+                                            <input v-model="container.name" type="text" required
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                                placeholder="请输入容器名称">
+                                        </div>
+
+                                        <!-- 镜像 -->
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">镜像地址 <span
+                                                    class="text-red-500">*</span></label>
+                                            <input v-model="container.image" type="text" required
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                                placeholder="请输入镜像地址">
+                                        </div>
+
+                                        <!-- 镜像拉取策略 -->
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">镜像拉取策略</label>
+                                            <select v-model="container.imagePullPolicy"
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                <option value="">请选择拉取策略</option>
+                                                <option v-for="option in getOptions('imagePullPolicy')"
+                                                    :key="option.dictValue" :value="option.dictValue">
+                                                    {{ option.dictName }} <span v-if="option.remark"
+                                                        class="text-gray-500">({{ option.remark }})</span>
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <!-- 启动命令 -->
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">启动命令</label>
+                                            <div class="space-y-2">
+                                                <div v-for="(cmd, index) in container.command" :key="'cmd-' + index"
+                                                    class="flex gap-2">
+                                                    <input v-model="container.command[index]" type="text"
+                                                        class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                                        placeholder="请输入命令">
+                                                    <button type="button" @click="removeCommand(index)"
+                                                        class="px-3 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50">删除</button>
+                                                </div>
+                                                <button type="button" @click="addCommand"
+                                                    class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+
+                                                    添加命令</button>
+                                            </div>
+                                        </div>
+
+                                        <!-- 启动参数 -->
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">启动参数</label>
+                                            <div class="space-y-2">
+                                                <div v-for="(arg, index) in container.args" :key="'arg-' + index"
+                                                    class="flex gap-2">
+                                                    <input v-model="container.args[index]" type="text"
+                                                        class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                                        placeholder="请输入参数">
+                                                    <button type="button" @click="removeArg(index)"
+                                                        class="px-3 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50">删除</button>
+                                                </div>
+                                                <button type="button" @click="addArg"
+                                                    class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+
+                                                    添加参数</button>
+                                            </div>
+                                        </div>
+
+                                        <!-- 端口配置 -->
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">端口配置</label>
+                                            <div class="space-y-2">
+                                                <div v-for="(port, index) in container.ports" :key="'port-' + index"
+                                                    class="flex gap-2">
+                                                    <input v-model.number="port.port" type="number" min="1" max="65535"
+                                                        class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                                        placeholder="端口号">
+                                                    <select v-model="port.protocol"
+                                                        class="block w-32 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                        <option v-for="option in getOptions('protocol')"
+                                                            :key="option.dictValue" :value="option.dictValue">
+                                                            {{ option.dictName }}
+                                                        </option>
+                                                    </select>
+                                                    <button type="button" @click="removePort(index)"
+                                                        class="px-3 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50">删除</button>
+                                                </div>
+                                                <button type="button" @click="addPort"
+                                                    class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+
+                                                    添加端口</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
 
@@ -802,12 +803,15 @@
                                     {{ priceInfo.errorMsg }}
                                 </span>
                                 <div v-else-if="priceInfo.isRange" class="el-price-text">
-                                    <div>{{ priceInfo.minPrice }}~{{ priceInfo.maxPrice }} {{ priceInfo.currency }}/秒</div>
-                                    <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }}~{{ priceInfo.maxPrice * 3600 }} {{ priceInfo.currency }}/小时</div>
+                                    <div>{{ priceInfo.minPrice }}~{{ priceInfo.maxPrice }} {{ priceInfo.currency }}/秒
+                                    </div>
+                                    <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }}~{{ priceInfo.maxPrice *
+                                        3600 }} {{ priceInfo.currency }}/小时</div>
                                 </div>
                                 <div v-else class="el-price-text">
                                     <div>{{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒</div>
-                                    <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }} {{ priceInfo.currency }}/小时</div>
+                                    <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }} {{ priceInfo.currency
+                                        }}/小时</div>
                                 </div>
                             </div>
 
@@ -949,7 +953,11 @@ module.exports = {
         },
         // API基础URL
         apiBaseUrl() {
-            // let u = window.location.origin;
+
+            if (!location.hostname.startsWith('192.168.') && !location.hostname.startsWith('10.') && !location.hostname.startsWith('172.') && !location.hostname.startsWith('localhost') && !location.hostname.startsWith('127.0.') && !location.hostname.startsWith('n.cc')) {
+                //非局域网, 生产环境
+                return "";
+            }
 
             let u = "http://127.0.0.1:44056"
 
