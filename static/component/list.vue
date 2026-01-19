@@ -187,7 +187,7 @@
                     <div>
                         <p class="text-sm text-gray-700">
                             显示第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
-                                }}</span> 条，
+                            }}</span> 条，
                             共 <span class="font-medium">{{ totalItems }}</span> 条
                         </p>
                     </div>
@@ -674,7 +674,13 @@ module.exports = {
         // API基础URL
         apiBaseUrl() {
             // let u = window.location.origin;
+
             let u = "http://127.0.0.1:44056"
+
+            if (window.location.port == '8551') {
+                //邵含的本地开发机器
+                u = "/"
+            }
 
             if (u.endsWith('/')) {
                 return u.slice(0, -1);
