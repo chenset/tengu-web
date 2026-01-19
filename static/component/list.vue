@@ -383,8 +383,8 @@
                                 订单状态</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 容器状态</th>
-                            <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                事件</th> -->
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                事件</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 规格</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -422,7 +422,7 @@
                                     {{ item.containerGroupStatus }}
                                 </span>
                             </td>
-                            <!-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.event }}</td> -->
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.event }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.spec }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.zone }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.createTime }}</td>
@@ -1162,7 +1162,7 @@ module.exports = {
                 user: item.email || '-',
                 containerGroupStatus: this.formatStatus(item.containerGroupStatus),
                 status: this.formatStatus(item.status),
-                event: '-',
+                event: item.events?.length || '-',
                 spec: this.formatSpec(item.cpu, item.memory, item.instanceType),
                 zone: this.formatRegion(item.regionId),
                 createTime: this.formatTime(item.createTime),
