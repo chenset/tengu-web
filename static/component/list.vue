@@ -425,7 +425,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                   <span :class="getStatusClass(item.containerGroupStatus)"
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer">
-                                {{ item.event }}
+                                {{ item.events?.length || '-' }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.spec }}</td>
@@ -1167,7 +1167,7 @@ module.exports = {
                 user: item.email || '-',
                 containerGroupStatus: this.formatStatus(item.containerGroupStatus),
                 status: this.formatStatus(item.status),
-                event: item.events?.length || '-',
+                events: item.events,
                 spec: this.formatSpec(item.cpu, item.memory, item.instanceType),
                 zone: this.formatRegion(item.regionId),
                 createTime: this.formatTime(item.createTime),
