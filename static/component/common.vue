@@ -57,6 +57,42 @@
             </div>
         </div>
     </transition>
+
+    <!-- 通用大型对话框 -->
+    <transition name="dialog-fade">
+        <div v-if="largeDialog.visible" class="dialog-overlay" @click="handleLargeDialogMaskClick">
+            <div class="dialog-wrapper" @click.stop>
+                <div :class="['large-dialog-container', largeDialog.width]">
+                    <div class="large-dialog-header">
+                        <span class="large-dialog-title">{{ largeDialog.title }}</span>
+                        <button class="large-dialog-close" @click="closeLargeDialog">
+                            <svg viewBox="0 0 1024 1024" width="16" height="16">
+                                <path fill="currentColor"
+                                    d="M764.288 214.592 512 466.88 259.712 214.592a31.936 31.936 0 0 0-45.12 45.12L466.752 512 214.528 764.224a31.936 31.936 0 1 0 45.12 45.184L512 557.184l252.288 252.288a31.936 31.936 0 0 0 45.12-45.12L557.12 512.064l252.288-252.352a31.936 31.936 0 1 0-45.12-45.184z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="large-dialog-body">
+                        <component v-if="largeDialog.component" :is="largeDialog.component" v-bind="largeDialog.props"
+                            @close="closeLargeDialog" @submit="handleLargeDialogSubmit"></component>
+                        <div v-else v-html="largeDialog.content"></div>
+                    </div>
+                    <div v-if="largeDialog.showFooter" class="large-dialog-footer">
+                        <button v-if="largeDialog.cancelText" class="dialog-btn dialog-btn-default"
+                            @click="closeLargeDialog">
+                            {{ largeDialog.cancelText }}
+                        </button>
+                        <button v-if="largeDialog.confirmText" class="dialog-btn dialog-btn-primary"
+                            :disabled="largeDialog.loading" @click="handleLargeDialogConfirm">
+                            <span v-if="largeDialog.loading"
+                                class="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></span>
+                            {{ largeDialog.loading ? largeDialog.loadingText : largeDialog.confirmText }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </transition>
 </template>
 
 <script>
@@ -75,6 +111,24 @@ module.exports = {
                 message: '',
                 resolve: null,
                 reject: null
+            },
+            largeDialog: {
+                visible: false,
+                title: '',
+                content: '',
+                component: null,
+                props: {},
+                width: 'large-dialog-md', // large-dialog-sm, large-dialog-md, large-dialog-lg, large-dialog-xl
+                showFooter: false,
+                cancelText: '取消',
+                confirmText: '确定',
+                loading: false,
+                loadingText: '提交中...',
+                closeOnClickModal: false,
+                onConfirm: null,
+                onClose: null,
+                resolve: null,
+                reject: null
             }
         }
     },
@@ -88,6 +142,9 @@ module.exports = {
         }
         if (!window.$alert) {
             window.$alert = this.showAlert;
+        }
+        if (!window.$dialog) {
+            window.$dialog = this.showLargeDialog;
         }
     },
     methods: {
@@ -140,6 +197,83 @@ module.exports = {
                 this.confirmBox.reject(false);
             }
             this.confirmBox.visible = false;
+        },
+
+        // 显示大型对话框
+        showLargeDialog(options) {
+            this.largeDialog.title = options.title || '';
+            this.largeDialog.content = options.content || '';
+            this.largeDialog.component = options.component || null;
+            this.largeDialog.props = options.props || {};
+            this.largeDialog.width = options.width || 'large-dialog-md';
+            this.largeDialog.showFooter = options.showFooter !== undefined ? options.showFooter : false;
+            this.largeDialog.cancelText = options.cancelText || '取消';
+            this.largeDialog.confirmText = options.confirmText || '确定';
+            this.largeDialog.loadingText = options.loadingText || '提交中...';
+            this.largeDialog.closeOnClickModal = options.closeOnClickModal !== undefined ? options.closeOnClickModal : false;
+            this.largeDialog.onConfirm = options.onConfirm || null;
+            this.largeDialog.onClose = options.onClose || null;
+            this.largeDialog.loading = false;
+            this.largeDialog.visible = true;
+
+            return new Promise((resolve, reject) => {
+                this.largeDialog.resolve = resolve;
+                this.largeDialog.reject = reject;
+            });
+        },
+
+        // 关闭大型对话框
+        closeLargeDialog() {
+            if (this.largeDialog.onClose) {
+                this.largeDialog.onClose();
+            }
+            if (this.largeDialog.reject) {
+                this.largeDialog.reject(false);
+            }
+            this.largeDialog.visible = false;
+        },
+
+        // 大型对话框 - 点击遮罩
+        handleLargeDialogMaskClick() {
+            if (this.largeDialog.closeOnClickModal) {
+                this.closeLargeDialog();
+            }
+        },
+
+        // 大型对话框 - 确定
+        async handleLargeDialogConfirm() {
+            if (this.largeDialog.onConfirm) {
+                this.largeDialog.loading = true;
+                try {
+                    await this.largeDialog.onConfirm();
+                    if (this.largeDialog.resolve) {
+                        this.largeDialog.resolve(true);
+                    }
+                    this.largeDialog.visible = false;
+                } catch (error) {
+                    console.error('Dialog confirm error:', error);
+                } finally {
+                    this.largeDialog.loading = false;
+                }
+            } else {
+                if (this.largeDialog.resolve) {
+                    this.largeDialog.resolve(true);
+                }
+                this.largeDialog.visible = false;
+            }
+        },
+
+        // 大型对话框 - 提交（来自子组件）
+        handleLargeDialogSubmit(data) {
+            if (this.largeDialog.resolve) {
+                this.largeDialog.resolve(data);
+            }
+            this.largeDialog.visible = false;
+        },
+
+        // 设置大型对话框加载状态
+        setLargeDialogLoading(loading) {
+            this.largeDialog.loading = loading;
         }
     }
 }
@@ -435,5 +569,106 @@ html:not(.dark) .moon {
     100% {
         opacity: 0;
     }
+}
+
+/* 大型对话框样式 */
+.large-dialog-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+}
+
+.large-dialog-sm {
+    width: 600px;
+    max-width: 90%;
+}
+
+.large-dialog-md {
+    width: 800px;
+    max-width: 90%;
+}
+
+.large-dialog-lg {
+    width: 1000px;
+    max-width: 90%;
+}
+
+.large-dialog-xl {
+    width: 1200px;
+    max-width: 95%;
+}
+
+.large-dialog-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #e4e7ed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.large-dialog-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #303133;
+    line-height: 1;
+}
+
+.large-dialog-close {
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #909399;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.large-dialog-close:hover {
+    background-color: #f5f7fa;
+    color: #409eff;
+}
+
+.large-dialog-body {
+    padding: 24px;
+    flex: 1;
+    overflow-y: auto;
+    color: #606266;
+    font-size: 14px;
+}
+
+.large-dialog-body::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.large-dialog-body::-webkit-scrollbar-thumb {
+    background-color: #dcdfe6;
+    border-radius: 4px;
+}
+
+.large-dialog-body::-webkit-scrollbar-thumb:hover {
+    background-color: #c0c4cc;
+}
+
+.large-dialog-body::-webkit-scrollbar-track {
+    background-color: #f5f7fa;
+}
+
+.large-dialog-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #e4e7ed;
+    text-align: right;
+    flex-shrink: 0;
 }
 </style>

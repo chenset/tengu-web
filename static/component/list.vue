@@ -1,4 +1,273 @@
-<style scoped></style>
+<style scoped>
+/* Element Plus 风格对话框样式 */
+.el-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.el-dialog-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.el-create-dialog-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    width: 1000px;
+    max-width: 95%;
+    max-height: 90vh;
+}
+
+.el-dialog-header-custom {
+    padding: 20px 24px;
+    border-bottom: 1px solid #e4e7ed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.el-dialog-title-custom {
+    font-size: 18px;
+    font-weight: 500;
+    color: #303133;
+    line-height: 1;
+}
+
+.el-dialog-close-custom {
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: #909399;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.el-dialog-close-custom:hover {
+    background-color: #f5f7fa;
+    color: #409eff;
+}
+
+.el-dialog-body-custom {
+    padding: 24px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.el-dialog-body-custom::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.el-dialog-body-custom::-webkit-scrollbar-thumb {
+    background-color: #dcdfe6;
+    border-radius: 4px;
+}
+
+.el-dialog-body-custom::-webkit-scrollbar-thumb:hover {
+    background-color: #c0c4cc;
+}
+
+.el-dialog-body-custom::-webkit-scrollbar-track {
+    background-color: #f5f7fa;
+}
+
+.el-loading-container {
+    text-align: center;
+    padding: 60px 0;
+}
+
+.el-loading-spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #409eff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.el-loading-text {
+    margin-top: 16px;
+    font-size: 14px;
+    color: #606266;
+}
+
+.el-form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.el-dialog-footer-custom {
+    padding: 16px 24px;
+    border-top: 1px solid #e4e7ed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.el-price-info {
+    flex: 1;
+    font-size: 14px;
+    color: #e6a23c;
+}
+
+.el-price-loading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.el-price-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #e6a23c;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.el-price-error {
+    color: #f56c6c;
+}
+
+.el-price-text {
+    font-weight: 500;
+}
+
+.el-price-hour {
+    font-size: 12px;
+    margin-top: 4px;
+    opacity: 0.8;
+}
+
+.el-dialog-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.el-btn {
+    padding: 9px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #dcdfe6;
+    background-color: #fff;
+    color: #606266;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.el-btn:hover:not(:disabled) {
+    color: #409eff;
+    border-color: #c6e2ff;
+    background-color: #ecf5ff;
+}
+
+.el-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.el-btn-default {
+    background-color: #fff;
+    border-color: #dcdfe6;
+    color: #606266;
+}
+
+.el-btn-default:hover:not(:disabled) {
+    color: #409eff;
+    border-color: #c6e2ff;
+    background-color: #ecf5ff;
+}
+
+.el-btn-primary {
+    background-color: #409eff;
+    border-color: #409eff;
+    color: #fff;
+}
+
+.el-btn-primary:hover:not(:disabled) {
+    background-color: #66b1ff;
+    border-color: #66b1ff;
+}
+
+.el-btn-loading {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* 对话框动画 */
+.el-dialog-fade-enter-active {
+    animation: el-dialog-fade-in 0.3s;
+}
+
+.el-dialog-fade-leave-active {
+    animation: el-dialog-fade-out 0.3s;
+}
+
+@keyframes el-dialog-fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes el-dialog-fade-out {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+</style>
 
 <template>
     <div class="container mx-auto p-6">
@@ -214,33 +483,32 @@
             </div>
         </div>
 
-        <!-- 创建实例对话框 -->
-        <div v-if="showCreateDialog" class="fixed z-50 inset-0 overflow-y-auto">
-            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <!-- 背景遮罩 -->
-                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity z-0" @click="closeCreateDialog">
-                </div>
-
-                <!-- 对话框内容 -->
-                <div
-                    class="relative z-10 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
-                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900">创建容器组实例</h3>
-                            <button @click="closeCreateDialog" class="text-gray-400 hover:text-gray-500">
-                                <span class="text-2xl">&times;</span>
+        <!-- 创建实例对话框 - Element Plus 风格 -->
+        <transition name="el-dialog-fade">
+            <div v-if="showCreateDialog" class="el-dialog-overlay" @click="handleDialogMaskClick">
+                <div class="el-dialog-wrapper" @click.stop>
+                    <div class="el-create-dialog-container">
+                        <!-- 对话框头部 -->
+                        <div class="el-dialog-header-custom">
+                            <span class="el-dialog-title-custom">创建容器组实例</span>
+                            <button @click="closeCreateDialog" class="el-dialog-close-custom">
+                                <svg viewBox="0 0 1024 1024" width="16" height="16">
+                                    <path fill="currentColor"
+                                        d="M764.288 214.592 512 466.88 259.712 214.592a31.936 31.936 0 0 0-45.12 45.12L466.752 512 214.528 764.224a31.936 31.936 0 1 0 45.12 45.184L512 557.184l252.288 252.288a31.936 31.936 0 0 0 45.12-45.12L557.12 512.064l252.288-252.352a31.936 31.936 0 1 0-45.12-45.184z" />
+                                </svg>
                             </button>
                         </div>
 
-                        <!-- 加载状态 -->
-                        <div v-if="loadingDictOptions" class="text-center py-8">
-                            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600">
+                        <!-- 对话框内容 -->
+                        <div class="el-dialog-body-custom">
+                            <!-- 加载状态 -->
+                            <div v-if="loadingDictOptions" class="el-loading-container">
+                                <div class="el-loading-spinner"></div>
+                                <p class="el-loading-text">加载配置选项中...</p>
                             </div>
-                            <p class="mt-2 text-sm text-gray-500">加载配置选项中...</p>
-                        </div>
 
-                        <!-- 表单内容 -->
-                        <form v-else @submit.prevent="submitCreate" class="space-y-6 max-h-[70vh] overflow-y-auto px-1">
+                            <!-- 表单内容 -->
+                            <form v-else @submit.prevent="submitCreate" class="el-form-container">
                             <!-- 基础配置 -->
                             <div class="border-b pb-4">
                                 <h4 class="text-md font-semibold text-gray-700 mb-3">基础配置</h4>
@@ -517,43 +785,50 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                            </form>
+                        </div>
 
-                    <!-- 底部按钮 -->
-                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                        <button @click="submitCreate" :disabled="submitting || loadingDictOptions" type="button"
-                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed">
-                            <span v-if="submitting"
-                                class="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></span>
-                            {{ submitting ? '创建中...' : '创建' }}
-                        </button>
-                        <button @click="closeCreateDialog" :disabled="submitting" type="button"
-                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed">
-                            取消
-                        </button>
+                        <!-- 对话框底部 -->
+                        <div class="el-dialog-footer-custom">
+                            <!-- 价格信息 -->
+                            <div class="el-price-info">
+                                <span v-if="priceInfo.loading" class="el-price-loading">
+                                    <span class="el-price-spinner"></span>
+                                    查询价格中...
+                                </span>
+                                <span v-else-if="priceInfo.errorMsg" class="el-price-error">
+                                    {{ priceInfo.errorMsg }}
+                                </span>
+                                <div v-else-if="priceInfo.isRange" class="el-price-text">
+                                    <div>{{ priceInfo.minPrice }}~{{ priceInfo.maxPrice }} {{ priceInfo.currency }}/秒
+                                    </div>
+                                    <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }}~{{ priceInfo.maxPrice *
+                                        3600 }} {{ priceInfo.currency }}/小时</div>
+                                </div>
+                                <div v-else class="el-price-text">
+                                    <div>{{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒</div>
+                                    <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }} {{ priceInfo.currency
+                                        }}/小时</div>
+                                </div>
+                            </div>
 
-                        <!-- 单价,价格展示 -->
-                        <p
-                            class="mt-3 w-full inline-flex justify-center rounded-md text-base font-medium text-orange-400  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                            <span class="px-4 py-2" v-if="priceInfo.loading">查询价格中...</span>
-                            <span class="px-4 py-2" v-else-if="priceInfo.errorMsg">{{ priceInfo.errorMsg }}</span>
-                            <small v-else-if="priceInfo.isRange">
-                                {{ priceInfo.minPrice }}~{{ priceInfo.maxPrice }} {{ priceInfo.currency }}/秒
-                                <br>
-                                {{ priceInfo.minPrice * 3600 }}~{{ priceInfo.maxPrice * 3600 }} {{ priceInfo.currency
-                                }}/小时
-                            </small>
-                            <small v-else>
-                                {{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒
-                                <br>
-                                {{ priceInfo.minPrice * 3600 }} {{ priceInfo.currency }}/小时
-                            </small>
-                        </p>
+                            <!-- 按钮组 -->
+                            <div class="el-dialog-buttons">
+                                <button @click="closeCreateDialog" :disabled="submitting" type="button"
+                                    class="el-btn el-btn-default">
+                                    取消
+                                </button>
+                                <button @click="submitCreate" :disabled="submitting || loadingDictOptions" type="button"
+                                    class="el-btn el-btn-primary">
+                                    <span v-if="submitting" class="el-btn-loading"></span>
+                                    {{ submitting ? '创建中...' : '创建' }}
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </transition>
     </div>
 </template>
 
@@ -955,6 +1230,11 @@ module.exports = {
             if (this.submitting) return;
             this.showCreateDialog = false;
             this.resetForm();
+        },
+        // 处理对话框遮罩点击
+        handleDialogMaskClick() {
+            // 不允许点击遮罩关闭对话框，保持与之前逻辑一致
+            // 如果需要点击遮罩关闭，可以调用 closeCreateDialog()
         },
         // 重置表单
         resetForm() {
