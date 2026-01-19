@@ -542,7 +542,7 @@
                                 {{ priceInfo.minPrice*3600 }}~{{ priceInfo.maxPrice*3600 }} {{ priceInfo.currency }}/小时
                             </small>
                             <small v-else>
-                                {{ priceInfo.minPrice*3600 }} {{ priceInfo.currency }}/秒
+                                {{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒
                                 <br>
                                 {{ priceInfo.minPrice*3600 }} {{ priceInfo.currency }}/小时
                             </small>
