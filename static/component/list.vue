@@ -863,7 +863,7 @@ module.exports = {
                 }
             } catch (error) {
                 console.error('加载列表数据失败:', error);
-                alert('加载数据失败: ' + error.message);
+                window.$message('加载数据失败: ' + error.message, 'error');
                 this.tableData = [];
                 this.totalItems = 0;
             } finally {
@@ -1000,11 +1000,11 @@ module.exports = {
                     // 自动填充默认值
                     this.applyDefaultValues();
                 } else {
-                    alert('加载配置选项失败');
+                    window.$message('加载配置选项失败', 'error');
                 }
             } catch (error) {
                 console.error('加载字典选项失败:', error);
-                alert('加载配置选项失败: ' + error.message);
+                window.$message('加载配置选项失败: ' + error.message, 'error');
             } finally {
                 this.loadingDictOptions = false;
             }
@@ -1140,47 +1140,47 @@ module.exports = {
         async submitCreate() {
             // 验证必填项
             if (!this.formData.containerGroupName) {
-                alert('请输入容器组名称');
+                window.$message('请输入容器组名称', 'warning');
                 return;
             }
             if (!this.formData.regionId) {
-                alert('请选择地域');
+                window.$message('请选择地域', 'warning');
                 return;
             }
             // if (!this.formData.vpcId) {
-            //     alert('请选择专有网络');
+            //     window.$message('请选择专有网络', 'warning');
             //     return;
             // }
             // if (!this.formData.vSwitchId) {
-            //     alert('请选择交换机');
+            //     window.$message('请选择交换机', 'warning');
             //     return;
             // }
             // if (!this.formData.securityGroupId) {
-            //     alert('请选择安全组');
+            //     window.$message('请选择安全组', 'warning');
             //     return;
             // }
             if (!this.formData.instanceType) {
-                alert('请选择ECS实例规格');
+                window.$message('请选择ECS实例规格', 'warning');
                 return;
             }
             if (!this.formData.spotStrategy) {
-                alert('请选择付费模式');
+                window.$message('请选择付费模式', 'warning');
                 return;
             }
             if (this.formData.spotStrategy === 'SpotWithPriceLimit' && !this.formData.spotPriceLimit) {
-                alert('请输入价格上限');
+                window.$message('请输入价格上限', 'warning');
                 return;
             }
             if (!this.formData.restartPolicy) {
-                alert('请选择重启策略');
+                window.$message('请选择重启策略', 'warning');
                 return;
             }
             if (!this.container.name) {
-                alert('请输入容器名称');
+                window.$message('请输入容器名称', 'warning');
                 return;
             }
             if (!this.container.image) {
-                alert('请输入镜像地址');
+                window.$message('请输入镜像地址', 'warning');
                 return;
             }
 
@@ -1240,18 +1240,18 @@ module.exports = {
                 const result = await response.json();
 
                 if (result.resultCode === 1) {
-                    alert('创建成功！容器组ID: ' + (result.data?.containerGroupId || ''));
+                    window.$message('创建成功！容器组ID: ' + (result.data?.containerGroupId || ''), 'success');
                     // 刷新列表
                     this.refreshList();
                     setTimeout(() => {
                         this.closeCreateDialog();
                     }, 200);
                 } else {
-                    alert('创建失败: ' + (result.message || '未知错误'));
+                    window.$message('创建失败: ' + (result.message || '未知错误'), 'error');
                 }
             } catch (error) {
                 console.error('创建容器组失败:', error);
-                alert('创建失败: ' + error.message);
+                window.$message('创建失败: ' + error.message, 'error');
             } finally {
                 this.submitting = false;
             }
@@ -1302,7 +1302,7 @@ module.exports = {
         // 查看详情
         viewDetail(item) {
             console.log('查看详情:', item);
-            alert(`查看详情: ${item.containerGroupName}`);
+            window.$message(`查看详情: ${item.containerGroupName}`, 'info');
         },
         // 打开
         openItem(item) {
@@ -1310,7 +1310,12 @@ module.exports = {
         },
         // 刷新
         async refreshItem(item) {
-            if (!confirm(`确定要刷新 ${item.containerGroupName} 吗?`)) {
+            try {
+                const confirmed = await window.$confirm(`确定要刷新 ${item.containerGroupName} 吗?`, '确认刷新');
+                if (!confirmed) {
+                    return;
+                }
+            } catch (error) {
                 return;
             }
 
@@ -1328,20 +1333,25 @@ module.exports = {
                 const result = await response.json();
 
                 if (result.resultCode === 1) {
-                    alert('刷新成功！');
+                    window.$message('刷新成功！', 'success');
                     // 刷新列表
                     this.loadTableData();
                 } else {
-                    alert('刷新失败: ' + (result.message || '未知错误'));
+                    window.$message('刷新失败: ' + (result.message || '未知错误'), 'error');
                 }
             } catch (error) {
                 console.error('刷新容器组失败:', error);
-                alert('刷新失败: ' + error.message);
+                window.$message('刷新失败: ' + error.message, 'error');
             }
         },
         // 释放
         async releaseItem(item) {
-            if (!confirm(`确定要释放 ${item.containerGroupName} 吗?`)) {
+            try {
+                const confirmed = await window.$confirm(`确定要释放 ${item.containerGroupName} 吗?`, '确认释放');
+                if (!confirmed) {
+                    return;
+                }
+            } catch (error) {
                 return;
             }
 
@@ -1361,19 +1371,19 @@ module.exports = {
 
 
                 if (result.resultCode === 1) {
-                    alert('释放成功！');
+                    window.$message('释放成功！', 'success');
                     // 刷新列表
                     this.loadTableData();
                 } else if (result.resultCode === 0) {
-                    alert(result.message || '该容器实例记录已被删除');
+                    window.$message(result.message || '该容器实例记录已被删除', 'info');
                     // 刷新列表
                     this.loadTableData();
                 } else {
-                    alert('释放失败: ' + (result.message || '未知错误'));
+                    window.$message('释放失败: ' + (result.message || '未知错误'), 'error');
                 }
             } catch (error) {
                 console.error('释放容器组失败:', error);
-                alert('释放失败: ' + error.message);
+                window.$message('释放失败: ' + error.message, 'error');
             }
         },
         // 查询容器组价格
