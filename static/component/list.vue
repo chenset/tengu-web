@@ -535,7 +535,8 @@
 
                         <!-- 单价,价格展示 -->
                         <p class="mt-3 w-full inline-flex justify-center rounded-md px-4 py-2 text-base font-medium text-orange-400  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                            0.0 RMB
+                            <span v-if="priceInfo.loading">查询价格中...</span>
+                            <span v-else>{{ priceInfo.tradePrice.toFixed(8) }} {{ priceInfo.currency }}/小时</span>
                         </p>
                     </div>
                 </div>
@@ -611,6 +612,14 @@ module.exports = {
                 command: [],
                 args: [],
                 ports: []
+            },
+            // 价格信息
+            priceInfo: {
+                loading: false,
+                currency: 'CNY',
+                originalPrice: 0,
+                discountPrice: 0,
+                tradePrice: 0
             }
         }
     },
@@ -660,6 +669,64 @@ module.exports = {
                 return u.slice(0, -1);
             }
             return u;
+        }
+    },
+    watch: {
+        // 监听表单关键字段变化，重新查询价格
+        'formData.channelCode'() {
+            if (this.showCreateDialog) {
+                this.fetchContainerGroupPrice();
+            }
+        },
+        'formData.regionId'() {
+            if (this.showCreateDialog) {
+                this.fetchContainerGroupPrice();
+            }
+        },
+        'formData.vpcId'() {
+            if (this.showCreateDialog) {
+                this.fetchContainerGroupPrice();
+            }
+        },
+        'formData.vSwitchId'() {
+            if (this.showCreateDialog) {
+                this.fetchContainerGroupPrice();
+            }
+        },
+        'formData.securityGroupId'() {
+            if (this.showCreateDialog) {
+                this.fetchContainerGroupPrice();
+            }
+        },
+        'formData.cpu'() {
+            if (this.showCreateDialog) {
+                this.fetchContainerGroupPrice();
+            }
+        },
+        'formData.memory'() {
+            if (this.showCreateDialog) {
+                this.fetchContainerGroupPrice();
+            }
+        },
+        'formData.instanceType'() {
+            if (this.showCreateDialog) {
+                this.fetchContainerGroupPrice();
+            }
+        },
+        'formData.spotStrategy'() {
+            if (this.showCreateDialog) {
+                this.fetchContainerGroupPrice();
+            }
+        },
+        'formData.spotPriceLimit'() {
+            if (this.showCreateDialog) {
+                this.fetchContainerGroupPrice();
+            }
+        },
+        'formData.restartPolicy'() {
+            if (this.showCreateDialog) {
+                this.fetchContainerGroupPrice();
+            }
         }
     },
     mounted() {
@@ -859,6 +926,10 @@ module.exports = {
             this.showCreateDialog = true;
             this.resetForm();
             await this.loadDictOptions();
+            // 加载默认值后查询价格
+            this.$nextTick(() => {
+                this.fetchContainerGroupPrice();
+            });
         },
         // 关闭创建对话框
         closeCreateDialog() {
@@ -1225,7 +1296,7 @@ module.exports = {
             }
 
             try {
-                
+
                 const response = await fetch(`${this.apiBaseUrl}/tengu/instance/deleteContainerGroup`, {
                     method: 'POST',
                     headers: {
@@ -1253,6 +1324,85 @@ module.exports = {
             } catch (error) {
                 console.error('释放容器组失败:', error);
                 alert('释放失败: ' + error.message);
+            }
+        },
+        // 查询容器组价格
+        async fetchContainerGroupPrice() {
+            // 构建请求数据 - 使用与 createContainerGroup 相同的参数
+            const requestData = {
+                channelCode: this.formData.channelCode,
+                regionId: this.formData.regionId,
+                containerGroupName: this.formData.containerGroupName,
+                vpcId: this.formData.vpcId,
+                vSwitchId: this.formData.vSwitchId,
+                securityGroupId: this.formData.securityGroupId,
+                instanceType: this.formData.instanceType,
+                spotStrategy: this.formData.spotStrategy,
+                restartPolicy: this.formData.restartPolicy,
+                autoMatchImageCache: this.formData.autoMatchImageCache,
+                containers: [
+                    {
+                        name: this.container.name,
+                        image: this.container.image
+                    }
+                ]
+            };
+
+            // 可选字段
+            if (this.formData.cpu) {
+                requestData.cpu = parseFloat(this.formData.cpu);
+            }
+            if (this.formData.memory) {
+                requestData.memory = parseFloat(this.formData.memory);
+            }
+            if (this.formData.spotStrategy === 'SpotWithPriceLimit' && this.formData.spotPriceLimit) {
+                requestData.spotPriceLimit = this.formData.spotPriceLimit;
+            }
+            if (this.container.imagePullPolicy) {
+                requestData.containers[0].imagePullPolicy = this.container.imagePullPolicy;
+            }
+            if (this.container.command.length > 0) {
+                requestData.containers[0].command = this.container.command.filter(cmd => cmd.trim() !== '');
+            }
+            if (this.container.args.length > 0) {
+                requestData.containers[0].args = this.container.args.filter(arg => arg.trim() !== '');
+            }
+            if (this.container.ports.length > 0) {
+                requestData.containers[0].ports = this.container.ports.filter(p => p.port);
+            }
+
+            this.priceInfo.loading = true;
+            try {
+                const response = await fetch(`${this.apiBaseUrl}/tengu/instance/describeContainerGroupPrice`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                const result = await response.json();
+
+                if (result.resultCode === 1 && result.data && result.data.priceInfo) {
+                    this.priceInfo.currency = result.data.priceInfo.currency || 'CNY';
+                    this.priceInfo.originalPrice = result.data.priceInfo.originalPrice || 0;
+                    this.priceInfo.discountPrice = result.data.priceInfo.discountPrice || 0;
+                    this.priceInfo.tradePrice = result.data.priceInfo.tradePrice || 0;
+                } else {
+                    console.error('查询价格失败:', result);
+                    // 失败时重置价格
+                    this.priceInfo.originalPrice = 0;
+                    this.priceInfo.discountPrice = 0;
+                    this.priceInfo.tradePrice = 0;
+                }
+            } catch (error) {
+                console.error('查询价格失败:', error);
+                // 失败时重置价格
+                this.priceInfo.originalPrice = 0;
+                this.priceInfo.discountPrice = 0;
+                this.priceInfo.tradePrice = 0;
+            } finally {
+                this.priceInfo.loading = false;
             }
         }
     }
