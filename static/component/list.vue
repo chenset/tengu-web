@@ -35,8 +35,7 @@
                         <div v-if="showRegionDropdown"
                             class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto"
                             @click.stop>
-                            <div v-for="option in regionOptions" :key="option.value"
-                                @click="toggleRegion(option.value)"
+                            <div v-for="option in regionOptions" :key="option.value" @click="toggleRegion(option.value)"
                                 class="flex items-center px-3 py-2 cursor-pointer hover:bg-gray-100">
                                 <input type="checkbox" :checked="filterParams.regionIdList.includes(option.value)"
                                     class="h-4 w-4 text-indigo-600 border-gray-300 rounded mr-2 pointer-events-none">
@@ -67,8 +66,7 @@
                         <div v-if="showStatusDropdown"
                             class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto"
                             @click.stop>
-                            <div v-for="option in statusOptions" :key="option.value"
-                                @click="toggleStatus(option.value)"
+                            <div v-for="option in statusOptions" :key="option.value" @click="toggleStatus(option.value)"
                                 class="flex items-center px-3 py-2 cursor-pointer hover:bg-gray-100">
                                 <input type="checkbox"
                                     :checked="filterParams.containerGroupStatusList.includes(option.value)"
@@ -125,7 +123,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 安全组/虚拟交换机</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                </th>
+                            </th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -163,7 +161,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <!-- <button @click="viewDetail(item)" -->
-                                    <!-- class="text-indigo-600 hover:text-indigo-900 mr-3">详情</button> -->
+                                <!-- class="text-indigo-600 hover:text-indigo-900 mr-3">详情</button> -->
                                 <button @click="openItem(item)"
                                     class="text-green-600 hover:text-green-900 mr-3">打开</button>
                                 <button @click="releaseItem(item)" class="text-red-600 hover:text-red-900">释放</button>
@@ -189,7 +187,7 @@
                     <div>
                         <p class="text-sm text-gray-700">
                             显示第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
-                            }}</span> 条，
+                                }}</span> 条，
                             共 <span class="font-medium">{{ totalItems }}</span> 条
                         </p>
                     </div>
@@ -534,17 +532,20 @@
                         </button>
 
                         <!-- 单价,价格展示 -->
-                        <p class="mt-3 w-full inline-flex justify-center rounded-md text-base font-medium text-orange-400  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                            <span v-if="priceInfo.loading">查询价格中...</span>
+                        <p
+                            class="mt-3 w-full inline-flex justify-center rounded-md text-base font-medium text-orange-400  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                            <span class="px-4 py-2" v-if="priceInfo.loading">查询价格中...</span>
+                            <span class="px-4 py-2" v-else-if="priceInfo.errorMsg">{{ priceInfo.errorMsg }}</span>
                             <small v-else-if="priceInfo.isRange">
                                 {{ priceInfo.minPrice }}~{{ priceInfo.maxPrice }} {{ priceInfo.currency }}/秒
                                 <br>
-                                {{ priceInfo.minPrice*3600 }}~{{ priceInfo.maxPrice*3600 }} {{ priceInfo.currency }}/小时
+                                {{ priceInfo.minPrice * 3600 }}~{{ priceInfo.maxPrice * 3600 }} {{ priceInfo.currency
+                                }}/小时
                             </small>
                             <small v-else>
                                 {{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒
                                 <br>
-                                {{ priceInfo.minPrice*3600 }} {{ priceInfo.currency }}/小时
+                                {{ priceInfo.minPrice * 3600 }} {{ priceInfo.currency }}/小时
                             </small>
                         </p>
                     </div>
@@ -566,7 +567,7 @@ module.exports = {
             // 筛选参数
             filterParams: {
                 regionIdList: [],
-                containerGroupStatusList: ['Running', 'Pending', 'Scheduling', 'Updating', 'Terminating','Restarting']
+                containerGroupStatusList: ['Running', 'Pending', 'Scheduling', 'Updating', 'Terminating', 'Restarting']
             },
             // 下拉菜单状态
             showRegionDropdown: false,
@@ -628,6 +629,7 @@ module.exports = {
                 currency: 'CNY',
                 minPrice: 0,
                 maxPrice: 0,
+                errorMsg: "",
                 isRange: false // 是否是价格区间
             }
         }
@@ -818,7 +820,7 @@ module.exports = {
         // 加载列表数据
         async loadTableData() {
             this.loading = true;
-          
+
             try {
                 const requestBody = {
                     page: this.currentPage,
@@ -869,7 +871,7 @@ module.exports = {
                 tag: this.formatRegion(item.regionId),
                 user: item.email || '-',
                 containerGroupStatus: this.formatStatus(item.containerGroupStatus),
-                status:this.formatStatus(item.status),
+                status: this.formatStatus(item.status),
                 event: '-',
                 spec: this.formatSpec(item.cpu, item.memory, item.instanceType),
                 zone: this.formatRegion(item.regionId),
@@ -1010,7 +1012,7 @@ module.exports = {
                             break;
                         case 'channelCode':
                             this.formData.channelCode = dict.defaultOptionsDictValue;
-                            break;    
+                            break;
                         case 'vpcId':
                             this.formData.vpcId = dict.defaultOptionsDictValue;
                             break;
@@ -1323,7 +1325,7 @@ module.exports = {
                     alert('释放成功！');
                     // 刷新列表
                     this.loadTableData();
-                }else if (result.resultCode === 0) {
+                } else if (result.resultCode === 0) {
                     alert(result.message || '该容器实例记录已被删除');
                     // 刷新列表
                     this.loadTableData();
@@ -1380,6 +1382,7 @@ module.exports = {
                 requestData.containers[0].ports = this.container.ports.filter(p => p.port);
             }
 
+            this.priceInfo.errorMsg = ""
             this.priceInfo.loading = true;
             try {
                 const response = await fetch(`${this.apiBaseUrl}/tengu/instance/describeContainerGroupPrice`, {
@@ -1392,7 +1395,13 @@ module.exports = {
 
                 const result = await response.json();
 
-                if (result.resultCode === 1 && result.data && result.data.priceInfo) {
+                if (!response.ok) {
+                    if (result.message) {
+                        this.priceInfo.errorMsg = result.message
+                    } else {
+                        this.priceInfo.errorMsg = "查询价格失败"
+                    }
+                } else if (result.resultCode === 1 && result.data && result.data.priceInfo) {
                     const priceInfo = result.data.priceInfo;
                     this.priceInfo.currency = priceInfo.currency || 'CNY';
 
@@ -1422,6 +1431,7 @@ module.exports = {
                     this.priceInfo.isRange = false;
                 }
             } catch (error) {
+                this.priceInfo.errorMsg = error
                 console.error('查询价格失败:', error);
                 // 失败时重置价格
                 this.priceInfo.minPrice = 0;
