@@ -480,9 +480,9 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                  <span @click="openEventsDialog(item)" :class="getStatusClass(item.containerGroupStatus)"
+                                <span @click="openEventsDialog(item)" :class="getStatusClass(item.containerGroupStatus)"
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer hover:opacity-80">
-                                {{ item.events?.length || '-' }}
+                                    {{ item.events?.length || '-' }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.spec }}</td>
@@ -902,7 +902,8 @@
                     <div class="events-dialog-container">
                         <!-- 对话框头部 -->
                         <div class="el-dialog-header-custom">
-                            <span class="el-dialog-title-custom">事件详情 - {{ currentEventsItem?.containerGroupName }}</span>
+                            <span class="el-dialog-title-custom">事件详情 - {{ currentEventsItem?.containerGroupName
+                            }}</span>
                             <button @click="closeEventsDialog" class="el-dialog-close-custom">
                                 <svg viewBox="0 0 1024 1024" width="16" height="16">
                                     <path fill="currentColor"
@@ -913,7 +914,8 @@
 
                         <!-- 对话框内容 -->
                         <div class="el-dialog-body-custom">
-                            <div v-if="!currentEventsItem?.events || currentEventsItem.events.length === 0" class="text-center py-8 text-gray-500">
+                            <div v-if="!currentEventsItem?.events || currentEventsItem.events.length === 0"
+                                class="text-center py-8 text-gray-500">
                                 暂无事件信息
                             </div>
                             <div v-else class="events-table-wrapper">
@@ -930,13 +932,14 @@
                                     <tbody>
                                         <tr v-for="(event, index) in currentEventsItem.events" :key="index">
                                             <td>
-                                                <span :class="event.type === 'Warning' ? 'event-type-warning' : 'event-type-normal'">
+                                                <span
+                                                    :class="event.type === 'Warning' ? 'event-type-warning' : 'event-type-normal'">
                                                     {{ event.type }}
                                                 </span>
                                             </td>
                                             <td>{{ event.count }}</td>
                                             <td>{{ formatEventTime(event.firstTimestamp) }}</br>
-                                            {{ formatEventTime(event.lastTimestamp) }}</td>
+                                                {{ formatEventTime(event.lastTimestamp) }}</td>
                                             <!-- <td style="word-break: break-all;">{{ event.name }}</td> -->
                                             <td style="word-break: break-word;">{{ event.message }}</td>
                                         </tr>
@@ -1264,7 +1267,11 @@ module.exports = {
 
                 const result = await response.json();
                 this.tableData = [];// 清空数据以防止旧数据残留
-                if (result.resultCode === 1 && result.data) {
+                this.totalItems = 0;
+                if (!response.ok) {
+                    console.error('网络响应错误:', response.statusText);
+                    window.$message('加载数据失败: ' + response.statusText, 'error');
+                } else if (result.resultCode === 1 && result.data) {
                     this.tableData = this.formatTableData(result.data.rows || []);
                     this.totalItems = result.data.total || 0;
                 } else {
@@ -1411,7 +1418,10 @@ module.exports = {
                     body: JSON.stringify({})
                 });
                 const result = await response.json();
-                if (result.resultCode === 1 && result.data && result.data.dictOptions) {
+                if (!response.ok) {
+                    console.error('网络响应错误:', response.statusText);
+                    window.$message('加载数据失败: ' + response.statusText, 'error');
+                } else if (result.resultCode === 1 && result.data && result.data.dictOptions) {
                     this.dictOptions = result.data.dictOptions.sort((a, b) => (b.weight || 0) - (a.weight || 0));
                     // 自动填充默认值
                     this.applyDefaultValues();
