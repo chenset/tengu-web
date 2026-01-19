@@ -533,7 +533,7 @@
                             取消
                         </button>
 
-                        <!-- 单价 -->
+                        <!-- 单价,价格展示 -->
                         <p class="mt-3 w-full inline-flex justify-center rounded-md px-4 py-2 text-base font-medium text-orange-400  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                             0.0 RMB
                         </p>
