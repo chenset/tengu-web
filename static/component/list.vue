@@ -800,15 +800,12 @@
                                     {{ priceInfo.errorMsg }}
                                 </span>
                                 <div v-else-if="priceInfo.isRange" class="el-price-text">
-                                    <div>{{ priceInfo.minPrice }}~{{ priceInfo.maxPrice }} {{ priceInfo.currency }}/秒
-                                    </div>
-                                    <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }}~{{ priceInfo.maxPrice *
-                                        3600 }} {{ priceInfo.currency }}/小时</div>
+                                    <div>{{ priceInfo.minPrice }}~{{ priceInfo.maxPrice }} {{ priceInfo.currency }}/秒</div>
+                                    <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }}~{{ priceInfo.maxPrice * 3600 }} {{ priceInfo.currency }}/小时</div>
                                 </div>
                                 <div v-else class="el-price-text">
                                     <div>{{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒</div>
-                                    <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }} {{ priceInfo.currency
-                                        }}/小时</div>
+                                    <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }} {{ priceInfo.currency }}/小时</div>
                                 </div>
                             </div>
 
