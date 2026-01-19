@@ -164,13 +164,15 @@
 }
 
 .el-price-text {
-    font-weight: 500;
+    /* font-weight: 500; */
+    /* font-size: 10px; */
 }
 
 .el-price-hour {
-    font-size: 12px;
-    margin-top: 4px;
-    opacity: 0.8;
+    margin-top: -3px;
+    /* font-size: 10px; */
+    /* margin-top: 2px; */
+    /* opacity: 0.8; */
 }
 
 .el-dialog-buttons {
