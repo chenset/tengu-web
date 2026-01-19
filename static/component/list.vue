@@ -269,6 +269,63 @@
         opacity: 0;
     }
 }
+
+/* 事件弹窗样式 */
+.events-dialog-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    width: 90%;
+    max-width: 1700px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.events-table-wrapper {
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 60vh;
+}
+
+.events-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.events-table th {
+    background-color: #f5f7fa;
+    color: #606266;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e4e7ed;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.events-table td {
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #606266;
+    border-bottom: 1px solid #ebeef5;
+}
+
+.events-table tbody tr:hover {
+    background-color: #f5f7fa;
+}
+
+.event-type-warning {
+    color: #e6a23c;
+    font-weight: 500;
+}
+
+.event-type-normal {
+    color: #67c23a;
+    font-weight: 500;
+}
 </style>
 
 <template>
@@ -423,8 +480,8 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                  <span :class="getStatusClass(item.containerGroupStatus)"
-                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer">
+                                  <span @click="openEventsDialog(item)" :class="getStatusClass(item.containerGroupStatus)"
+                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer hover:opacity-80">
                                 {{ item.events?.length || '-' }}
                                 </span>
                             </td>
@@ -837,6 +894,70 @@
                 </div>
             </div>
         </transition>
+
+        <!-- 事件详情对话框 -->
+        <transition name="el-dialog-fade">
+            <div v-if="showEventsDialog" class="el-dialog-overlay" @click="closeEventsDialog">
+                <div class="el-dialog-wrapper" @click.stop>
+                    <div class="events-dialog-container">
+                        <!-- 对话框头部 -->
+                        <div class="el-dialog-header-custom">
+                            <span class="el-dialog-title-custom">事件详情 - {{ currentEventsItem?.containerGroupName }}</span>
+                            <button @click="closeEventsDialog" class="el-dialog-close-custom">
+                                <svg viewBox="0 0 1024 1024" width="16" height="16">
+                                    <path fill="currentColor"
+                                        d="M764.288 214.592 512 466.88 259.712 214.592a31.936 31.936 0 0 0-45.12 45.12L466.752 512 214.528 764.224a31.936 31.936 0 1 0 45.12 45.184L512 557.184l252.288 252.288a31.936 31.936 0 0 0 45.12-45.12L557.12 512.064l252.288-252.352a31.936 31.936 0 1 0-45.12-45.184z" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- 对话框内容 -->
+                        <div class="el-dialog-body-custom">
+                            <div v-if="!currentEventsItem?.events || currentEventsItem.events.length === 0" class="text-center py-8 text-gray-500">
+                                暂无事件信息
+                            </div>
+                            <div v-else class="events-table-wrapper">
+                                <table class="events-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 80px;">类型</th>
+                                            <th style="width: 60px;">次数</th>
+                                            <th style="width: 180px;">首次/最后时间</th>
+                                            <!-- <th style="width: 300px;">名称</th> -->
+                                            <th>消息</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(event, index) in currentEventsItem.events" :key="index">
+                                            <td>
+                                                <span :class="event.type === 'Warning' ? 'event-type-warning' : 'event-type-normal'">
+                                                    {{ event.type }}
+                                                </span>
+                                            </td>
+                                            <td>{{ event.count }}</td>
+                                            <td>{{ formatEventTime(event.firstTimestamp) }}</br>
+                                            {{ formatEventTime(event.lastTimestamp) }}</td>
+                                            <!-- <td style="word-break: break-all;">{{ event.name }}</td> -->
+                                            <td style="word-break: break-word;">{{ event.message }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 对话框底部 -->
+                        <div class="el-dialog-footer-custom">
+                            <div class="el-price-info"></div>
+                            <div class="el-dialog-buttons">
+                                <button @click="closeEventsDialog" type="button" class="el-btn el-btn-primary">
+                                    关闭
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
     </div>
 </template>
 
@@ -916,7 +1037,10 @@ module.exports = {
                 maxPrice: 0,
                 errorMsg: "",
                 isRange: false // 是否是价格区间
-            }
+            },
+            // 事件弹窗
+            showEventsDialog: false,
+            currentEventsItem: null
         }
     },
     computed: {
@@ -1677,6 +1801,26 @@ module.exports = {
                 console.error('释放容器组失败:', error);
                 window.$message('释放失败: ' + error.message, 'error');
             }
+        },
+        // 打开事件弹窗
+        openEventsDialog(item) {
+            if (!item.events || item.events.length === 0) {
+                window.$message('暂无事件信息', 'info');
+                return;
+            }
+            this.currentEventsItem = item;
+            this.showEventsDialog = true;
+        },
+        // 关闭事件弹窗
+        closeEventsDialog() {
+            this.showEventsDialog = false;
+            this.currentEventsItem = null;
+        },
+        // 格式化事件时间
+        formatEventTime(timestamp) {
+            if (!timestamp) return '-';
+            const date = new Date(timestamp);
+            return date.toISOString().slice(0, 19).replace('T', ' ');
         },
         // 查询容器组价格
         async fetchContainerGroupPrice() {
