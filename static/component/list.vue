@@ -164,6 +164,8 @@
                                 <!-- class="text-indigo-600 hover:text-indigo-900 mr-3">详情</button> -->
                                 <button @click="openItem(item)"
                                     class="text-green-600 hover:text-green-900 mr-3">打开</button>
+                                <button @click="refreshItem(item)"
+                                    class="text-blue-600 hover:text-blue-900 mr-3">刷新</button>
                                 <button @click="releaseItem(item)" class="text-red-600 hover:text-red-900">释放</button>
                             </td>
                         </tr>
@@ -1305,6 +1307,37 @@ module.exports = {
         // 打开
         openItem(item) {
             window.open(`${this.apiBaseUrl}/tengu/container/open/redirect?id=${item.id}`, '_blank');
+        },
+        // 刷新
+        async refreshItem(item) {
+            if (!confirm(`确定要刷新 ${item.containerGroupName} 吗?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${this.apiBaseUrl}/tengu/instance/refreshContainerGroup`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: item.id
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.resultCode === 1) {
+                    alert('刷新成功！');
+                    // 刷新列表
+                    this.loadTableData();
+                } else {
+                    alert('刷新失败: ' + (result.message || '未知错误'));
+                }
+            } catch (error) {
+                console.error('刷新容器组失败:', error);
+                alert('刷新失败: ' + error.message);
+            }
         },
         // 释放
         async releaseItem(item) {
