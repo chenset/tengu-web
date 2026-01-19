@@ -536,7 +536,12 @@
                         <!-- 单价,价格展示 -->
                         <p class="mt-3 w-full inline-flex justify-center rounded-md px-4 py-2 text-base font-medium text-orange-400  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                             <span v-if="priceInfo.loading">查询价格中...</span>
-                            <span v-else>{{ priceInfo.tradePrice.toFixed(8) }} {{ priceInfo.currency }}/小时</span>
+                            <span v-else-if="priceInfo.isRange">
+                                {{ priceInfo.minPrice }}~{{ priceInfo.maxPrice }} {{ priceInfo.currency }}/秒
+                            </span>
+                            <span v-else>
+                                {{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒
+                            </span>
                         </p>
                     </div>
                 </div>
@@ -617,9 +622,9 @@ module.exports = {
             priceInfo: {
                 loading: false,
                 currency: 'CNY',
-                originalPrice: 0,
-                discountPrice: 0,
-                tradePrice: 0
+                minPrice: 0,
+                maxPrice: 0,
+                isRange: false // 是否是价格区间
             }
         }
     },
@@ -1384,23 +1389,40 @@ module.exports = {
                 const result = await response.json();
 
                 if (result.resultCode === 1 && result.data && result.data.priceInfo) {
-                    this.priceInfo.currency = result.data.priceInfo.currency || 'CNY';
-                    this.priceInfo.originalPrice = result.data.priceInfo.originalPrice || 0;
-                    this.priceInfo.discountPrice = result.data.priceInfo.discountPrice || 0;
-                    this.priceInfo.tradePrice = result.data.priceInfo.tradePrice || 0;
+                    const priceInfo = result.data.priceInfo;
+                    this.priceInfo.currency = priceInfo.currency || 'CNY';
+
+                    // 判断是单一价格还是价格区间
+                    if (priceInfo.spotPrices && Array.isArray(priceInfo.spotPrices) && priceInfo.spotPrices.length > 0) {
+                        // 价格区间：从 spotPrices 中找出最低和最高的 spotPrice
+                        const spotPrices = priceInfo.spotPrices.map(item => item.spotPrice);
+                        this.priceInfo.minPrice = Math.min(...spotPrices);
+                        this.priceInfo.maxPrice = Math.max(...spotPrices);
+                        this.priceInfo.isRange = this.priceInfo.minPrice !== this.priceInfo.maxPrice;
+                    } else if (priceInfo.tradePrice !== undefined) {
+                        // 单一价格
+                        this.priceInfo.minPrice = priceInfo.tradePrice;
+                        this.priceInfo.maxPrice = priceInfo.tradePrice;
+                        this.priceInfo.isRange = false;
+                    } else {
+                        // 没有价格信息，重置
+                        this.priceInfo.minPrice = 0;
+                        this.priceInfo.maxPrice = 0;
+                        this.priceInfo.isRange = false;
+                    }
                 } else {
                     console.error('查询价格失败:', result);
                     // 失败时重置价格
-                    this.priceInfo.originalPrice = 0;
-                    this.priceInfo.discountPrice = 0;
-                    this.priceInfo.tradePrice = 0;
+                    this.priceInfo.minPrice = 0;
+                    this.priceInfo.maxPrice = 0;
+                    this.priceInfo.isRange = false;
                 }
             } catch (error) {
                 console.error('查询价格失败:', error);
                 // 失败时重置价格
-                this.priceInfo.originalPrice = 0;
-                this.priceInfo.discountPrice = 0;
-                this.priceInfo.tradePrice = 0;
+                this.priceInfo.minPrice = 0;
+                this.priceInfo.maxPrice = 0;
+                this.priceInfo.isRange = false;
             } finally {
                 this.priceInfo.loading = false;
             }
