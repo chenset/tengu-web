@@ -422,7 +422,12 @@
                                     {{ item.containerGroupStatus }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.event }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                  <span :class="getStatusClass(item.containerGroupStatus)"
+                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer">
+                                {{ item.event }}
+                                </span>
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.spec }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.zone }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.createTime }}</td>
