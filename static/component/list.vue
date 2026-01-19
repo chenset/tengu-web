@@ -459,7 +459,7 @@
                 <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                     <div>
                         <p class="text-sm text-gray-700">
-                            显示第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
+                            第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
                             }}</span> 条，
                             共 <span class="font-medium">{{ totalItems }}</span> 条
                         </p>
