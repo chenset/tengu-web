@@ -1307,7 +1307,8 @@ module.exports = {
                 events: item.events,
                 spec: this.formatSpec(item.cpu, item.memory, item.instanceType),
                 zone: this.formatRegion(item.regionId),
-                createTime: this.formatTime(item.createTime),
+                //createTime: this.formatTime(item.createTime),
+                createTime: item.createTime.timestamp2yyyymmddhmShangHaiTime(),
                 securityGroup: item.securityGroupId || '-',
                 vSwitch: item.vswitchId || '-',
                 rawData: item // 保存原始数据
