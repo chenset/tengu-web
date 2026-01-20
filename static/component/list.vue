@@ -447,6 +447,8 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 所在可用区</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                价格</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 创建时间</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 安全组/虚拟交换机</th>
@@ -487,6 +489,10 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.spec }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.zone }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <div v-if="item.rawData.price>0" class="text-sm font-medium text-orange-400">{{ (item.rawData.price* (new Date().getTime()-(item.rawData.createTime))).toFixed(3) }} {{ item.rawData.currency }}</div>
+                                <div v-if="item.rawData.price>0" class="text-xs text-gray-500">{{item.rawData.price}} {{ item.rawData.currency }} / 秒</div>
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.createTime }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">{{ item.securityGroup }}</div>
