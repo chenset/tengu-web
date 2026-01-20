@@ -487,11 +487,29 @@
                                     {{ item.events?.length || '-' }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.spec }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.zone }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <div v-if="item.rawData.cpu" class="text-sm font-medium">
+                                    {{ item.rawData.cpu }}核{{ item.rawData.memory }}G
+                                </div>
+                                <div v-if="item.rawData.instanceType" class="text-xs font-medium text-gray-500">
+                                    {{ item.rawData.instanceType }}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <span v-if="!item.rawData.zoneId">
+                                {{ item.zone }} 
+                                </span>
+                                <span v-if="item.rawData.zoneId">
+                                {{ item.rawData.zoneId }}
+                                </span>
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                <div v-if="item.rawData.price>0" class="text-sm font-medium text-orange-400">{{ Math.round(item.rawData.price* (new Date().getTime()-(item.rawData.createTime))/1000*10000)/10000 }} {{ item.rawData.currency }}</div>
-                                <div v-if="item.rawData.price>0" class="text-xs text-gray-500">{{item.rawData.price}} {{ item.rawData.currency }} / 秒</div>
+                                <div v-if="item.rawData.price > 0" class="text-sm font-medium text-orange-400">{{
+                                    Math.round(item.rawData.price * (new
+                                    Date().getTime()-(item.rawData.createTime))/1000*10000)/10000 }} {{
+                                    item.rawData.currency }}</div>
+                                <div v-if="item.rawData.price > 0" class="text-xs text-gray-500">{{ item.rawData.price }} {{
+                                    item.rawData.currency }} / 秒</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.createTime }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -528,7 +546,7 @@
                     <div>
                         <p class="text-sm text-gray-700">
                             第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
-                                }}</span> 条，
+                            }}</span> 条，
                             共 <span class="font-medium">{{ totalItems }}</span> 条
                         </p>
                     </div>
@@ -879,7 +897,7 @@
                                 <div v-else class="el-price-text">
                                     <div>{{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒</div>
                                     <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }} {{ priceInfo.currency
-                                        }}/小时</div>
+                                    }}/小时</div>
                                 </div>
                             </div>
 
@@ -909,7 +927,7 @@
                         <!-- 对话框头部 -->
                         <div class="el-dialog-header-custom">
                             <span class="el-dialog-title-custom">事件详情 - {{ currentEventsItem?.containerGroupName
-                            }}</span>
+                                }}</span>
                             <button @click="closeEventsDialog" class="el-dialog-close-custom">
                                 <svg viewBox="0 0 1024 1024" width="16" height="16">
                                     <path fill="currentColor"
@@ -982,7 +1000,7 @@ module.exports = {
             // 筛选参数
             filterParams: {
                 regionIdList: [],
-                containerGroupStatusList: ['Running', 'Pending', 'Scheduling', 'Updating', 'Terminating', 'Restarting','ScheduleFailed']
+                containerGroupStatusList: ['Running', 'Pending', 'Scheduling', 'Updating', 'Terminating', 'Restarting', 'ScheduleFailed']
             },
             // 下拉菜单状态
             showRegionDropdown: false,
