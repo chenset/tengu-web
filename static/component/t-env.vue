@@ -62,7 +62,7 @@
                 Cost: 1223.10 RMB 展示 cpu/内存/磁盘/网络（丢包率）/时间/成本  停止按钮
             </div>
         </div>
-        <iframe ref="iframe" src="http://192.168.2.147:2828/?folder=/tmp" :class="{ dragging: isDragging }"></iframe>
+        <iframe ref="iframe" id="iframe" :class="{ dragging: isDragging }"></iframe>
     </div>
 </template>
 
@@ -85,6 +85,8 @@ module.exports = {
         document.addEventListener('mousemove', this.onDrag);
         document.addEventListener('mouseup', this.stopDrag);
         window.addEventListener('resize', this.onWindowResize);
+        // document.getElementById('iframe').src=location.hash.split('#')[1]+"?folder=/tmp" 
+        document.getElementById('iframe').src=location.hash.split('#')[1]
     },
     beforeDestroy() {
         document.removeEventListener('mousemove', this.onDrag);
