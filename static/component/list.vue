@@ -1307,7 +1307,6 @@ module.exports = {
                 events: item.events,
                 spec: this.formatSpec(item.cpu, item.memory, item.instanceType),
                 zone: this.formatRegion(item.regionId),
-                //createTime: this.formatTime(item.createTime),
                 createTime: item.createTime.timestamp2yyyymmddhmShangHaiTime(),
                 securityGroup: item.securityGroupId || '-',
                 vSwitch: item.vswitchId || '-',
@@ -1346,12 +1345,6 @@ module.exports = {
                 return `${cpu}核${memory}G`;
             }
             return instanceType || '-';
-        },
-        // 格式化时间
-        formatTime(timestamp) {
-            if (!timestamp) return '-';
-            const date = new Date(timestamp);
-            return date.toISOString().slice(0, 19).replace('T', ' ');
         },
         // 筛选条件改变
         handleFilterChange() {
