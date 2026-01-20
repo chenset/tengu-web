@@ -976,7 +976,7 @@ module.exports = {
             // 筛选参数
             filterParams: {
                 regionIdList: [],
-                containerGroupStatusList: ['Running', 'Pending', 'Scheduling', 'Updating', 'Terminating', 'Restarting']
+                containerGroupStatusList: ['Running', 'Pending', 'Scheduling', 'Updating', 'Terminating', 'Restarting','ScheduleFailed']
             },
             // 下拉菜单状态
             showRegionDropdown: false,

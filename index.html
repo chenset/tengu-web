@@ -12,7 +12,7 @@
     <!-- <link href="/static/app.css?_1" rel="stylesheet" type="text/css" /> -->
     <!-- <link rel="stylesheet" href="/static/fontawesome/all.min.css" media="print" onload="this.media='all'"> -->
     <script src="/static/app.min.js?_1"></script>
-    <script src="/static/app.js?_1"></script> 
+    <script src="/static/app.js?_1"></script>
     <script src="/static/tailwind.4.1.17.prod.js"></script>
 </head>
 
@@ -47,6 +47,13 @@
                         alias: ['/list/'],
                         component: Vue.defineAsyncComponent(httpVueLoaderVersion('/static/component/list.vue')),
                         meta: { title: "Index" },
+                    },
+                    {
+                        //container
+                        path: '/t-env/:ip(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})/:port([123]\\d{3})/:pathMatch(.*)*',
+                        //alias: ['/', '/index', '/index/', '/index.html'],
+                        component: Vue.defineAsyncComponent(httpVueLoaderVersion('/static/component/t-env.vue')),
+                        meta: { title: "T-ENV" },
                     },
                     {
                         //404
