@@ -1585,10 +1585,10 @@ module.exports = {
             //     window.$message('请选择安全组', 'warning');
             //     return;
             // }
-            if (!this.formData.instanceType) {
-                window.$message('请选择ECS实例规格', 'warning');
-                return;
-            }
+            //if (!this.formData.instanceType) {
+            //   indow.$message('请选择ECS实例规格', 'warning');
+            //   return;
+            //}
             if (!this.formData.spotStrategy) {
                 window.$message('请选择付费模式', 'warning');
                 return;
