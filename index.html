@@ -50,7 +50,8 @@
                     },
                     {
                         //container
-                        path: '/t-env/:ip(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})/:port([123]\\d{3})/:pathMatch(.*)*',
+                        //path: '/t-env/:ip(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})/:port([123]\\d{3})/:iid(\\d+)/:pathMatch(.*)*',
+                        path: '/t-env/:ip(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})/:port([123]\\d{3})/:id([1-9]\\d*)/:pathMatch(.*)*',
                         //alias: ['/', '/index', '/index/', '/index.html'],
                         component: Vue.defineAsyncComponent(httpVueLoaderVersion('/static/component/t-env.vue')),
                         meta: { title: "T-ENV" },
