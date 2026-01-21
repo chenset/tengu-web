@@ -11,59 +11,39 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             邮箱 <span class="text-red-500">*</span>
                         </label>
-                        <input
-                            type="email"
-                            v-model="createForm.email"
-                            required
-                            placeholder="请输入邮箱"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
+                        <input type="email" v-model="createForm.email" required placeholder="请输入邮箱"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             昵称
                         </label>
-                        <input
-                            type="text"
-                            v-model="createForm.nickname"
-                            placeholder="可选，不填则使用邮箱"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
+                        <input type="text" v-model="createForm.nickname" placeholder="可选，不填则使用邮箱"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             密码 <span class="text-red-500">*</span>
                         </label>
-                        <input
-                            type="password"
-                            v-model="createForm.password"
-                            required
-                            placeholder="请输入密码"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
+                        <input type="password" v-model="createForm.password" required placeholder="请输入密码"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             角色
                         </label>
-                        <select
-                            v-model="createForm.role"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
+                        <select v-model="createForm.role"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="user">user</option>
                             <option value="admin">admin</option>
                         </select>
                     </div>
 
                     <div class="md:col-span-2 lg:col-span-4">
-                        <button
-                            type="submit"
-                            :disabled="createLoading"
-                            class="el-btn el-btn-primary px-6 py-2"
-                        >
+                        <button type="submit" :disabled="createLoading" class="el-btn el-btn-primary px-6 py-2">
                             <span v-if="createLoading" class="el-btn-loading"></span>
                             {{ createLoading ? '创建中...' : '创建用户' }}
                         </button>
@@ -115,14 +95,16 @@
                                 <td class="px-4 py-3 text-sm text-gray-900 border-b">{{ user.email }}</td>
                                 <td class="px-4 py-3 text-sm text-gray-900 border-b">{{ user.nickname || '-' }}</td>
                                 <td class="px-4 py-3 text-sm border-b">
-                                    <span :class="user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'"
-                                          class="px-2 py-1 rounded text-xs font-medium">
+                                    <span
+                                        :class="user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'"
+                                        class="px-2 py-1 rounded text-xs font-medium">
                                         {{ user.role }}
                                     </span>
                                 </td>
                                 <td class="px-4 py-3 text-sm border-b">
-                                    <span :class="user.status === 1 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
-                                          class="px-2 py-1 rounded text-xs font-medium">
+                                    <span
+                                        :class="user.status === 1 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
+                                        class="px-2 py-1 rounded text-xs font-medium">
                                         {{ user.status === 1 ? '正常' : '禁用' }}
                                     </span>
                                 </td>
@@ -137,16 +119,12 @@
                                 </td>
                                 <td class="px-4 py-3 text-sm border-b">
                                     <div class="flex justify-center gap-2">
-                                        <button
-                                            @click="handleToggleStatus(user)"
-                                            class="el-btn el-btn-default px-3 py-1 text-xs"
-                                        >
+                                        <button @click="handleToggleStatus(user)"
+                                            class="el-btn el-btn-default px-3 py-1 text-xs">
                                             {{ user.status === 1 ? '禁用' : '启用' }}
                                         </button>
-                                        <button
-                                            @click="handleResetPassword(user)"
-                                            class="el-btn el-btn-default px-3 py-1 text-xs"
-                                        >
+                                        <button @click="handleResetPassword(user)"
+                                            class="el-btn el-btn-default px-3 py-1 text-xs">
                                             重置密码
                                         </button>
                                     </div>
@@ -162,21 +140,15 @@
                         共 {{ pagination.total }} 条记录
                     </div>
                     <div class="flex gap-2">
-                        <button
-                            @click="handlePageChange(pagination.page - 1)"
-                            :disabled="pagination.page <= 1"
-                            class="el-btn el-btn-default px-4 py-2"
-                        >
+                        <button @click="handlePageChange(pagination.page - 1)" :disabled="pagination.page <= 1"
+                            class="el-btn el-btn-default px-4 py-2">
                             上一页
                         </button>
                         <span class="px-4 py-2 text-sm text-gray-700">
                             第 {{ pagination.page }} / {{ totalPages }} 页
                         </span>
-                        <button
-                            @click="handlePageChange(pagination.page + 1)"
-                            :disabled="pagination.page >= totalPages"
-                            class="el-btn el-btn-default px-4 py-2"
-                        >
+                        <button @click="handlePageChange(pagination.page + 1)" :disabled="pagination.page >= totalPages"
+                            class="el-btn el-btn-default px-4 py-2">
                             下一页
                         </button>
                     </div>
@@ -277,7 +249,7 @@ module.exports = {
                 const result = await response.json();
 
                 if (result.resultCode === 1) {
-                    this.userList = result.data.list || [];
+                    this.userList = result.data.rows || [];
                     this.pagination.total = result.data.total || 0;
                 } else {
                     window.$message(result.message || '获取列表失败', 'error');
@@ -384,7 +356,7 @@ module.exports = {
                 showFooter: true,
                 cancelText: '',
                 confirmText: '关闭',
-                onConfirm: function() {
+                onConfirm: function () {
                     return Promise.resolve();
                 }
             });
