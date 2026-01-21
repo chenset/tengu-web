@@ -140,7 +140,7 @@ module.exports = {
     },
     methods: {
         async refreshControlPanel() {
-            const response = await fetch(`${apiBaseUrl()}/tengu/container/control/panel?id=` + this.$route.params.id, { method: 'GET' });
+            const response = await fetchWithToken(`${apiBaseUrl()}/tengu/container/control/panel?id=` + this.$route.params.id, { method: 'GET' });
             const result = await response.json();
 
             if (!response.ok) {
@@ -205,7 +205,7 @@ module.exports = {
 
             try {
 
-                const response = await fetch(`${apiBaseUrl()}/tengu/instance/deleteContainerGroup`, {
+                const response = await fetchWithToken(`${apiBaseUrl()}/tengu/instance/deleteContainerGroup`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

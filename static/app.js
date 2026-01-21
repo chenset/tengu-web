@@ -1091,3 +1091,40 @@ function getTimeElapsed(startTime) {
 
 
 const mixins = { methods: { byteFormat, } }
+
+// 时间戳格式化函数 (13位毫秒时间戳)
+function formatTimestamp(timestamp) {
+    if (!timestamp) {
+        return '-';
+    }
+    const d = new Date(timestamp);
+    return d.getFullYear() + '/' + pad2(d.getMonth() + 1) + '/' + pad2(d.getDate()) + ' ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes()) + ':' + pad2(d.getSeconds());
+}
+
+// Token管理函数
+function setApiAccessToken(token) {
+    if (token) {
+        localStorage.setItem('apiAccessToken', token);
+    } else {
+        localStorage.removeItem('apiAccessToken');
+    }
+}
+
+function getApiAccessToken() {
+    return localStorage.getItem('apiAccessToken') || '';
+}
+
+function removeApiAccessToken() {
+    localStorage.removeItem('apiAccessToken');
+}
+
+// Fetch封装 - 自动添加token到请求头
+function fetchWithToken(url, options) {
+    options = options || {};
+    options.headers = options.headers || {};
+    const token = getApiAccessToken();
+    if (token) {
+        options.headers['X-API-ACCESS-TOKEN'] = token;
+    }
+    return fetch(url, options);
+}

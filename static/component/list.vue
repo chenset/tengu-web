@@ -1267,7 +1267,7 @@ module.exports = {
                     requestBody.containerGroupStatusList = this.filterParams.containerGroupStatusList;
                 }
 
-                const response = await fetch(`${this.apiBaseUrl}/tengu/instance/describeContainerGroupPage`, {
+                const response = await fetchWithToken(`${this.apiBaseUrl}/tengu/instance/describeContainerGroupPage`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -1414,7 +1414,7 @@ module.exports = {
         async loadDictOptions() {
             this.loadingDictOptions = true;
             try {
-                const response = await fetch(`${this.apiBaseUrl}/tengu/instance/getContainerGroupDictOptions`, {
+                const response = await fetchWithToken(`${this.apiBaseUrl}/tengu/instance/getContainerGroupDictOptions`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -1660,7 +1660,7 @@ module.exports = {
 
             this.submitting = true;
             try {
-                const response = await fetch(`${this.apiBaseUrl}/tengu/instance/createContainerGroup`, {
+                const response = await fetchWithToken(`${this.apiBaseUrl}/tengu/instance/createContainerGroup`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -1750,7 +1750,7 @@ module.exports = {
             }
 
             try {
-                const response = await fetch(`${this.apiBaseUrl}/tengu/instance/refreshContainerGroup`, {
+                const response = await fetchWithToken(`${this.apiBaseUrl}/tengu/instance/refreshContainerGroup`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -1787,7 +1787,7 @@ module.exports = {
 
             try {
 
-                const response = await fetch(`${this.apiBaseUrl}/tengu/instance/deleteContainerGroup`, {
+                const response = await fetchWithToken(`${this.apiBaseUrl}/tengu/instance/deleteContainerGroup`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -1884,7 +1884,7 @@ module.exports = {
             this.priceInfo.errorMsg = ""
             this.priceInfo.loading = true;
             try {
-                const response = await fetch(`${this.apiBaseUrl}/tengu/instance/describeContainerGroupPrice`, {
+                const response = await fetchWithToken(`${this.apiBaseUrl}/tengu/instance/describeContainerGroupPrice`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
