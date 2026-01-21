@@ -332,7 +332,7 @@
     <div class="container mx-auto p-6">
         <!-- 头部操作栏 -->
         <div class="mb-4 flex justify-between items-center">
-            <h1 class="text-2xl font-semibold text-gray-900">容器组管理</h1>
+            <h1 class="text-2xl font-semibold text-gray-900">容器组</h1>
             <button @click="openCreateDialog"
                 class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 创建实例
