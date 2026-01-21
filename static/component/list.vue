@@ -330,14 +330,13 @@
 
 <template>
     <div class="container mx-auto p-6">
-        <!-- 头部操作栏 -->
-        <div class="mb-4 flex justify-between items-center">
-            <h1 class="text-2xl font-semibold text-gray-900">容器组</h1>
+        <!-- 头部操作栏 - 使用公共 header 组件 -->
+        <app-header title="容器组">
             <button @click="openCreateDialog"
                 class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 创建实例
             </button>
-        </div>
+        </app-header>
 
         <!-- 筛选条件 -->
         <div class="mb-4 bg-white rounded-lg shadow p-4">
