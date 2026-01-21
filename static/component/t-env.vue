@@ -35,6 +35,7 @@
     position: fixed;
     top: 0;
     right: 0;
+    text-align: center;
     width: 500px;
     /* height: 27px; */
     cursor: move;
@@ -44,22 +45,24 @@
     color: white;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.21);
 }
-.control-panel-cost{
+
+.control-panel-cost {
     padding: 4px 10px;
 }
-
 </style>
 
 <template>
     <div class="iframe-container">
         <div class="drag-overlay" :class="{ active: isDragging }"></div>
-        <div class="control-panel-container"
-             ref="controlPanel"
-             @mousedown="startDrag"
-             :style="{ top: position.y + 'px', left: position.x + 'px', right: 'auto', zIndex: isDragging ? 10000 : 1000 }">
+        <div class="control-panel-container" ref="controlPanel" @mousedown="startDrag"
+        v-show="this.controlPanel.costStr"
+            :style="{ top: position.y + 'px', left: position.x + 'px', right: 'auto', zIndex: isDragging ? 10000 : 1000 }">
             <div class="control-panel-cost text-xs">
-            <!-- 需要展示 cpu/内存/磁盘/网络/时间/成本  -->
-                Cost: 1223.10 RMB 展示 cpu/内存/磁盘/网络（丢包率）/时间/成本  停止按钮 {{ $route.params.id  }}
+                <!-- 需要展示 cpu/内存/磁盘/网络（丢包率）/时间/成本  -->
+                消费:{{ this.controlPanel.costStr }} / 已运行:{{ this.controlPanel.timeElapsedStr }} 
+
+                  <button @click="releaseItem()" class="text-red-600 hover:text-red-700 cursor-pointer">释放</button>
+
             </div>
         </div>
         <iframe ref="iframe" id="iframe" :class="{ dragging: isDragging }"></iframe>
@@ -72,7 +75,12 @@ module.exports = {
         return {
             position: { x: 0, y: 0 },
             isDragging: false,
-            dragOffset: { x: 0, y: 0 }
+            dragOffset: { x: 0, y: 0 },
+
+            controlPanel: {
+                costStr: "",
+                timeElapsedStr: "",
+            }
         }
     },
     mounted() {
@@ -86,7 +94,23 @@ module.exports = {
         document.addEventListener('mouseup', this.stopDrag);
         window.addEventListener('resize', this.onWindowResize);
         // document.getElementById('iframe').src=location.hash.split('#')[1]+"?folder=/tmp" 
-        document.getElementById('iframe').src=location.hash.split('#')[1]
+        document.getElementById('iframe').src = location.hash.split('#')[1]
+
+        setTimeout(async () => {
+            let sleepMs = 1000
+            while (true) {
+                await sleep(sleepMs)
+                //todo 控制 sleep
+                //todo 控制退出
+
+                await this.refreshControlPanel()
+                sleepMs += 100
+            }
+        }, 10)
+
+    },
+    unmounted() {
+
     },
     beforeDestroy() {
         document.removeEventListener('mousemove', this.onDrag);
@@ -94,6 +118,95 @@ module.exports = {
         window.removeEventListener('resize', this.onWindowResize);
     },
     methods: {
+        async refreshControlPanel() {
+            const response = await fetch(`${apiBaseUrl()}/tengu/container/control/panel?id=` + this.$route.params.id, { method: 'GET' });
+            const result = await response.json();
+
+            if (!response.ok) {
+                return
+            }
+
+            if (result.resultCode != 1) {
+                return
+            }
+
+            // Math.round(item.rawData.price * (new Date().getTime()-(item.rawData.createTime))/1000*10000)/10000 }} 
+
+            this.controlPanel.costStr = (Math.round(result.data.price * (result.data.currentTime - result.data.createTime) / 1000 * 10000) / 10000) +" "+ result.data.currency 
+            this.controlPanel.timeElapsedStr = getTimeElapsed(result.data.createTime)
+
+
+            // result.
+
+            //             {
+            //     "resultCode": 1,
+            //     "data": {
+            //         "id": 20,
+            //         "regionId": "cn-shenzhen",
+            //         "zoneId": "cn-shenzhen-c",
+            //         "cpu": 1,
+            //         "memory": 1,
+            //         "price": 0.00000389,
+            //         "currency": "CNY",
+            //         "status": "Running",
+            //         "containerGroupStatus": "Running",
+            //         "createTime": 1768961698187,
+            //         "updateTime": 1768961840092,
+            //         "currentTime": 1768965829394,
+            //         "metrics": {
+            //             "cpu": 100,
+            //             "usedCpu": 50,
+            //             "mem": 2048,
+            //             "usedMem": 1024,
+            //             "disk": 10240,
+            //             "usedDisk": 5120,
+            //             "pingLoss": 1,
+            //             "pingLatency": 20
+            //         }
+            //     }
+            // }
+            // console.log(result)
+        },
+        // 释放
+        async releaseItem() {
+            let id = this.$route.params.id 
+            try {
+                const confirmed = await window.$confirm(`确定要释放计算资源吗?`, '确认释放');
+                if (!confirmed) {
+                    return;
+                }
+            } catch (error) {
+                return;
+            }
+
+            try {
+
+                const response = await fetch(`${apiBaseUrl()}/tengu/instance/deleteContainerGroup`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: id
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.resultCode === 1) {
+                    window.$message('释放成功！', 'success');
+                    // 刷新列表
+                } else if (result.resultCode === 0) {
+                    window.$message(result.message || '该容器实例记录已被删除', 'info');
+                    // 刷新列表
+                } else {
+                    window.$message('释放失败: ' + (result.message || '未知错误'), 'error');
+                }
+            } catch (error) {
+                console.error('释放容器组失败:', error);
+                window.$message('释放失败: ' + error.message, 'error');
+            }
+        },
         constrainPosition() {
             // 获取面板的当前尺寸
             const panel = this.$refs.controlPanel;

@@ -1023,4 +1023,71 @@ function getUrlPayload() {
     // return JSON.parse(atob(getQueryParam('payload')));
 }
 
+// API基础URL
+function apiBaseUrl() {
+
+    if (!location.hostname.startsWith('192.168.') && !location.hostname.startsWith('10.') && !location.hostname.startsWith('172.') && !location.hostname.startsWith('localhost') && !location.hostname.startsWith('127.0.') && !location.hostname.startsWith('n.cc')) {
+        //非局域网, 生产环境
+        return "";
+    }
+
+    let u = "http://127.0.0.1:44056"
+
+    if (window.location.port == '8551') {
+        //邵含的本地开发机器
+        u = "/"
+    }
+
+    if (u.endsWith('/')) {
+        return u.slice(0, -1);
+    }
+    return u;
+}
+
+function getTimeElapsed(startTime) {
+    // 计算时间差（毫秒）
+    const now = new Date();
+    const start = new Date(startTime);
+    const diffMs = now - start;
+
+    // 转换为秒
+    const diffSeconds = Math.floor(diffMs / 1000);
+
+    // 如果时间差为负数或0，返回0秒
+    if (diffSeconds <= 0) {
+        return '0秒';
+    }
+
+    // 计算各个时间单位
+    const days = Math.floor(diffSeconds / 86400);
+    const hours = Math.floor((diffSeconds % 86400) / 3600);
+    const minutes = Math.floor((diffSeconds % 3600) / 60);
+    const seconds = diffSeconds % 60;
+
+    // 构建返回字符串
+    let result = '';
+
+    if (days > 0) {
+        result += `${days}天`;
+        if (hours > 0) {
+            result += `${hours}时`;
+        }
+    } else if (hours > 0) {
+        result += `${hours}时`;
+        if (minutes > 0) {
+            result += `${minutes}分`;
+        }
+    } else if (minutes > 0) {
+        result += `${minutes}分`;
+        if (seconds > 0) {
+            result += `${seconds}秒`;
+        }
+    } else {
+        result += `${seconds}秒`;
+    }
+
+    return result;
+}
+
+
 const mixins = { methods: { byteFormat, } }

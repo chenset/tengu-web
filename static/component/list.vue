@@ -1111,23 +1111,7 @@ module.exports = {
         },
         // API基础URL
         apiBaseUrl() {
-
-            if (!location.hostname.startsWith('192.168.') && !location.hostname.startsWith('10.') && !location.hostname.startsWith('172.') && !location.hostname.startsWith('localhost') && !location.hostname.startsWith('127.0.') && !location.hostname.startsWith('n.cc')) {
-                //非局域网, 生产环境
-                return "";
-            }
-
-            let u = "http://127.0.0.1:44056"
-
-            if (window.location.port == '8551') {
-                //邵含的本地开发机器
-                u = "/"
-            }
-
-            if (u.endsWith('/')) {
-                return u.slice(0, -1);
-            }
-            return u;
+               return window.apiBaseUrl() 
         }
     },
     watch: {
