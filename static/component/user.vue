@@ -236,6 +236,8 @@ module.exports = {
         async fetchUserList() {
             this.listLoading = true;
             try {
+                this.userList = []
+                this.pagination.total = 0
                 const response = await fetchWithToken(this.apiBaseUrl + '/tengu/account/page', {
                     method: 'POST',
                     headers: {
