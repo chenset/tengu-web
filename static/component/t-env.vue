@@ -97,7 +97,7 @@ module.exports = {
         document.getElementById('iframe').src = location.hash.split('#')[1]
 
         setTimeout(async () => {
-            let sleepMs = 1000
+            let sleepMs = 3000
             while (true) {
                 await sleep(sleepMs)
                 //todo 控制 sleep
