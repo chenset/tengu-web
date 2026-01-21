@@ -109,9 +109,9 @@ module.exports = {
     },
     mounted() {
         // 如果已经登录，直接跳转首页
-        if (getApiAccessToken()) {
-            this.$router.push('/');
-        }
+        // if (getApiAccessToken()) {
+            // this.$router.push('/');
+        // }
     }
 }
 </script>
