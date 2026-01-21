@@ -36,9 +36,8 @@
                 <button
                     type="submit"
                     :disabled="loading"
-                    class="w-full el-btn el-btn-primary py-3 text-base font-medium"
+                    class="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-lg transition duration-200 text-base"
                 >
-                    <span v-if="loading" class="el-btn-loading"></span>
                     {{ loading ? '登录中...' : '登录' }}
                 </button>
             </form>

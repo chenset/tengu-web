@@ -1735,7 +1735,7 @@ module.exports = {
         },
         // 打开
         openItem(item) {
-            window.open(`${this.apiBaseUrl}/tengu/container/open/redirect?id=${item.id}`, '_blank');
+            window.open(`${this.apiBaseUrl}/tengu/container/open/redirect?id=${item.id}&X-API-ACCESS-TOKEN=` + getApiAccessToken(), '_blank');
         },
         // 刷新
         async refreshItem(item) {
