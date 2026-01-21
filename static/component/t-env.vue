@@ -59,7 +59,8 @@
             :style="{ top: position.y + 'px', left: position.x + 'px', right: 'auto', zIndex: isDragging ? 10000 : 1000 }">
             <div class="control-panel-cost text-xs">
                 <!-- 需要展示 cpu/内存/磁盘/网络（丢包率）/时间/成本  -->
-                消费:{{ this.controlPanel.costStr }} / 已运行:{{ this.controlPanel.timeElapsedStr }}
+                消费:{{ this.controlPanel.costStr }} / {{ this.controlPanel.statusStr }}:{{
+                    this.controlPanel.timeElapsedStr }}
 
                 <button @click="releaseItem()" class="text-red-600 hover:text-red-700 cursor-pointer">释放</button>
 
@@ -76,11 +77,24 @@ module.exports = {
             position: { x: 0, y: 0 },
             isDragging: false,
             dragOffset: { x: 0, y: 0 },
-
+            statusDict: {
+                'Pending': '启动中',
+                'Running': '运行中',
+                'Succeeded': '运行成功',
+                'Failed': '运行失败',
+                'Scheduling': '创建中',
+                'ScheduleFailed': '创建失败',
+                'Restarting': '重启中',
+                'Updating': '更新中',
+                'Terminating': '终止中',
+                'Expired': '过期',
+                'Terminated': '已终止'
+            },
             controlPanel: {
                 break: false, //break the loop
-                sleepMs: 3000,
+                sleepMs: 1000,
                 costStr: "",
+                statusStr: "",
                 timeElapsedStr: "",
             }
         }
@@ -141,7 +155,7 @@ module.exports = {
 
             this.controlPanel.costStr = (Math.round(result.data.price * (result.data.currentTime - result.data.createTime) / 1000 * 10000) / 10000) + " " + result.data.currency
             this.controlPanel.timeElapsedStr = getTimeElapsed(result.data.createTime)
-
+            this.controlPanel.statusStr = this.statusDict[result.data.status] || result.data.status
             if (result.data.status === "Terminated") {
                 this.controlPanel.sleepMs = 600000
             }
