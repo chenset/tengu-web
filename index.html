@@ -35,13 +35,13 @@
             .use(VueRouter.createRouter({
                 history: VueRouter.createWebHashHistory(),  // 路由为 Hash 模式
                 routes: [
-                    {
-                        //index
-                        path: '/',
-                        alias: ['/', '/index', '/index/', '/index.html'],
-                        component: Vue.defineAsyncComponent(httpVueLoaderVersion('/static/component/index.vue')),
-                        meta: { title: "Index" },
-                    },
+                    //    {
+                    //        //index
+                    //       path: '/',
+                    //        alias: ['/', '/index', '/index/', '/index.html'],
+                    //        component: Vue.defineAsyncComponent(httpVueLoaderVersion('/static/component/index.vue')),
+                    //        meta: { title: "Index" },
+                    //   },
                     {
                         //login
                         path: '/login',
@@ -58,8 +58,8 @@
                     },
                     {
                         //list
-                        path: '/list',
-                        alias: ['/list/'],
+                        path: '/',
+                        alias: ['/list/','/list'],
                         component: Vue.defineAsyncComponent(httpVueLoaderVersion('/static/component/list.vue')),
                         meta: { title: "Index" },
                     },

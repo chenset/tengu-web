@@ -1080,7 +1080,7 @@ function getTimeElapsed(startTime) {
     } else if (minutes > 0) {
         result += `${minutes}分`;
         // if (seconds > 0) {
-            // result += `${seconds}秒`;
+        // result += `${seconds}秒`;
         // }
     } else {
         result += `${seconds}秒`;
@@ -1126,5 +1126,17 @@ function fetchWithToken(url, options) {
     if (token) {
         options.headers['X-API-ACCESS-TOKEN'] = token;
     }
-    return fetch(url, options);
+    let res = fetch(url, options);
+
+    //捕获401错误，自动跳转登录
+    res = res.then(response => {
+        if (response.status === 401) {
+            // 跳转到登录页
+            window.location.href = '#/login';
+            return Promise.reject(new Error('Unauthorized'));
+        }
+        return response;
+    });
+
+    return res
 }
