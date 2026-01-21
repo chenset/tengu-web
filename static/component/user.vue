@@ -1,7 +1,8 @@
 <template>
     <div class="min-h-screen bg-gray-50 p-6">
         <div class="max-w-7xl mx-auto">
-            <h1 class="text-3xl font-bold text-gray-800 mb-6">用户管理</h1>
+            <!-- 使用公共 header 组件 -->
+            <app-header title="用户管理"></app-header>
 
             <!-- 创建用户部分 -->
             <div class="bg-white rounded-lg shadow-md p-6 mb-6">
