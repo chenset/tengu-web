@@ -450,8 +450,7 @@
                                 消耗</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 创建时间</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                安全组/虚拟交换机</th>
+                            <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"> 安全组/虚拟交换机</th> -->
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             </th>
                         </tr>
@@ -512,10 +511,12 @@
                                     item.rawData.currency }} / 秒</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.createTime }}</td>
+                            <!--
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">{{ item.securityGroup }}</div>
                                 <div class="text-sm text-gray-500">{{ item.vSwitch }}</div>
                             </td>
+                            -->
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <!-- <button @click="viewDetail(item)" -->
                                 <!-- class="text-indigo-600 hover:text-indigo-900 mr-3">详情</button> -->
