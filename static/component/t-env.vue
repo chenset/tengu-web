@@ -79,6 +79,7 @@ module.exports = {
 
             controlPanel: {
                 break: false, //break the loop
+                sleepMs: 3000,
                 costStr: "",
                 timeElapsedStr: "",
             }
@@ -98,19 +99,18 @@ module.exports = {
         document.getElementById('iframe').src = location.hash.split('#')[1]
 
         setTimeout(async () => {
-            let sleepMs = 3000
             while (true) {
-                await sleep(sleepMs)
+                await sleep(this.controlPanel.sleepMs)
                 //todo 控制 sleep
                 //todo 控制退出
 
-                if (this.controlPanel.break){
+                if (this.controlPanel.break) {
                     break
                 }
 
                 await this.refreshControlPanel()
-                if (sleepMs < 60000) {
-                    sleepMs += 100
+                if (this.controlPanel.sleepMs < 60000) {
+                    this.controlPanel.sleepMs += 100
                 }
             }
         }, 10)
@@ -142,6 +142,9 @@ module.exports = {
             this.controlPanel.costStr = (Math.round(result.data.price * (result.data.currentTime - result.data.createTime) / 1000 * 10000) / 10000) + " " + result.data.currency
             this.controlPanel.timeElapsedStr = getTimeElapsed(result.data.createTime)
 
+            if (result.data.status === "Terminated") {
+                this.controlPanel.sleepMs = 600000
+            }
 
             // result.
 
