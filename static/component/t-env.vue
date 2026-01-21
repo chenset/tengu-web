@@ -78,6 +78,7 @@ module.exports = {
             dragOffset: { x: 0, y: 0 },
 
             controlPanel: {
+                break: false, //break the loop
                 costStr: "",
                 timeElapsedStr: "",
             }
@@ -103,6 +104,10 @@ module.exports = {
                 //todo 控制 sleep
                 //todo 控制退出
 
+                if (this.controlPanel.break){
+                    break
+                }
+
                 await this.refreshControlPanel()
                 if (sleepMs < 60000) {
                     sleepMs += 100
@@ -112,7 +117,7 @@ module.exports = {
 
     },
     unmounted() {
-
+        this.controlPanel.break = true
     },
     beforeDestroy() {
         document.removeEventListener('mousemove', this.onDrag);
