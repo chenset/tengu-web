@@ -55,13 +55,13 @@
     <div class="iframe-container">
         <div class="drag-overlay" :class="{ active: isDragging }"></div>
         <div class="control-panel-container" ref="controlPanel" @mousedown="startDrag"
-        v-show="this.controlPanel.costStr"
+            v-show="this.controlPanel.costStr"
             :style="{ top: position.y + 'px', left: position.x + 'px', right: 'auto', zIndex: isDragging ? 10000 : 1000 }">
             <div class="control-panel-cost text-xs">
                 <!-- 需要展示 cpu/内存/磁盘/网络（丢包率）/时间/成本  -->
-                消费:{{ this.controlPanel.costStr }} / 已运行:{{ this.controlPanel.timeElapsedStr }} 
+                消费:{{ this.controlPanel.costStr }} / 已运行:{{ this.controlPanel.timeElapsedStr }}
 
-                  <button @click="releaseItem()" class="text-red-600 hover:text-red-700 cursor-pointer">释放</button>
+                <button @click="releaseItem()" class="text-red-600 hover:text-red-700 cursor-pointer">释放</button>
 
             </div>
         </div>
@@ -104,7 +104,9 @@ module.exports = {
                 //todo 控制退出
 
                 await this.refreshControlPanel()
-                sleepMs += 100
+                if (sleepMs < 60000) {
+                    sleepMs += 100
+                }
             }
         }, 10)
 
@@ -132,7 +134,7 @@ module.exports = {
 
             // Math.round(item.rawData.price * (new Date().getTime()-(item.rawData.createTime))/1000*10000)/10000 }} 
 
-            this.controlPanel.costStr = (Math.round(result.data.price * (result.data.currentTime - result.data.createTime) / 1000 * 10000) / 10000) +" "+ result.data.currency 
+            this.controlPanel.costStr = (Math.round(result.data.price * (result.data.currentTime - result.data.createTime) / 1000 * 10000) / 10000) + " " + result.data.currency
             this.controlPanel.timeElapsedStr = getTimeElapsed(result.data.createTime)
 
 
@@ -169,7 +171,7 @@ module.exports = {
         },
         // 释放
         async releaseItem() {
-            let id = this.$route.params.id 
+            let id = this.$route.params.id
             try {
                 const confirmed = await window.$confirm(`确定要释放计算资源吗?`, '确认释放');
                 if (!confirmed) {
