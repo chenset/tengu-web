@@ -521,6 +521,7 @@
                                 <!-- <button @click="viewDetail(item)" -->
                                 <!-- class="text-indigo-600 hover:text-indigo-900 mr-3">详情</button> -->
                                 <button @click="openItem(item)"
+                                    v-if="item.rawData.host"
                                     class="text-green-600 hover:text-green-900 mr-3">打开</button>
                                 <button @click="refreshItem(item)"
                                     class="text-blue-600 hover:text-blue-900 mr-3">刷新</button>
