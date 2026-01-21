@@ -62,7 +62,7 @@
                 消费:{{ this.controlPanel.costStr }} / {{ this.controlPanel.statusStr }}:{{
                     this.controlPanel.timeElapsedStr }}
 
-                <button @click="releaseItem()" class="text-red-600 hover:text-red-700 cursor-pointer">释放</button>
+                / <button @click="releaseItem()" class="text-red-600 hover:text-red-700 cursor-pointer">释放</button>
 
             </div>
         </div>
