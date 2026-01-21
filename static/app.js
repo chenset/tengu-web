@@ -1079,9 +1079,9 @@ function getTimeElapsed(startTime) {
         }
     } else if (minutes > 0) {
         result += `${minutes}分`;
-        if (seconds > 0) {
-            result += `${seconds}秒`;
-        }
+        // if (seconds > 0) {
+            // result += `${seconds}秒`;
+        // }
     } else {
         result += `${seconds}秒`;
     }
