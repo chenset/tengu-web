@@ -71,7 +71,7 @@ module.exports = {
 
             this.loading = true;
             try {
-                const response = await fetch(this.apiBaseUrl + '/login', {
+                const response = await fetchWithToken(this.apiBaseUrl + '/tengu/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

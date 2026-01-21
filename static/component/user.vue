@@ -223,7 +223,7 @@ module.exports = {
 
             this.createLoading = true;
             try {
-                const response = await fetchWithToken(this.apiBaseUrl + '/account/create', {
+                const response = await fetchWithToken(this.apiBaseUrl + '/tengu/account/create', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -263,7 +263,7 @@ module.exports = {
         async fetchUserList() {
             this.listLoading = true;
             try {
-                const response = await fetchWithToken(this.apiBaseUrl + '/account/page', {
+                const response = await fetchWithToken(this.apiBaseUrl + '/tengu/account/page', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -302,7 +302,7 @@ module.exports = {
             }
 
             try {
-                const response = await fetchWithToken(this.apiBaseUrl + '/account/status/switch', {
+                const response = await fetchWithToken(this.apiBaseUrl + '/tengu/account/status/switch', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -337,7 +337,7 @@ module.exports = {
             }
 
             try {
-                const response = await fetchWithToken(this.apiBaseUrl + '/account/password/reset', {
+                const response = await fetchWithToken(this.apiBaseUrl + '/tengu/account/password/reset', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
