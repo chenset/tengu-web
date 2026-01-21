@@ -51,8 +51,8 @@
                     },
                     {
                         //account
-                        path: '/account',
-                        alias: ['/account/'],
+                        path: '/user',
+                        alias: ['/account/', '/user/', '/account'],
                         component: Vue.defineAsyncComponent(httpVueLoaderVersion('/static/component/user.vue')),
                         meta: { title: "用户管理" },
                     },
