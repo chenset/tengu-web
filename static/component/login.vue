@@ -92,9 +92,9 @@ module.exports = {
 
                     window.$message('登录成功', 'success');
 
-                    // 跳转到首页
+                    // 跳转到list
                     setTimeout(() => {
-                        this.$router.push('/');
+                        this.$router.push('/list');
                     }, 500);
                 } else {
                     window.$message(result.message || '登录失败', 'error');

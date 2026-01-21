@@ -97,16 +97,6 @@ module.exports = {
             isLoggingOut: false
         }
     },
-    computed: {
-        apiBaseUrl() {
-            // 复用 list.vue 中的逻辑
-            var currentPort = window.location.port;
-            if (currentPort === '8551') {
-                return '';
-            }
-            return 'http://127.0.0.1:44056';
-        }
-    },
     methods: {
         async handleLogout() {
             if (this.isLoggingOut) {
@@ -117,9 +107,9 @@ module.exports = {
                 this.isLoggingOut = true;
 
                 // 调用登出 API
-                const response = await fetch(this.apiBaseUrl + '/logout', {
-                    method: 'GET',
-                    credentials: 'include' // 携带 cookie
+                const response = await fetchWithToken(apiBaseUrl() + '/tengu/logout', {
+                    method: 'GET'
+                    // credentials: 'include' // 携带 cookie
                 });
 
                 // 无论 API 是否成功，都跳转到登录页
