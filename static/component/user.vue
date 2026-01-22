@@ -24,13 +24,13 @@
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
 
-                    <div>
+                    <!-- <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             密码 <span class="text-red-500">*</span>
                         </label>
                         <input type="password" v-model="createForm.password" required placeholder="请输入密码"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                    </div>
+                    </div> -->
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">
@@ -43,8 +43,8 @@
                         </select>
                     </div>
 
-                    <div class="md:col-span-2 lg:col-span-4">
-                        <button type="submit" :disabled="createLoading" class="bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-medium py-2 px-6 rounded-md transition duration-200">
+                    <div>
+                        <button type="submit" :disabled="createLoading" class="mt-7 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-medium py-2 px-6 rounded-md transition duration-200">
                             {{ createLoading ? '创建中...' : '创建用户' }}
                         </button>
                     </div>
@@ -188,7 +188,7 @@ module.exports = {
     },
     methods: {
         async handleCreateUser() {
-            if (!this.createForm.email || !this.createForm.password) {
+            if (!this.createForm.email) {
                 window.$message('请填写必填项', 'warning');
                 return;
             }
@@ -203,7 +203,6 @@ module.exports = {
                     body: JSON.stringify({
                         email: this.createForm.email,
                         nickname: this.createForm.nickname,
-                        password: this.createForm.password,
                         role: this.createForm.role
                     })
                 });
@@ -216,7 +215,6 @@ module.exports = {
                     this.createForm = {
                         email: '',
                         nickname: '',
-                        password: '',
                         role: 'user'
                     };
                     // 刷新列表
