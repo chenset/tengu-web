@@ -351,7 +351,7 @@ module.exports = {
                 </div>
             `;
 
-            window.$largeDialog({
+            window.$dialog({
                 title: '密码重置成功',
                 content: content,
                 width: 'w-96',
