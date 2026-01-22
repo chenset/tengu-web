@@ -1,30 +1,29 @@
 <template>
-    <div class="min-h-screen bg-gray-50 p-6">
-        <div class="max-w-7xl mx-auto">
-            <!-- 使用公共 header 组件 -->
-            <app-header title="用户管理"></app-header>
+    <div class="container mx-auto p-6">
+        <!-- 使用公共 header 组件 -->
+        <app-header title="用户管理"></app-header>
 
-            <!-- 创建用户部分 -->
-            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">创建用户</h2>
-                <form @submit.prevent="handleCreateUser" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            邮箱 <span class="text-red-500">*</span>
-                        </label>
-                        <input type="email" v-model="createForm.email" required placeholder="请输入邮箱"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                    </div>
+        <!-- 创建用户部分 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">创建用户</h2>
+            <form @submit.prevent="handleCreateUser" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        邮箱 <span class="text-red-500">*</span>
+                    </label>
+                    <input type="email" v-model="createForm.email" required placeholder="请输入邮箱"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            昵称
-                        </label>
-                        <input type="text" v-model="createForm.nickname" placeholder="可选，不填则使用邮箱"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                    </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        昵称
+                    </label>
+                    <input type="text" v-model="createForm.nickname" placeholder="可选，不填则使用邮箱"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
 
-                    <!-- <div>
+                <!-- <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             密码 <span class="text-red-500">*</span>
                         </label>
@@ -32,128 +31,127 @@
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
                     </div> -->
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            角色
-                        </label>
-                        <select v-model="createForm.role"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="user">user</option>
-                            <option value="admin">admin</option>
-                        </select>
-                    </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        角色
+                    </label>
+                    <select v-model="createForm.role"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="user">user</option>
+                        <option value="admin">admin</option>
+                    </select>
+                </div>
 
-                    <div>
-                        <button type="submit" :disabled="createLoading"
-                            class="mt-7 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-medium py-2 px-6 rounded-md transition duration-200">
-                            {{ createLoading ? '创建中...' : '创建用户' }}
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- 用户列表部分 -->
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-semibold text-gray-800">用户列表</h2>
-                    <button @click="fetchUserList"
-                        class="bg-white hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 border border-gray-300 rounded-md transition duration-200">
-                        刷新
+                <div>
+                    <button type="submit" :disabled="createLoading"
+                        class="mt-7 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-medium py-2 px-6 rounded-md transition duration-200">
+                        {{ createLoading ? '创建中...' : '创建用户' }}
                     </button>
                 </div>
+            </form>
+        </div>
 
-                <!-- 表格 -->
-                <div class="overflow-x-auto">
-                    <table class="w-full border-collapse">
-                        <thead>
-                            <tr class="bg-gray-50">
-                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">ID</th>
-                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">邮箱</th>
-                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">昵称</th>
-                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">角色</th>
-                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">状态</th>
-                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">最后登录时间</th>
-                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">最后登录IP</th>
-                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">创建时间</th>
-                                <th class="px-4 py-3 text-center text-sm font-medium text-gray-700 border-b">操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-if="listLoading">
-                                <td colspan="9" class="px-4 py-8 text-center text-gray-500">
-                                    <div class="flex items-center justify-center">
-                                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                                        <span class="ml-3">加载中...</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr v-else-if="userList.length === 0">
-                                <td colspan="9" class="px-4 py-8 text-center text-gray-500">
-                                    暂无数据
-                                </td>
-                            </tr>
-                            <tr v-else v-for="user in userList" :key="user.id" class="hover:bg-gray-50 transition">
-                                <td class="px-4 py-3 text-sm text-gray-900 border-b">{{ user.id }}</td>
-                                <td class="px-4 py-3 text-sm text-gray-900 border-b">{{ user.email }}</td>
-                                <td class="px-4 py-3 text-sm text-gray-900 border-b">{{ user.nickname || '-' }}</td>
-                                <td class="px-4 py-3 text-sm border-b">
-                                    <span
-                                        :class="user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'"
-                                        class="px-2 py-1 rounded text-xs font-medium">
-                                        {{ user.role }}
-                                    </span>
-                                </td>
-                                <td class="px-4 py-3 text-sm border-b">
-                                    <span
-                                        :class="user.status === 1 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
-                                        class="px-2 py-1 rounded text-xs font-medium">
-                                        {{ user.status === 1 ? '正常' : '禁用' }}
-                                    </span>
-                                </td>
-                                <td class="px-4 py-3 text-sm text-gray-600 border-b">
-                                    {{ formatTime(user.lastLoginTime) }}
-                                </td>
-                                <td class="px-4 py-3 text-sm text-gray-600 border-b">
-                                    {{ user.lastLoginIp || '-' }}
-                                </td>
-                                <td class="px-4 py-3 text-sm text-gray-600 border-b">
-                                    {{ formatTime(user.createTime) }}
-                                </td>
-                                <td class="px-4 py-3 text-sm border-b">
-                                    <div class="flex justify-center gap-2">
-                                        <button @click="handleToggleStatus(user)"
-                                            class="bg-white hover:bg-gray-50 text-gray-700 font-medium py-1 px-3 border border-gray-300 rounded text-xs transition duration-200">
-                                            {{ user.status === 1 ? '禁用' : '启用' }}
-                                        </button>
-                                        <button @click="handleResetPassword(user)"
-                                            class="bg-white hover:bg-gray-50 text-gray-700 font-medium py-1 px-3 border border-gray-300 rounded text-xs transition duration-200">
-                                            重置密码
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <!-- 用户列表部分 -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-gray-800">用户列表</h2>
+                <button @click="fetchUserList"
+                    class="bg-white hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 border border-gray-300 rounded-md transition duration-200">
+                    刷新
+                </button>
+            </div>
+
+            <!-- 表格 -->
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">ID</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">邮箱</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">昵称</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">角色</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">状态</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">最后登录时间</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">最后登录IP</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">创建时间</th>
+                            <th class="px-4 py-3 text-center text-sm font-medium text-gray-700 border-b">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-if="listLoading">
+                            <td colspan="9" class="px-4 py-8 text-center text-gray-500">
+                                <div class="flex items-center justify-center">
+                                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                                    <span class="ml-3">加载中...</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr v-else-if="userList.length === 0">
+                            <td colspan="9" class="px-4 py-8 text-center text-gray-500">
+                                暂无数据
+                            </td>
+                        </tr>
+                        <tr v-else v-for="user in userList" :key="user.id" class="hover:bg-gray-50 transition">
+                            <td class="px-4 py-3 text-sm text-gray-900 border-b">{{ user.id }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-900 border-b">{{ user.email }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-900 border-b">{{ user.nickname || '-' }}</td>
+                            <td class="px-4 py-3 text-sm border-b">
+                                <span
+                                    :class="user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'"
+                                    class="px-2 py-1 rounded text-xs font-medium">
+                                    {{ user.role }}
+                                </span>
+                            </td>
+                            <td class="px-4 py-3 text-sm border-b">
+                                <span
+                                    :class="user.status === 1 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
+                                    class="px-2 py-1 rounded text-xs font-medium">
+                                    {{ user.status === 1 ? '正常' : '禁用' }}
+                                </span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600 border-b">
+                                {{ formatTime(user.lastLoginTime) }}
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600 border-b">
+                                {{ user.lastLoginIp || '-' }}
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600 border-b">
+                                {{ formatTime(user.createTime) }}
+                            </td>
+                            <td class="px-4 py-3 text-sm border-b">
+                                <div class="flex justify-center gap-2">
+                                    <button @click="handleToggleStatus(user)"
+                                        class="bg-white hover:bg-gray-50 text-gray-700 font-medium py-1 px-3 border border-gray-300 rounded text-xs transition duration-200">
+                                        {{ user.status === 1 ? '禁用' : '启用' }}
+                                    </button>
+                                    <button @click="handleResetPassword(user)"
+                                        class="bg-white hover:bg-gray-50 text-gray-700 font-medium py-1 px-3 border border-gray-300 rounded text-xs transition duration-200">
+                                        重置密码
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="flex justify-between items-center mt-6">
+                <div class="text-sm text-gray-600">
+                    共 {{ pagination.total }} 条记录
                 </div>
-
-                <!-- 分页 -->
-                <div class="flex justify-between items-center mt-6">
-                    <div class="text-sm text-gray-600">
-                        共 {{ pagination.total }} 条记录
-                    </div>
-                    <div class="flex gap-2">
-                        <button @click="handlePageChange(pagination.page - 1)" :disabled="pagination.page <= 1"
-                            class="bg-white hover:bg-gray-50 disabled:bg-gray-100 disabled:cursor-not-allowed text-gray-700 disabled:text-gray-400 font-medium py-2 px-4 border border-gray-300 rounded-md transition duration-200">
-                            上一页
-                        </button>
-                        <span class="px-4 py-2 text-sm text-gray-700">
-                            第 {{ pagination.page }} / {{ totalPages }} 页
-                        </span>
-                        <button @click="handlePageChange(pagination.page + 1)" :disabled="pagination.page >= totalPages"
-                            class="bg-white hover:bg-gray-50 disabled:bg-gray-100 disabled:cursor-not-allowed text-gray-700 disabled:text-gray-400 font-medium py-2 px-4 border border-gray-300 rounded-md transition duration-200">
-                            下一页
-                        </button>
-                    </div>
+                <div class="flex gap-2">
+                    <button @click="handlePageChange(pagination.page - 1)" :disabled="pagination.page <= 1"
+                        class="bg-white hover:bg-gray-50 disabled:bg-gray-100 disabled:cursor-not-allowed text-gray-700 disabled:text-gray-400 font-medium py-2 px-4 border border-gray-300 rounded-md transition duration-200">
+                        上一页
+                    </button>
+                    <span class="px-4 py-2 text-sm text-gray-700">
+                        第 {{ pagination.page }} / {{ totalPages }} 页
+                    </span>
+                    <button @click="handlePageChange(pagination.page + 1)" :disabled="pagination.page >= totalPages"
+                        class="bg-white hover:bg-gray-50 disabled:bg-gray-100 disabled:cursor-not-allowed text-gray-700 disabled:text-gray-400 font-medium py-2 px-4 border border-gray-300 rounded-md transition duration-200">
+                        下一页
+                    </button>
                 </div>
             </div>
         </div>
