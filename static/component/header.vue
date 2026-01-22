@@ -73,10 +73,28 @@
             <!-- 插槽：允许父组件传入自定义按钮 -->
             <slot></slot>
 
+            <!-- 用户管理按钮 -->
+            <router-link v-if="!isActive('/user')" :to="{ path: '/user', query: {} }" style="display: none;"
+                id="user-menu-btn">
+                <button class="logout-btn">
+                    用户管理
+                </button>
+            </router-link>
+
+            <!-- 容器列表 -->
+            <router-link v-if="!isActive('/','/list')" :to="{ path: '/', query: {} }" style="display: none;" id="container-menu-btn">
+                <button class="logout-btn">
+                    容器组
+                </button>
+            </router-link>
+
             <!-- 登出按钮 -->
             <button @click="handleLogout" class="logout-btn">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                    </path>
                 </svg>
                 登出
             </button>
@@ -94,10 +112,53 @@ module.exports = {
     },
     data() {
         return {
-            isLoggingOut: false
+            isLoggingOut: false,
+            myAccount: {}
         }
     },
+    mounted() {
+        this.fetchSessionAccount();
+    },
     methods: {
+        isActive(...paths) {
+            for (const v of paths) {
+                if (this.$route.path === v) {
+                    return true
+                }
+            }
+            return false
+        },
+        async fetchSessionAccount() {
+            const response = await fetchWithToken(apiBaseUrl() + '/tengu/account/my', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const result = await response.json();
+
+            if (result?.resultCode !== 1) {
+                return
+            }
+
+            console.log(result.data)
+            this.myAccount = result.data || {};
+            if (this.myAccount?.role === 'admin') {
+                const userMenuBtn = document.getElementById('user-menu-btn');
+                if (userMenuBtn) {
+                    // userMenuBtn.style.display = 'inline-flex';
+                    userMenuBtn.style.display = 'block';
+                }
+                const containerMenuBtn = document.getElementById('container-menu-btn');
+                if (containerMenuBtn) {
+                    // containerMenuBtn.style.display = 'inline-flex';
+                    containerMenuBtn.style.display = 'block';
+                }
+            }
+
+        },
+
         async handleLogout() {
             if (this.isLoggingOut) {
                 return;
