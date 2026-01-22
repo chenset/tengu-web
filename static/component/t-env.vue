@@ -44,6 +44,9 @@
     background: rgb(79, 193, 255);
     color: white;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.21);
+    white-space: nowrap;
+    width: max-content;
+    min-width: min-content;
 }
 
 .control-panel-cost {
@@ -101,16 +104,13 @@ module.exports = {
         }
     },
     mounted() {
-        const panel = this.$refs.controlPanel;
-        const rect = panel.getBoundingClientRect();
-
         // 尝试从 localStorage 恢复位置
-        this.loadPosition(rect);
+        this.loadPosition();
 
         document.addEventListener('mousemove', this.onDrag);
         document.addEventListener('mouseup', this.stopDrag);
         window.addEventListener('resize', this.onWindowResize);
-        // document.getElementById('iframe').src=location.hash.split('#')[1]+"?folder=/tmp" 
+        // document.getElementById('iframe').src=location.hash.split('#')[1]+"?folder=/tmp"
         document.getElementById('iframe').src = location.hash.split('#')[1]
 
         setTimeout(async () => {
@@ -143,6 +143,14 @@ module.exports = {
         document.removeEventListener('mouseup', this.stopDrag);
         window.removeEventListener('resize', this.onWindowResize);
     },
+    // watch: {
+    //     'controlPanel.costStr': function() {
+    //         // 内容变化时，确保面板位置仍在可视区域内
+    //         this.$nextTick(() => {
+    //             this.constrainPosition();
+    //         });
+    //     }
+    // },
     methods: {
         async refreshControlPanel() {
             const response = await fetchWithToken(`${apiBaseUrl()}/tengu/container/control/panel?id=` + this.$route.params.id, { method: 'GET' });
@@ -165,36 +173,7 @@ module.exports = {
                 this.controlPanel.sleepMs = 600000
             }
 
-            // result.
-
-            //             {
-            //     "resultCode": 1,
-            //     "data": {
-            //         "id": 20,
-            //         "regionId": "cn-shenzhen",
-            //         "zoneId": "cn-shenzhen-c",
-            //         "cpu": 1,
-            //         "memory": 1,
-            //         "price": 0.00000389,
-            //         "currency": "CNY",
-            //         "status": "Running",
-            //         "containerGroupStatus": "Running",
-            //         "createTime": 1768961698187,
-            //         "updateTime": 1768961840092,
-            //         "currentTime": 1768965829394,
-            //         "metrics": {
-            //             "cpu": 100,
-            //             "usedCpu": 50,
-            //             "mem": 2048,
-            //             "usedMem": 1024,
-            //             "disk": 10240,
-            //             "usedDisk": 5120,
-            //             "pingLoss": 1,
-            //             "pingLatency": 20
-            //         }
-            //     }
-            // }
-            // console.log(result)
+            this.constrainPosition();
         },
         // 释放
         async releaseItem() {
@@ -236,49 +215,59 @@ module.exports = {
                 window.$message('释放失败: ' + error.message, 'error');
             }
         },
-        constrainPosition() {
-            // 获取面板的当前尺寸
+        getPanelSize() {
             const panel = this.$refs.controlPanel;
-            if (!panel) return;
+            if (!panel) return { width: 0, height: 0 };
 
+            // 获取面板的实际渲染尺寸（不会被position影响）
             const rect = panel.getBoundingClientRect();
+            return { width: rect.width, height: rect.height };
+        },
+        constrainPosition() {
+            const panelSize = this.getPanelSize();
+            if (!panelSize.width || !panelSize.height) return;
 
             // 限制位置在窗口内
-            this.position.x = Math.max(0, Math.min(this.position.x, window.innerWidth - rect.width));
-            this.position.y = Math.max(0, Math.min(this.position.y, window.innerHeight - rect.height));
+            this.position.x = Math.max(0, Math.min(this.position.x, window.innerWidth - panelSize.width));
+            this.position.y = Math.max(0, Math.min(this.position.y, window.innerHeight - panelSize.height));
         },
-        loadPosition(rect) {
-            try {
-                const saved = localStorage.getItem('__controlPanelPosition');
-                if (saved) {
-                    const savedData = JSON.parse(saved);
-                    const savedWindowSize = savedData.windowSize;
-                    const savedPos = savedData.position;
+        loadPosition() {
+            // 等待DOM渲染后再设置位置
+            this.$nextTick(() => {
+                const panelSize = this.getPanelSize();
 
-                    // 计算相对于窗口的位置比例
-                    const relativeX = savedPos.x / savedWindowSize.width;
-                    const relativeY = savedPos.y / savedWindowSize.height;
+                try {
+                    const saved = localStorage.getItem('__controlPanelPosition');
+                    if (saved) {
+                        const savedData = JSON.parse(saved);
+                        const savedWindowSize = savedData.windowSize;
+                        const savedPos = savedData.position;
 
-                    // 根据当前窗口尺寸计算新位置
-                    let newX = relativeX * window.innerWidth;
-                    let newY = relativeY * window.innerHeight;
+                        // 计算相对于窗口的位置比例
+                        const relativeX = savedPos.x / savedWindowSize.width;
+                        const relativeY = savedPos.y / savedWindowSize.height;
 
-                    // 确保面板在可视区域内
-                    newX = Math.max(0, Math.min(newX, window.innerWidth - rect.width));
-                    newY = Math.max(0, Math.min(newY, window.innerHeight - rect.height));
+                        // 根据当前窗口尺寸计算新位置
+                        let newX = relativeX * window.innerWidth;
+                        let newY = relativeY * window.innerHeight;
 
-                    this.position.x = newX;
-                    this.position.y = newY;
-                } else {
-                    // 默认位置：右上角
-                    this.position.x = window.innerWidth - rect.width;
+                        // 确保面板在可视区域内
+                        newX = Math.max(0, Math.min(newX, window.innerWidth - panelSize.width));
+                        newY = Math.max(0, Math.min(newY, window.innerHeight - panelSize.height));
+
+                        this.position.x = newX;
+                        this.position.y = newY;
+                    } else {
+                        // 默认位置：右上角
+                        this.position.x = Math.max(0, window.innerWidth - panelSize.width);
+                        this.position.y = 0;
+                    }
+                } catch (e) {
+                    // localStorage 出错时使用默认位置
+                    this.position.x = Math.max(0, window.innerWidth - panelSize.width);
                     this.position.y = 0;
                 }
-            } catch (e) {
-                // localStorage 出错时使用默认位置
-                this.position.x = window.innerWidth - rect.width;
-                this.position.y = 0;
-            }
+            });
         },
         onWindowResize() {
             // 窗口大小改变时，确保面板不超出边界
