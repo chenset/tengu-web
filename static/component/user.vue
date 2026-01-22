@@ -111,13 +111,13 @@
                                     </span>
                                 </td>
                                 <td class="px-4 py-3 text-sm text-gray-600 border-b">
-                                    {{ formatTime(user.last_login_time) }}
+                                    {{ formatTime(user.lastLoginTime) }}
                                 </td>
                                 <td class="px-4 py-3 text-sm text-gray-600 border-b">
-                                    {{ user.last_login_ip || '-' }}
+                                    {{ user.lastLoginIp || '-' }}
                                 </td>
                                 <td class="px-4 py-3 text-sm text-gray-600 border-b">
-                                    {{ formatTime(user.create_time) }}
+                                    {{ formatTime(user.createTime) }}
                                 </td>
                                 <td class="px-4 py-3 text-sm border-b">
                                     <div class="flex justify-center gap-2">
@@ -376,7 +376,11 @@ module.exports = {
         },
 
         formatTime(timestamp) {
-            return formatTimestamp(timestamp);
+            if (!timestamp) {
+                return ""
+            }
+
+            return timestamp.timestamp2yyyymmddhmShangHaiTime()
         }
     },
     mounted() {
