@@ -330,17 +330,18 @@
 
 <template>
     <div class="container mx-auto p-6">
+
         <!-- 头部操作栏 - 使用公共 header 组件 -->
         <app-header title="容器组">
-            <button @click="openCreateDialog"
+            <!-- <button @click="openCreateDialog"
                 class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 创建实例
-            </button>
+            </button> -->
         </app-header>
 
         <!-- 筛选条件 -->
         <div class="mb-4 bg-white rounded-lg shadow p-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
                 <!-- 地域多选 -->
                 <!-- <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">地域</label>
@@ -403,10 +404,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex items-end">
+                <div class="flex items-end gap-2 md:col-span-1">
                     <button @click="loadTableData"
                         class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                         查询
+                    </button>
+                    <button @click="openCreateDialog"
+                        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        创建实例
                     </button>
                 </div>
             </div>
@@ -495,19 +500,20 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 <span v-if="!item.rawData.zoneId">
-                                {{ item.zone }} 
+                                    {{ item.zone }}
                                 </span>
                                 <span v-if="item.rawData.zoneId">
-                                {{ item.rawData.zoneId }}
+                                    {{ item.rawData.zoneId }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 <div v-if="item.rawData.price > 0" class="text-sm font-medium text-orange-400">{{
                                     Math.round(item.rawData.price * (new
-                                    Date().getTime()-(item.rawData.createTime))/1000*10000)/10000 }} {{
-                                    item.rawData.currency }}</div>
-                                <div v-if="item.rawData.price > 0" class="text-xs text-gray-500">{{ item.rawData.price }} {{
-                                    item.rawData.currency }} / 秒</div>
+                                        Date().getTime() - (item.rawData.createTime)) / 1000 * 10000) / 10000 }} {{
+                                        item.rawData.currency }}</div>
+                                <div v-if="item.rawData.price > 0" class="text-xs text-gray-500">{{ item.rawData.price
+                                    }} {{
+                                        item.rawData.currency }} / 秒</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.createTime }}</td>
                             <!--
@@ -519,8 +525,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-right">
                                 <!-- <button @click="viewDetail(item)" -->
                                 <!-- class="text-indigo-600 hover:text-indigo-900 mr-3">详情</button> -->
-                                <button @click="openItem(item)"
-                                    v-if="item.rawData.host"
+                                <button @click="openItem(item)" v-if="item.rawData.host"
                                     class="text-green-600 hover:text-green-900 mr-3">打开</button>
                                 <button @click="refreshItem(item)"
                                     class="text-blue-600 hover:text-blue-900 mr-3">刷新</button>
@@ -547,7 +552,7 @@
                     <div>
                         <p class="text-sm text-gray-700">
                             第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
-                            }}</span> 条，
+                                }}</span> 条，
                             共 <span class="font-medium">{{ totalItems }}</span> 条
                         </p>
                     </div>
@@ -898,7 +903,7 @@
                                 <div v-else class="el-price-text">
                                     <div>{{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒</div>
                                     <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }} {{ priceInfo.currency
-                                    }}/小时</div>
+                                        }}/小时</div>
                                 </div>
                             </div>
 
@@ -928,7 +933,7 @@
                         <!-- 对话框头部 -->
                         <div class="el-dialog-header-custom">
                             <span class="el-dialog-title-custom">事件详情 - {{ currentEventsItem?.containerGroupName
-                                }}</span>
+                            }}</span>
                             <button @click="closeEventsDialog" class="el-dialog-close-custom">
                                 <svg viewBox="0 0 1024 1024" width="16" height="16">
                                     <path fill="currentColor"
@@ -1110,7 +1115,7 @@ module.exports = {
         },
         // API基础URL
         apiBaseUrl() {
-               return window.apiBaseUrl() 
+            return window.apiBaseUrl()
         }
     },
     watch: {
