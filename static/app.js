@@ -1033,7 +1033,7 @@ function apiBaseUrl() {
 
     let u = "http://127.0.0.1:44056"
 
-    if (window.location.port == '8551') {
+    if (window.location.port == '8551' || window.location.port == '8552') {
         //邵含的本地开发机器
         u = "/"
     }
