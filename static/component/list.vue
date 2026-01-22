@@ -1172,9 +1172,6 @@ module.exports = {
         }
     },
     mounted() {
-
-                window.$message('加载数据', 'success');
-
         this.loadTableData();
         // 添加全局点击事件监听器
         document.addEventListener('click', this.handleClickOutside);
