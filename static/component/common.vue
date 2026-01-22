@@ -325,8 +325,8 @@ html:not(.dark) .moon {
 }
 
 .message-success {
-    background-color: #f0f9ff;
-    border-color: #c6f6d5;
+    background-color:rgb(240, 249, 235);
+    border-color: rgb(245, 249, 245);
 }
 
 .message-success .message-icon {
