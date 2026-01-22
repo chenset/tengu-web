@@ -40,7 +40,7 @@
     /* height: 27px; */
     cursor: move;
     user-select: none;
-    border-radius: 5px;
+    border-radius: 4px;
     background: rgb(79, 193, 255);
     color: white;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.21);
