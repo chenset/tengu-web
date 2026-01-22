@@ -36,7 +36,7 @@
     top: 0;
     right: 0;
     text-align: center;
-    width: 500px;
+    /* width: 500px; */
     /* height: 27px; */
     cursor: move;
     user-select: none;
