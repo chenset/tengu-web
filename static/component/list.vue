@@ -342,7 +342,7 @@
         <div class="mb-4 bg-white rounded-lg shadow p-4">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <!-- 地域多选 -->
-                <div>
+                <!-- <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">地域</label>
                     <div class="relative" ref="regionDropdown">
                         <div @click.stop="toggleRegionDropdown"
@@ -370,7 +370,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- 状态多选 -->
                 <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-1">容器状态</label>
