@@ -91,6 +91,7 @@ module.exports = {
                 'Terminated': '已终止'
             },
             controlPanel: {
+                count: 0,
                 break: false, //break the loop
                 sleepMs: 1000,
                 costStr: "",
@@ -114,7 +115,11 @@ module.exports = {
 
         setTimeout(async () => {
             while (true) {
-                await sleep(this.controlPanel.sleepMs)
+                if (this.controlPanel.count !== 0) {//第一次不sleep
+                    await sleep(this.controlPanel.sleepMs)
+                }
+                this.controlPanel.count++
+
                 //todo 控制 sleep
                 //todo 控制退出
 
