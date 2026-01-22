@@ -44,7 +44,8 @@
                     </div>
 
                     <div>
-                        <button type="submit" :disabled="createLoading" class="mt-7 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-medium py-2 px-6 rounded-md transition duration-200">
+                        <button type="submit" :disabled="createLoading"
+                            class="mt-7 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-medium py-2 px-6 rounded-md transition duration-200">
                             {{ createLoading ? '创建中...' : '创建用户' }}
                         </button>
                     </div>
@@ -55,7 +56,8 @@
             <div class="bg-white rounded-lg shadow-md p-6">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-xl font-semibold text-gray-800">用户列表</h2>
-                    <button @click="fetchUserList" class="bg-white hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 border border-gray-300 rounded-md transition duration-200">
+                    <button @click="fetchUserList"
+                        class="bg-white hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 border border-gray-300 rounded-md transition duration-200">
                         刷新
                     </button>
                 </div>
@@ -210,7 +212,10 @@ module.exports = {
                 const result = await response.json();
 
                 if (result.resultCode === 1) {
-                    window.$message('创建成功', 'success');
+
+                    // 显示密码弹窗
+                    this.showPasswordDialog(this.createForm.email, result.data.password);
+
                     // 重置表单
                     this.createForm = {
                         email: '',
@@ -350,7 +355,7 @@ module.exports = {
             `;
 
             window.$dialog({
-                title: '密码重置成功',
+                title: '用户&密码设置成功',
                 content: content,
                 width: 'w-96',
                 showFooter: true,
