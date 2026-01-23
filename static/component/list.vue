@@ -611,13 +611,13 @@
                                     <h4 class="text-md font-semibold text-gray-700 mb-3">基础配置</h4>
                                     <div class="grid grid-cols-1 gap-4">
                                         <!-- 容器组名称 -->
-                                        <div>
+                                        <!-- <div>
                                             <label class="block text-sm font-medium text-gray-700">容器组名称 <span
                                                     class="text-red-500">*</span></label>
                                             <input v-model="formData.containerGroupName" type="text" required
                                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                                 placeholder="请输入容器组名称">
-                                        </div>
+                                        </div> -->
 
                                         <!-- 选择通道账号 -->
                                         <div>
@@ -1576,10 +1576,10 @@ module.exports = {
         // 提交创建
         async submitCreate() {
             // 验证必填项
-            if (!this.formData.containerGroupName) {
-                window.$message('请输入容器组名称', 'warning');
-                return;
-            }
+   //         if (!this.formData.containerGroupName) {
+    //            window.$message('请输入容器组名称', 'warning');
+    //            return;
+     //       }
             if (!this.formData.regionId) {
                 window.$message('请选择地域', 'warning');
                 return;
