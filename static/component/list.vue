@@ -509,10 +509,17 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                <div v-if="item.rawData.price > 0" class="text-sm font-medium text-orange-400">{{
-                                    Math.round(item.rawData.price * (new
-                                        Date().getTime() - (item.rawData.createTime)) / 1000 * 10000) / 10000 }} {{
-                                        item.rawData.currency }}</div>
+                                <div v-if="item.rawData.price > 0" class="text-sm font-medium text-orange-400">
+
+                                    <span v-if="!item.rawData.deleteTime">
+                                        {{ Math.round(item.rawData.price * (new Date().getTime() - (item.rawData.createTime)) / 1000 * 10000) / 10000 }} 
+                                    </span> 
+
+                                    <span v-if="item.rawData.deleteTime">
+                                        {{ Math.round(item.rawData.price * (item.rawData.deleteTime - (item.rawData.createTime)) / 1000 * 10000) / 10000 }} 
+                                    </span> 
+
+                                    {{ item.rawData.currency }}</div>
                                 <div v-if="item.rawData.price > 0" class="text-xs text-gray-500">{{ item.rawData.price
                                 }} {{
                                         item.rawData.currency }} / 秒</div>
