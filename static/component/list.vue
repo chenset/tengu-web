@@ -453,6 +453,8 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 消耗</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Email</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 创建时间</th>
                             <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"> 安全组/虚拟交换机</th> -->
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -515,6 +517,7 @@
                                     }} {{
                                         item.rawData.currency }} / 秒</div>
                             </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.rawData.email }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.createTime }}</td>
                             <!--
                             <td class="px-6 py-4 whitespace-nowrap">
