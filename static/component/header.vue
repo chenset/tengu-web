@@ -142,7 +142,7 @@ module.exports = {
                 return
             }
 
-            console.log(result.data)
+            // console.log(result.data)
             this.myAccount = result.data || {};
             if (this.myAccount?.role === 'admin') {
                 const userMenuBtn = document.getElementById('user-menu-btn');
