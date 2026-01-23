@@ -514,7 +514,7 @@
                                         Date().getTime() - (item.rawData.createTime)) / 1000 * 10000) / 10000 }} {{
                                         item.rawData.currency }}</div>
                                 <div v-if="item.rawData.price > 0" class="text-xs text-gray-500">{{ item.rawData.price
-                                    }} {{
+                                }} {{
                                         item.rawData.currency }} / 秒</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.rawData.email }}</td>
@@ -555,7 +555,7 @@
                     <div>
                         <p class="text-sm text-gray-700">
                             第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
-                                }}</span> 条，
+                            }}</span> 条，
                             共 <span class="font-medium">{{ totalItems }}</span> 条
                         </p>
                     </div>
@@ -906,7 +906,7 @@
                                 <div v-else class="el-price-text">
                                     <div>{{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒</div>
                                     <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }} {{ priceInfo.currency
-                                        }}/小时</div>
+                                    }}/小时</div>
                                 </div>
                             </div>
 
@@ -936,7 +936,7 @@
                         <!-- 对话框头部 -->
                         <div class="el-dialog-header-custom">
                             <span class="el-dialog-title-custom">事件详情 - {{ currentEventsItem?.containerGroupName
-                            }}</span>
+                                }}</span>
                             <button @click="closeEventsDialog" class="el-dialog-close-custom">
                                 <svg viewBox="0 0 1024 1024" width="16" height="16">
                                     <path fill="currentColor"
@@ -1576,10 +1576,10 @@ module.exports = {
         // 提交创建
         async submitCreate() {
             // 验证必填项
-   //         if (!this.formData.containerGroupName) {
-    //            window.$message('请输入容器组名称', 'warning');
-    //            return;
-     //       }
+            //         if (!this.formData.containerGroupName) {
+            //            window.$message('请输入容器组名称', 'warning');
+            //            return;
+            //       }
             if (!this.formData.regionId) {
                 window.$message('请选择地域', 'warning');
                 return;
@@ -1840,9 +1840,8 @@ module.exports = {
         // 格式化事件时间
         formatEventTime(timestamp) {
             if (!timestamp) return '-';
-            return timestamp.timestamp2yyyymmddhmShangHaiTime();
-            // const date = new Date(timestamp);
-            // return date.toISOString().slice(0, 19).replace('T', ' ');
+            const date = new Date(timestamp);
+            return date.toISOString().slice(0, 19).replace('T', ' ');
         },
         // 查询容器组价格
         async fetchContainerGroupPrice() {
