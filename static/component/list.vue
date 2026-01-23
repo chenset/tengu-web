@@ -701,7 +701,7 @@
                                     <h4 class="text-md font-semibold text-gray-700 mb-3">规格配置</h4>
                                     <div class="grid grid-cols-2 gap-4">
                                         <!-- CPU规格 -->
-                                        <div>
+                                        <!-- <div>
                                             <label class="block text-sm font-medium text-gray-700">CPU规格</label>
                                             <select v-model="formData.cpu" @change="onCpuChange"
                                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
@@ -712,10 +712,10 @@
                                                         class="text-gray-500">({{ option.remark }})</span>
                                                 </option>
                                             </select>
-                                        </div>
+                                        </div> -->
 
                                         <!-- 内存规格（级联） -->
-                                        <div>
+                                        <!-- <div>
                                             <label class="block text-sm font-medium text-gray-700">内存规格</label>
                                             <select v-model="formData.memory" :disabled="!formData.cpu"
                                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100">
@@ -725,7 +725,7 @@
                                                     {{ option.dictName }}
                                                 </option>
                                             </select>
-                                        </div>
+                                        </div> -->
 
                                         <!-- ECS实例规格 -->
                                         <div class="col-span-2">
