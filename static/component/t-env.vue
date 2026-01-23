@@ -166,7 +166,12 @@ module.exports = {
 
             // Math.round(item.rawData.price * (new Date().getTime()-(item.rawData.createTime))/1000*10000)/10000 }} 
 
-            this.controlPanel.costStr = (Math.round(result.data.price * (result.data.currentTime - result.data.createTime) / 1000 * 10000) / 10000) + " " + result.data.currency
+            if (result.data.deleteTime) {
+                this.controlPanel.costStr = (Math.round(result.data.price * (result.data.deleteTime - result.data.createTime) / 1000 * 10000) / 10000) + " " + result.data.currency
+            } else {
+                this.controlPanel.costStr = (Math.round(result.data.price * (result.data.currentTime - result.data.createTime) / 1000 * 10000) / 10000) + " " + result.data.currency
+            }
+
             this.controlPanel.timeElapsedStr = getTimeElapsed(result.data.createTime)
             this.controlPanel.statusStr = this.statusDict[result.data.status] || result.data.status
             if (result.data.status === "Terminated") {
