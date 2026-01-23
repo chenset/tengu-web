@@ -1840,8 +1840,9 @@ module.exports = {
         // 格式化事件时间
         formatEventTime(timestamp) {
             if (!timestamp) return '-';
-            const date = new Date(timestamp);
-            return date.toISOString().slice(0, 19).replace('T', ' ');
+            return timestamp.timestamp2yyyymmddhmShangHaiTime();
+            // const date = new Date(timestamp);
+            // return date.toISOString().slice(0, 19).replace('T', ' ');
         },
         // 查询容器组价格
         async fetchContainerGroupPrice() {
