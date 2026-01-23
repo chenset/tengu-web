@@ -153,32 +153,37 @@ module.exports = {
     // },
     methods: {
         async refreshControlPanel() {
-            const response = await fetchWithToken(`${apiBaseUrl()}/tengu/container/control/panel?id=` + this.$route.params.id, { method: 'GET' });
-            const result = await response.json();
+            try {
 
-            if (!response.ok) {
-                return
+                const response = await fetchWithToken(`${apiBaseUrl()}/tengu/container/control/panel?id=` + this.$route.params.id, { method: 'GET' });
+                const result = await response.json();
+
+                if (!response.ok) {
+                    return
+                }
+
+                if (result.resultCode != 1) {
+                    return
+                }
+
+                // Math.round(item.rawData.price * (new Date().getTime()-(item.rawData.createTime))/1000*10000)/10000 }} 
+
+                if (result.data.deleteTime) {
+                    this.controlPanel.costStr = (Math.round(result.data.price * (result.data.deleteTime - result.data.createTime) / 1000 * 10000) / 10000) + " " + result.data.currency
+                } else {
+                    this.controlPanel.costStr = (Math.round(result.data.price * (result.data.currentTime - result.data.createTime) / 1000 * 10000) / 10000) + " " + result.data.currency
+                }
+
+                this.controlPanel.timeElapsedStr = getTimeElapsed(result.data.createTime)
+                this.controlPanel.statusStr = this.statusDict[result.data.status] || result.data.status
+                if (result.data.status === "Terminated") {
+                    this.controlPanel.sleepMs = 600000
+                }
+
+                this.constrainPosition();
+            } catch (ignore) {
+
             }
-
-            if (result.resultCode != 1) {
-                return
-            }
-
-            // Math.round(item.rawData.price * (new Date().getTime()-(item.rawData.createTime))/1000*10000)/10000 }} 
-
-            if (result.data.deleteTime) {
-                this.controlPanel.costStr = (Math.round(result.data.price * (result.data.deleteTime - result.data.createTime) / 1000 * 10000) / 10000) + " " + result.data.currency
-            } else {
-                this.controlPanel.costStr = (Math.round(result.data.price * (result.data.currentTime - result.data.createTime) / 1000 * 10000) / 10000) + " " + result.data.currency
-            }
-
-            this.controlPanel.timeElapsedStr = getTimeElapsed(result.data.createTime)
-            this.controlPanel.statusStr = this.statusDict[result.data.status] || result.data.status
-            if (result.data.status === "Terminated") {
-                this.controlPanel.sleepMs = 600000
-            }
-
-            this.constrainPosition();
         },
         // 释放
         async releaseItem() {
