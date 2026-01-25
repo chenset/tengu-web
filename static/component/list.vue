@@ -436,6 +436,8 @@
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 容器组ID/名称</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Email</th>
                             <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 标签</th> -->
                             <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -451,8 +453,7 @@
                                 所在可用区</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 消耗</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Email</th>
+
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 创建时间</th>
                             <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"> 安全组/虚拟交换机</th> -->
@@ -466,6 +467,9 @@
                                 <div class="text-sm font-medium text-gray-900">{{ item.containerGroupId }}</div>
                                 <div class="text-sm text-gray-500">{{ item.containerGroupName }}</div>
                             </td>
+
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.rawData.email }}</td>
+
                             <!-- <td class="px-6 py-4 whitespace-nowrap">
                                 <span
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 tex「方案选单」t-blue-800">
@@ -477,7 +481,7 @@
                                 <span :class="getStatusClass(item.status)"
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
                                     <span v-if="item.status != item.containerGroupStatus">
-                                    订单 
+                                        订单
                                     </span>
                                     {{ item.status }}
                                 </span>
@@ -486,7 +490,7 @@
                                     :class="getStatusClass(item.containerGroupStatus)"
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
                                     <span v-if="item.status != item.containerGroupStatus">
-                                    容器 
+                                        容器
                                     </span>
                                     {{ item.containerGroupStatus }}
                                 </span>
@@ -529,10 +533,10 @@
                                     {{ item.rawData.currency }}
                                 </div>
                                 <div v-if="item.rawData.price > 0" class="text-xs text-gray-500">{{ item.rawData.price
-                                    }} {{
+                                }} {{
                                         item.rawData.currency }} / 秒</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.rawData.email }}</td>
+
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.createTime }}</td>
                             <!--
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -570,7 +574,7 @@
                     <div>
                         <p class="text-sm text-gray-700">
                             第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
-                                }}</span> 条，
+                            }}</span> 条，
                             共 <span class="font-medium">{{ totalItems }}</span> 条
                         </p>
                     </div>
@@ -921,7 +925,7 @@
                                 <div v-else class="el-price-text">
                                     <div>{{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒</div>
                                     <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }} {{ priceInfo.currency
-                                        }}/小时</div>
+                                    }}/小时</div>
                                 </div>
                             </div>
 
@@ -951,7 +955,7 @@
                         <!-- 对话框头部 -->
                         <div class="el-dialog-header-custom">
                             <span class="el-dialog-title-custom">事件详情 - {{ currentEventsItem?.containerGroupName
-                            }}</span>
+                                }}</span>
                             <button @click="closeEventsDialog" class="el-dialog-close-custom">
                                 <svg viewBox="0 0 1024 1024" width="16" height="16">
                                     <path fill="currentColor"
