@@ -534,12 +534,30 @@
                                     {{ item.rawData.currency }}
                                 </div>
                                 <div v-if="item.rawData.price > 0" class="text-xs text-gray-500">{{ item.rawData.price
-                                }} {{ item.rawData.currency }} / 秒</div>
+                                    }} {{ item.rawData.currency }} / 秒</div>
                             </td>
 
+                            <!-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ item.createTime }}
+                            </td> -->
+
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <strong>
+                                    <span v-if="!item.rawData.deleteTime">
+                                        {{ getTimeElapsed(item.rawData.createTime, new Date().getTime()) }}
+                                    </span>
+
+                                    <span v-if="item.rawData.deleteTime">
+                                        {{ getTimeElapsed(item.rawData.createTime, item.rawData.deleteTime) }}
+                                    </span>
+                                </strong>
+
+                                <br>
+
                                 {{ item.createTime }}
                             </td>
+
+
                             <!--
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">{{ item.securityGroup }}</div>
@@ -576,7 +594,7 @@
                     <div>
                         <p class="text-sm text-gray-700">
                             第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
-                                }}</span> 条，
+                            }}</span> 条，
                             共 <span class="font-medium">{{ totalItems }}</span> 条
                         </p>
                     </div>
@@ -927,7 +945,7 @@
                                 <div v-else class="el-price-text">
                                     <div>{{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒</div>
                                     <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }} {{ priceInfo.currency
-                                        }}/小时</div>
+                                    }}/小时</div>
                                 </div>
                             </div>
 
@@ -957,7 +975,7 @@
                         <!-- 对话框头部 -->
                         <div class="el-dialog-header-custom">
                             <span class="el-dialog-title-custom">事件详情 - {{ currentEventsItem?.containerGroupName
-                            }}</span>
+                                }}</span>
                             <button @click="closeEventsDialog" class="el-dialog-close-custom">
                                 <svg viewBox="0 0 1024 1024" width="16" height="16">
                                     <path fill="currentColor"
