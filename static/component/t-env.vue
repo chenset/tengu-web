@@ -174,6 +174,7 @@ module.exports = {
 
                 let releaseItemWrap = document.getElementById('releaseItemWrap')
                 if (result.data.deleteTime) {
+                    this.controlPanel.timeElapsedStr = getTimeElapsed(result.data.createTime, result.data.deleteTime)
                     this.controlPanel.costStr = (Math.round(result.data.price * (result.data.deleteTime - result.data.createTime) / 1000 * 10000) / 10000) + " " + result.data.currency
 
                     let controlPanelContainer = document.querySelector('.control-panel-container')
@@ -187,6 +188,7 @@ module.exports = {
                     }
 
                 } else {
+                    this.controlPanel.timeElapsedStr = getTimeElapsed(result.data.createTime)
                     this.controlPanel.costStr = (Math.round(result.data.price * (result.data.currentTime - result.data.createTime) / 1000 * 10000) / 10000) + " " + result.data.currency
                     if (releaseItemWrap) {
                         releaseItemWrap.style.display = 'inline'
@@ -194,13 +196,12 @@ module.exports = {
 
                 }
 
-                this.controlPanel.timeElapsedStr = getTimeElapsed(result.data.createTime)
                 this.controlPanel.statusStr = this.statusDict[result.data.status] || result.data.status
                 if (result.data.status === "Terminated") {
                     this.controlPanel.sleepMs = 600000
                 }
 
-                document.title = `${result.data.cpu}核${result.data.memory}G ${this.controlPanel.statusStr} ${this.controlPanel.timeElapsedStr}`
+                document.title = `${result.data.cpu}核${result.data.memory}G [ ${this.controlPanel.statusStr} ] ${this.controlPanel.timeElapsedStr}`
 
                 this.constrainPosition();
             } catch (ignore) {
