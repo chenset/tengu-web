@@ -441,9 +441,8 @@
                             <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 用户</th> -->
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                订单状态</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                容器状态</th>
+                                状态
+                            </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 事件</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -477,12 +476,18 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span :class="getStatusClass(item.status)"
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
+                                    <span v-if="item.status != item.containerGroupStatus">
+                                    订单 
+                                    </span>
                                     {{ item.status }}
                                 </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span :class="getStatusClass(item.containerGroupStatus)"
+                                <br>
+                                <span v-if="item.status != item.containerGroupStatus"
+                                    :class="getStatusClass(item.containerGroupStatus)"
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
+                                    <span v-if="item.status != item.containerGroupStatus">
+                                    容器 
+                                    </span>
                                     {{ item.containerGroupStatus }}
                                 </span>
                             </td>
@@ -512,16 +517,19 @@
                                 <div v-if="item.rawData.price > 0" class="text-sm font-medium text-orange-400">
 
                                     <span v-if="!item.rawData.deleteTime">
-                                        {{ Math.round(item.rawData.price * (new Date().getTime() - (item.rawData.createTime)) / 1000 * 10000) / 10000 }} 
-                                    </span> 
+                                        {{ Math.round(item.rawData.price * (new Date().getTime() -
+                                            (item.rawData.createTime)) / 1000 * 10000) / 10000 }}
+                                    </span>
 
                                     <span v-if="item.rawData.deleteTime">
-                                        {{ Math.round(item.rawData.price * (item.rawData.deleteTime - (item.rawData.createTime)) / 1000 * 10000) / 10000 }} 
-                                    </span> 
+                                        {{ Math.round(item.rawData.price * (item.rawData.deleteTime -
+                                            (item.rawData.createTime)) / 1000 * 10000) / 10000 }}
+                                    </span>
 
-                                    {{ item.rawData.currency }}</div>
+                                    {{ item.rawData.currency }}
+                                </div>
                                 <div v-if="item.rawData.price > 0" class="text-xs text-gray-500">{{ item.rawData.price
-                                }} {{
+                                    }} {{
                                         item.rawData.currency }} / 秒</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.rawData.email }}</td>
@@ -562,7 +570,7 @@
                     <div>
                         <p class="text-sm text-gray-700">
                             第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
-                            }}</span> 条，
+                                }}</span> 条，
                             共 <span class="font-medium">{{ totalItems }}</span> 条
                         </p>
                     </div>
@@ -913,7 +921,7 @@
                                 <div v-else class="el-price-text">
                                     <div>{{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒</div>
                                     <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }} {{ priceInfo.currency
-                                    }}/小时</div>
+                                        }}/小时</div>
                                 </div>
                             </div>
 
@@ -943,7 +951,7 @@
                         <!-- 对话框头部 -->
                         <div class="el-dialog-header-custom">
                             <span class="el-dialog-title-custom">事件详情 - {{ currentEventsItem?.containerGroupName
-                                }}</span>
+                            }}</span>
                             <button @click="closeEventsDialog" class="el-dialog-close-custom">
                                 <svg viewBox="0 0 1024 1024" width="16" height="16">
                                     <path fill="currentColor"
