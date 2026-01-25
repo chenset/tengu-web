@@ -200,6 +200,8 @@ module.exports = {
                     this.controlPanel.sleepMs = 600000
                 }
 
+                document.title = `${result.data.cpu}核${result.data.memory}G ${this.controlPanel.statusStr} ${this.controlPanel.timeElapsedStr}`
+
                 this.constrainPosition();
             } catch (ignore) {
 
