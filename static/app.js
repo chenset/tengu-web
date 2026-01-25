@@ -1044,9 +1044,9 @@ function apiBaseUrl() {
     return u;
 }
 
-function getTimeElapsed(startTime) {
+function getTimeElapsed(startTime, endTime = null) {
     // 计算时间差（毫秒）
-    const now = new Date();
+    const now = endTime ? new Date(endTime) : new Date();
     const start = new Date(startTime);
     const diffMs = now - start;
 
@@ -1090,7 +1090,6 @@ function getTimeElapsed(startTime) {
 }
 
 
-const mixins = { methods: { byteFormat, } }
 
 // 时间戳格式化函数 (13位毫秒时间戳)
 function formatTimestamp(timestamp) {
@@ -1140,3 +1139,5 @@ function fetchWithToken(url, options) {
 
     return res
 }
+
+const mixins = { methods: { byteFormat, getTimeElapsed} }

@@ -78,6 +78,7 @@
 
 <script>
 module.exports = {
+    mixins: [mixins],
     data() {
         return {
             position: { x: 0, y: 0 },

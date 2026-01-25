@@ -160,6 +160,7 @@
 
 <script>
 module.exports = {
+    mixins: [mixins],
     data() {
         return {
             createForm: {
