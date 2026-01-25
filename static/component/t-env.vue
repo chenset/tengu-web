@@ -47,6 +47,7 @@
     white-space: nowrap;
     width: max-content;
     min-width: min-content;
+    font-weight: 600;
 }
 
 .control-panel-cost {
@@ -65,7 +66,9 @@
                 消费:{{ this.controlPanel.costStr }} / {{ this.controlPanel.statusStr }}:{{
                     this.controlPanel.timeElapsedStr }}
 
-                / <button @click="releaseItem()" class="text-red-600 hover:text-red-700 cursor-pointer">释放</button>
+                <span id="releaseItemWrap">
+                    / <button @click="releaseItem()" class="text-red-600 hover:text-red-700 cursor-pointer">释放</button>
+                </span>
 
             </div>
         </div>
@@ -168,10 +171,26 @@ module.exports = {
 
                 // Math.round(item.rawData.price * (new Date().getTime()-(item.rawData.createTime))/1000*10000)/10000 }} 
 
+                let releaseItemWrap = document.getElementById('releaseItemWrap')
                 if (result.data.deleteTime) {
                     this.controlPanel.costStr = (Math.round(result.data.price * (result.data.deleteTime - result.data.createTime) / 1000 * 10000) / 10000) + " " + result.data.currency
+
+                    let controlPanelContainer = document.querySelector('.control-panel-container')
+                    if (controlPanelContainer) {
+                        controlPanelContainer.style.background = 'rgb(246, 56, 50)'; //red
+                    }
+
+                    // releaseItemWrap
+                    if (releaseItemWrap) {
+                        releaseItemWrap.style.display = 'none'
+                    }
+
                 } else {
                     this.controlPanel.costStr = (Math.round(result.data.price * (result.data.currentTime - result.data.createTime) / 1000 * 10000) / 10000) + " " + result.data.currency
+                    if (releaseItemWrap) {
+                        releaseItemWrap.style.display = 'inline'
+                    }
+
                 }
 
                 this.controlPanel.timeElapsedStr = getTimeElapsed(result.data.createTime)
