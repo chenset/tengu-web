@@ -504,7 +504,10 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 <div v-if="item.rawData.cpu" class="text-sm font-medium">
-                                    {{ item.rawData.cpu }}核{{ item.rawData.memory }}G
+                                    {{ item.rawData.cpu }}核{{ item.rawData.memory }}G 
+                                    <span class="text-red-400" v-if="isGPUSpec(item?.rawData?.instanceType)">
+                                     GPU
+                                    </span>
                                 </div>
                                 <div v-if="item.rawData.instanceType" class="text-xs font-medium text-gray-500">
                                     {{ item.rawData.instanceType }}
@@ -1403,6 +1406,9 @@ module.exports = {
                 return instanceType || '-';
             }
 
+        },
+        isGPUSpec(instanceType){
+            return instanceType && (instanceType.startsWith("ecs.gn5") || instanceType.startsWith("ecs.gn8is"))
         },
         // 筛选条件改变
         handleFilterChange() {
