@@ -1359,7 +1359,6 @@ module.exports = {
                 containerGroupStatus: this.formatStatus(item.containerGroupStatus),
                 status: this.formatStatus(item.status),
                 events: item.events,
-                spec: this.formatSpec(item.cpu, item.memory, item.instanceType),
                 zone: this.formatRegion(item.regionId),
                 createTime: item.createTime.timestamp2yyyymmddhmShangHaiTime(),
                 securityGroup: item.securityGroupId || '-',
@@ -1392,20 +1391,6 @@ module.exports = {
                 'Terminated': '已终止'
             };
             return statusMap[status] || status;
-        },
-        // 格式化规格
-        formatSpec(cpu, memory, instanceType) {
-            if (cpu && memory) {
-                return `${cpu}核${memory}G`;
-            }
-
-            if (instanceType && (instanceType.startsWith("ecs.gn5") || instanceType.startsWith("ecs.gn8is"))) {
-                // GPU 
-                return instanceType + "[ GPU ]" || '-';
-            } else {
-                return instanceType || '-';
-            }
-
         },
         isGPUSpec(instanceType){
             return instanceType && (instanceType.startsWith("ecs.gn5") || instanceType.startsWith("ecs.gn8is"))
