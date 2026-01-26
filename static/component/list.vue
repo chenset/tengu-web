@@ -1395,7 +1395,14 @@ module.exports = {
             if (cpu && memory) {
                 return `${cpu}核${memory}G`;
             }
-            return instanceType || '-';
+
+            if (instanceType && (instanceType.startsWith("ecs.gn5") || instanceType.startsWith("ecs.gn8is"))) {
+                // GPU 
+                return instanceType + "[ GPU ]" || '-';
+            } else {
+                return instanceType || '-';
+            }
+
         },
         // 筛选条件改变
         handleFilterChange() {
