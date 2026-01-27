@@ -220,6 +220,9 @@ module.exports = {
                 return;
             }
 
+            // reset sleep time
+            this.controlPanel.sleepMs = 1000
+
             try {
 
                 const response = await fetchWithToken(`${apiBaseUrl()}/tengu/instance/deleteContainerGroup`, {
