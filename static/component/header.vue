@@ -82,7 +82,8 @@
             </router-link>
 
             <!-- 容器列表 -->
-            <router-link v-if="!isActive('/','/list')" :to="{ path: '/', query: {} }" style="display: none;" id="container-menu-btn">
+            <router-link v-if="!isActive('/', '/list')" :to="{ path: '/', query: {} }" style="display: none;"
+                id="container-menu-btn">
                 <button class="logout-btn">
                     容器组
                 </button>
@@ -113,11 +114,13 @@ module.exports = {
     data() {
         return {
             isLoggingOut: false,
-            myAccount: {}
+            currentLoginAccount: {}
         }
     },
     mounted() {
-        this.fetchSessionAccount();
+        this.currentLoginAccount = JSON.parse(localStorage.getItem('_current_login_account') || '{}')
+        this.menuControlByAccount()
+        this.fetchSessionAccount()
     },
     methods: {
         isActive(...paths) {
@@ -143,8 +146,12 @@ module.exports = {
             }
 
             // console.log(result.data)
-            this.myAccount = result.data || {};
-            if (this.myAccount?.role === 'admin') {
+            this.currentLoginAccount = result.data || {};
+            localStorage.setItem('_current_login_account', JSON.stringify(this.currentLoginAccount));
+            this.menuControlByAccount()
+        },
+        async menuControlByAccount() {
+            if (this.currentLoginAccount?.role === 'admin') {
                 const userMenuBtn = document.getElementById('user-menu-btn');
                 if (userMenuBtn) {
                     // userMenuBtn.style.display = 'inline-flex';
@@ -158,7 +165,6 @@ module.exports = {
             }
 
         },
-
         async handleLogout() {
             if (this.isLoggingOut) {
                 return;

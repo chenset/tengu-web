@@ -468,7 +468,12 @@
                                 <div class="text-sm text-gray-500">{{ item.containerGroupName }}</div>
                             </td>
 
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.rawData.email }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <span
+                                    :class="{ 'font-semibold text-black': this.currentLoginAccount.role === 'admin' && item.rawData.email === this.currentLoginAccount.email}">
+                                    {{ item.rawData.email }}
+                                </span>
+                            </td>
 
                             <!-- <td class="px-6 py-4 whitespace-nowrap">
                                 <span
@@ -504,9 +509,9 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 <div v-if="item.rawData.cpu" class="text-sm font-medium">
-                                    {{ item.rawData.cpu }}核{{ item.rawData.memory }}G 
+                                    {{ item.rawData.cpu }}核{{ item.rawData.memory }}G
                                     <span class="text-red-400" v-if="isGPUSpec(item?.rawData?.instanceType)">
-                                     GPU
+                                        GPU
                                     </span>
                                 </div>
                                 <div v-if="item.rawData.instanceType" class="text-xs font-medium text-gray-500">
@@ -1044,6 +1049,7 @@ module.exports = {
     mixins: [mixins],
     data() {
         return {
+            currentLoginAccount: { email: "", role: "", nickname: "" },
             currentPage: 1,
             pageSize: 10,
             tableData: [],
@@ -1226,6 +1232,12 @@ module.exports = {
         this.loadTableData();
         // 添加全局点击事件监听器
         document.addEventListener('click', this.handleClickOutside);
+
+        // 获取当前登录账号信息
+        this.currentLoginAccount = JSON.parse(localStorage.getItem('_current_login_account') || '{}')
+        setTimeout(() => {
+            this.currentLoginAccount = JSON.parse(localStorage.getItem('_current_login_account') || '{}')
+        }, 1000);
     },
     beforeDestroy() {
         // 移除全局点击事件监听器
@@ -1392,7 +1404,7 @@ module.exports = {
             };
             return statusMap[status] || status;
         },
-        isGPUSpec(instanceType){
+        isGPUSpec(instanceType) {
             return instanceType && (instanceType.startsWith("ecs.gn5") || instanceType.startsWith("ecs.gn8is"))
         },
         // 筛选条件改变
