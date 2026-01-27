@@ -210,6 +210,9 @@ module.exports = {
         },
         // 释放
         async releaseItem() {
+            // reset sleep time
+            this.controlPanel.sleepMs = 1000
+
             let id = this.$route.params.id
             try {
                 const confirmed = await window.$confirm(`确定要释放计算资源吗?`, '确认释放');
@@ -219,9 +222,6 @@ module.exports = {
             } catch (error) {
                 return;
             }
-
-            // reset sleep time
-            this.controlPanel.sleepMs = 1000
 
             try {
 
