@@ -653,6 +653,101 @@
 
                             <!-- 表单内容 -->
                             <form v-else @submit.prevent="submitCreate" class="el-form-container">
+
+
+
+
+                                <!-- 规格配置 -->
+                                <div class="border-b pb-4">
+                                    <h4 class="text-md font-semibold text-gray-700 mb-3">规格配置</h4>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <!-- CPU规格 -->
+                                        <!-- <div>
+                                            <label class="block text-sm font-medium text-gray-700">CPU规格</label>
+                                            <select v-model="formData.cpu" @change="onCpuChange"
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                <option value="">请选择CPU</option>
+                                                <option v-for="option in getOptions('cpu')" :key="option.dictValue"
+                                                    :value="option.dictValue">
+                                                    {{ option.dictName }} <span v-if="option.remark"
+                                                        class="text-gray-500">({{ option.remark }})</span>
+                                                </option>
+                                            </select>
+                                        </div> -->
+
+                                        <!-- 内存规格（级联） -->
+                                        <!-- <div>
+                                            <label class="block text-sm font-medium text-gray-700">内存规格</label>
+                                            <select v-model="formData.memory" :disabled="!formData.cpu"
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100">
+                                                <option value="">请选择内存</option>
+                                                <option v-for="option in memoryOptions" :key="option.dictValue"
+                                                    :value="option.dictValue">
+                                                    {{ option.dictName }}
+                                                </option>
+                                            </select>
+                                        </div> -->
+
+                                        <!-- ECS实例规格 -->
+                                        <div class="col-span-2">
+                                            <label class="block text-sm font-medium text-gray-700">ECS实例规格 <span
+                                                    class="text-red-500">*</span></label>
+                                            <select v-model="formData.instanceType" :disabled="readonlyFields.instanceType" required
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
+                                                <option value="">请选择实例规格</option>
+                                                <option v-for="option in getOptions('instanceType')"
+                                                    :key="option.dictValue" :value="option.dictValue">
+                                                    {{ option.dictName }} <span v-if="option.remark"
+                                                        class="text-gray-500">({{ option.remark }})</span>
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <!-- 付费模式 -->
+                                        <div class="col-span-2">
+                                            <label class="block text-sm font-medium text-gray-700">付费模式 <span
+                                                    class="text-red-500">*</span></label>
+                                            <select v-model="formData.spotStrategy" :disabled="readonlyFields.spotStrategy" @change="onSpotStrategyChange"
+                                                required
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
+                                                <option value="">请选择付费模式</option>
+                                                <option v-for="option in getOptions('spotStrategy')"
+                                                    :key="option.dictValue" :value="option.dictValue">
+                                                    {{ option.dictName }} <span v-if="option.remark"
+                                                        class="text-gray-500">({{ option.remark }})</span>
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <!-- 价格上限（抢占式时显示） -->
+                                        <div v-if="formData.spotStrategy === 'SpotWithPriceLimit'" class="col-span-2">
+                                            <label class="block text-sm font-medium text-gray-700">价格上限 <span
+                                                    class="text-red-500">*</span></label>
+                                            <input v-model.number="formData.spotPriceLimit" type="number" step="0.01"
+                                                min="0" required
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                                placeholder="请输入价格上限（元/小时）">
+                                        </div>
+
+                                        <!-- 重启策略 -->
+                                        <div class="col-span-2">
+                                            <label class="block text-sm font-medium text-gray-700">重启策略 <span
+                                                    class="text-red-500">*</span></label>
+                                            <select v-model="formData.restartPolicy" :disabled="readonlyFields.restartPolicy" required
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
+                                                <option value="">请选择重启策略</option>
+                                                <option v-for="option in getOptions('restartPolicy')"
+                                                    :key="option.dictValue" :value="option.dictValue">
+                                                    {{ option.dictName }} <span v-if="option.remark"
+                                                        class="text-gray-500">({{ option.remark }})</span>
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+
+
                                 <!-- 基础配置 -->
                                 <div class="border-b pb-4">
                                     <h4 class="text-md font-semibold text-gray-700 mb-3">基础配置</h4>
@@ -743,94 +838,6 @@
                                     </div>
                                 </div>
 
-                                <!-- 规格配置 -->
-                                <div class="border-b pb-4">
-                                    <h4 class="text-md font-semibold text-gray-700 mb-3">规格配置</h4>
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <!-- CPU规格 -->
-                                        <!-- <div>
-                                            <label class="block text-sm font-medium text-gray-700">CPU规格</label>
-                                            <select v-model="formData.cpu" @change="onCpuChange"
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                <option value="">请选择CPU</option>
-                                                <option v-for="option in getOptions('cpu')" :key="option.dictValue"
-                                                    :value="option.dictValue">
-                                                    {{ option.dictName }} <span v-if="option.remark"
-                                                        class="text-gray-500">({{ option.remark }})</span>
-                                                </option>
-                                            </select>
-                                        </div> -->
-
-                                        <!-- 内存规格（级联） -->
-                                        <!-- <div>
-                                            <label class="block text-sm font-medium text-gray-700">内存规格</label>
-                                            <select v-model="formData.memory" :disabled="!formData.cpu"
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100">
-                                                <option value="">请选择内存</option>
-                                                <option v-for="option in memoryOptions" :key="option.dictValue"
-                                                    :value="option.dictValue">
-                                                    {{ option.dictName }}
-                                                </option>
-                                            </select>
-                                        </div> -->
-
-                                        <!-- ECS实例规格 -->
-                                        <div class="col-span-2">
-                                            <label class="block text-sm font-medium text-gray-700">ECS实例规格 <span
-                                                    class="text-red-500">*</span></label>
-                                            <select v-model="formData.instanceType" :disabled="readonlyFields.instanceType" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
-                                                <option value="">请选择实例规格</option>
-                                                <option v-for="option in getOptions('instanceType')"
-                                                    :key="option.dictValue" :value="option.dictValue">
-                                                    {{ option.dictName }} <span v-if="option.remark"
-                                                        class="text-gray-500">({{ option.remark }})</span>
-                                                </option>
-                                            </select>
-                                        </div>
-
-                                        <!-- 付费模式 -->
-                                        <div class="col-span-2">
-                                            <label class="block text-sm font-medium text-gray-700">付费模式 <span
-                                                    class="text-red-500">*</span></label>
-                                            <select v-model="formData.spotStrategy" :disabled="readonlyFields.spotStrategy" @change="onSpotStrategyChange"
-                                                required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
-                                                <option value="">请选择付费模式</option>
-                                                <option v-for="option in getOptions('spotStrategy')"
-                                                    :key="option.dictValue" :value="option.dictValue">
-                                                    {{ option.dictName }} <span v-if="option.remark"
-                                                        class="text-gray-500">({{ option.remark }})</span>
-                                                </option>
-                                            </select>
-                                        </div>
-
-                                        <!-- 价格上限（抢占式时显示） -->
-                                        <div v-if="formData.spotStrategy === 'SpotWithPriceLimit'" class="col-span-2">
-                                            <label class="block text-sm font-medium text-gray-700">价格上限 <span
-                                                    class="text-red-500">*</span></label>
-                                            <input v-model.number="formData.spotPriceLimit" type="number" step="0.01"
-                                                min="0" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                                placeholder="请输入价格上限（元/小时）">
-                                        </div>
-
-                                        <!-- 重启策略 -->
-                                        <div class="col-span-2">
-                                            <label class="block text-sm font-medium text-gray-700">重启策略 <span
-                                                    class="text-red-500">*</span></label>
-                                            <select v-model="formData.restartPolicy" :disabled="readonlyFields.restartPolicy" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
-                                                <option value="">请选择重启策略</option>
-                                                <option v-for="option in getOptions('restartPolicy')"
-                                                    :key="option.dictValue" :value="option.dictValue">
-                                                    {{ option.dictName }} <span v-if="option.remark"
-                                                        class="text-gray-500">({{ option.remark }})</span>
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <!-- 容器配置 -->
                                 <div>
