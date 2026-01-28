@@ -12,7 +12,7 @@
     <!-- <link href="/static/app.css?_1" rel="stylesheet" type="text/css" /> -->
     <!-- <link rel="stylesheet" href="/static/fontawesome/all.min.css" media="print" onload="this.media='all'"> -->
     <script src="/static/app.min.js?_2"></script>
-    <script src="/static/app.js?_4"></script>
+    <script src="/static/app.js?_5"></script>
     <script src="/static/tailwind.4.1.17.prod.js"></script>
 </head>
 
@@ -27,7 +27,7 @@
         <common></common>
     </div>
     <script>
-        const version = "7";
+        const version = "8";
         //由于原生的 HTML 解析行为的限制，单个闭合标签可能会导致一些例外情况，所以请使用双封闭标签
         const app = Vue.createApp({})
             .component("common", Vue.defineAsyncComponent(httpVueLoaderVersion('/static/component/common.vue')))
