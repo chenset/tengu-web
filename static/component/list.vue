@@ -842,7 +842,7 @@
                                                     class="text-red-500">*</span></label>
                                             <input v-model="container.name" type="text" required
                                                 :disabled="readonlyFields.containers"
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
                                                 placeholder="请输入容器名称">
                                         </div>
 
@@ -852,7 +852,7 @@
                                                     class="text-red-500">*</span></label>
                                             <input v-model="container.image" type="text" required
                                                 :disabled="readonlyFields.containers"
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm  disabled:bg-gray-100 disabled:cursor-not-allowed"
                                                 placeholder="请输入镜像地址">
                                         </div>
 
@@ -878,7 +878,7 @@
                                                     class="flex gap-2">
                                                     <input v-model="container.command[index]" type="text"
                                                         :disabled="readonlyFields.containers"
-                                                        class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                                        class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
                                                         placeholder="请输入命令">
                                                     <button type="button" @click="removeCommand(index)"
                                                         :disabled="readonlyFields.containers"
@@ -899,7 +899,7 @@
                                                     class="flex gap-2">
                                                     <input v-model="container.args[index]" type="text"
                                                         :disabled="readonlyFields.containers"
-                                                        class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                                        class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm  disabled:bg-gray-100 disabled:cursor-not-allowed"
                                                         placeholder="请输入参数">
                                                     <button type="button" @click="removeArg(index)"
                                                         :disabled="readonlyFields.containers"
