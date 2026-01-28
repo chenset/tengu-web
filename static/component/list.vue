@@ -881,11 +881,11 @@
                                                         class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
                                                         placeholder="请输入命令">
                                                     <button type="button" @click="removeCommand(index)"
-                                                        :disabled="readonlyFields.containers"
+                                                        v-if="!readonlyFields.containers"
                                                         class="px-3 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50">删除</button>
                                                 </div>
                                                 <button type="button" @click="addCommand"
-                                                    :disabled="readonlyFields.containers"
+                                                    v-if="!readonlyFields.containers"
                                                     class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+
                                                     添加命令</button>
                                             </div>
@@ -902,18 +902,18 @@
                                                         class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm  disabled:bg-gray-100 disabled:cursor-not-allowed"
                                                         placeholder="请输入参数">
                                                     <button type="button" @click="removeArg(index)"
-                                                        :disabled="readonlyFields.containers"
+                                                        v-if="!readonlyFields.containers"
                                                         class="px-3 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50">删除</button>
                                                 </div>
                                                 <button type="button" @click="addArg"
-                                                    :disabled="readonlyFields.containers"
+                                                        v-if="!readonlyFields.containers"
                                                     class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+
                                                     添加参数</button>
                                             </div>
                                         </div>
 
                                         <!-- 端口配置 -->
-                                        <div>
+                                        <div v-if="!readonlyFields.containers && container.ports.length">
                                             <label class="block text-sm font-medium text-gray-700 mb-2">端口配置</label>
                                             <div class="space-y-2">
                                                 <div v-for="(port, index) in container.ports" :key="'port-' + index"
@@ -931,11 +931,12 @@
                                                         </option>
                                                     </select>
                                                     <button type="button" @click="removePort(index)"
-                                                        :disabled="readonlyFields.containers"
+                                                        v-if="!readonlyFields.containers"
                                                         class="px-3 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50">删除</button>
                                                 </div>
                                                 <button type="button" @click="addPort"
                                                     :disabled="readonlyFields.containers"
+                                                     v-if="!readonlyFields.containers"
                                                     class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+
                                                     添加端口</button>
                                             </div>
