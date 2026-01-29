@@ -1078,7 +1078,7 @@ module.exports = {
         return {
             currentLoginAccount: { email: "", role: "", nickname: "" },
             currentPage: 1,
-            pageSize: 10,
+            pageSize: 20,
             tableData: [],
             totalItems: 0,
             loading: false,
