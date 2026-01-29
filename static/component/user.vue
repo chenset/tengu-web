@@ -70,6 +70,7 @@
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">邮箱</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">昵称</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">角色</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">消耗</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">状态</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">最后登录时间</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">最后登录IP</th>
@@ -100,6 +101,26 @@
                                     :class="user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'"
                                     class="px-2 py-1 rounded text-xs font-medium">
                                     {{ user.role }}
+                                </span>
+                            </td>
+                            <td class="px-4 text-sm text-gray-900 border-b">
+                                <span v-if="!user.statistics?.total">
+                                    -
+                                </span>
+                                <span v-if="user.statistics?.total">
+                                    <span v-if="user.statistics.total >= 0.1">
+                                        {{ Math.round(user.statistics?.total * 10) / 10 }} CNY
+                                    </span>
+                                    <span v-else>
+                                        {{ Math.round(user.statistics?.total * 100000) / 100000 }} CNY
+                                    </span>
+                                </span>
+
+                                <span v-if="user.statistics?.millis">
+                                    <br>
+                                    <span>
+                                            {{ (user.statistics?.millis / 1000 / 60).toFixed(1) }} 分钟
+                                    </span>
                                 </span>
                             </td>
                             <td class="px-4 py-3 text-sm border-b">
