@@ -502,7 +502,7 @@
 
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                <span @click="openEventsDialog(item)" :class="getStatusClass(item.containerGroupStatus)"
+                                <span @click="openEventsDialog(item)" :class="getEventClass(item.events)"
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer hover:opacity-80">
                                     {{ item.events?.length || '-' }}
                                 </span>
@@ -692,7 +692,8 @@
                                         <div class="col-span-2">
                                             <label class="block text-sm font-medium text-gray-700">ECS实例规格 <span
                                                     class="text-red-500">*</span></label>
-                                            <select v-model="formData.instanceType" :disabled="readonlyFields.instanceType" required
+                                            <select v-model="formData.instanceType"
+                                                :disabled="readonlyFields.instanceType" required
                                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
                                                 <option value="">请选择实例规格</option>
                                                 <option v-for="option in getOptions('instanceType')"
@@ -707,7 +708,8 @@
                                         <div class="col-span-2">
                                             <label class="block text-sm font-medium text-gray-700">付费模式 <span
                                                     class="text-red-500">*</span></label>
-                                            <select v-model="formData.spotStrategy" :disabled="readonlyFields.spotStrategy" @change="onSpotStrategyChange"
+                                            <select v-model="formData.spotStrategy"
+                                                :disabled="readonlyFields.spotStrategy" @change="onSpotStrategyChange"
                                                 required
                                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
                                                 <option value="">请选择付费模式</option>
@@ -733,7 +735,8 @@
                                         <div class="col-span-2">
                                             <label class="block text-sm font-medium text-gray-700">重启策略 <span
                                                     class="text-red-500">*</span></label>
-                                            <select v-model="formData.restartPolicy" :disabled="readonlyFields.restartPolicy" required
+                                            <select v-model="formData.restartPolicy"
+                                                :disabled="readonlyFields.restartPolicy" required
                                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
                                                 <option value="">请选择重启策略</option>
                                                 <option v-for="option in getOptions('restartPolicy')"
@@ -745,7 +748,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
 
 
                                 <!-- 基础配置 -->
@@ -765,7 +768,8 @@
                                         <div>
                                             <label class="block text-sm font-medium text-gray-700">通道账号选择 <span
                                                     class="text-red-500">*</span></label>
-                                            <select v-model="formData.channelCode" :disabled="readonlyFields.channelCode" required
+                                            <select v-model="formData.channelCode"
+                                                :disabled="readonlyFields.channelCode" required
                                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
                                                 <option>请选择通道账号</option>
                                                 <option v-for="option in getOptions('channelCode')"
@@ -780,7 +784,8 @@
                                         <div>
                                             <label class="block text-sm font-medium text-gray-700">地域选择 <span
                                                     class="text-red-500">*</span></label>
-                                            <select v-model="formData.regionId" :disabled="readonlyFields.regionId" required
+                                            <select v-model="formData.regionId" :disabled="readonlyFields.regionId"
+                                                required
                                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
                                                 <option value="">请选择地域</option>
                                                 <option v-for="option in getOptions('regionId')" :key="option.dictValue"
@@ -810,7 +815,8 @@
                                         <div>
                                             <label class="block text-sm font-medium text-gray-700">交换机 <span
                                                     class="text-red-500">*</span></label>
-                                            <select v-model="formData.vSwitchId" :disabled="readonlyFields.vSwitchId" required
+                                            <select v-model="formData.vSwitchId" :disabled="readonlyFields.vSwitchId"
+                                                required
                                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
                                                 <option value="">请选择交换机</option>
                                                 <option v-for="option in getOptions('vSwitchId')"
@@ -825,7 +831,8 @@
                                         <div>
                                             <label class="block text-sm font-medium text-gray-700">安全组 <span
                                                     class="text-red-500">*</span></label>
-                                            <select v-model="formData.securityGroupId" :disabled="readonlyFields.securityGroupId" required
+                                            <select v-model="formData.securityGroupId"
+                                                :disabled="readonlyFields.securityGroupId" required
                                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
                                                 <option value="">请选择安全组</option>
                                                 <option v-for="option in getOptions('securityGroupId')"
@@ -857,7 +864,7 @@
                                         <div>
                                             <label class="block text-sm font-medium text-gray-700">镜像地址 <span
                                                     class="text-red-500">*</span></label>
-                                                <!-- :disabled="readonlyFields.containers" -->
+                                            <!-- :disabled="readonlyFields.containers" -->
                                             <input v-model="container.image" type="text" required
                                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm  disabled:bg-gray-100 disabled:cursor-not-allowed"
                                                 placeholder="请输入镜像地址">
@@ -866,7 +873,8 @@
                                         <!-- 镜像拉取策略 -->
                                         <div>
                                             <label class="block text-sm font-medium text-gray-700">镜像拉取策略</label>
-                                            <select v-model="container.imagePullPolicy" :disabled="readonlyFields.imagePullPolicy"
+                                            <select v-model="container.imagePullPolicy"
+                                                :disabled="readonlyFields.imagePullPolicy"
                                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
                                                 <option value="">请选择拉取策略</option>
                                                 <option v-for="option in getOptions('imagePullPolicy')"
@@ -912,8 +920,7 @@
                                                         v-if="!readonlyFields.containers"
                                                         class="px-3 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50">删除</button>
                                                 </div>
-                                                <button type="button" @click="addArg"
-                                                        v-if="!readonlyFields.containers"
+                                                <button type="button" @click="addArg" v-if="!readonlyFields.containers"
                                                     class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+
                                                     添加参数</button>
                                             </div>
@@ -943,7 +950,7 @@
                                                 </div>
                                                 <button type="button" @click="addPort"
                                                     :disabled="readonlyFields.containers"
-                                                     v-if="!readonlyFields.containers"
+                                                    v-if="!readonlyFields.containers"
                                                     class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+
                                                     添加端口</button>
                                             </div>
@@ -1157,7 +1164,7 @@ module.exports = {
                 restartPolicy: false,
                 imagePullPolicy: false,
                 containerGroupName: false,
-                containers:false,
+                containers: false,
             },
             // 事件弹窗
             showEventsDialog: false,
@@ -1592,7 +1599,7 @@ module.exports = {
                         case 'containerGroupName':
                             this.readonlyFields.containerGroupName = true;
                             break;
-                          case 'containers':
+                        case 'containers':
                             this.readonlyFields.containers = true;
                             break;
                     }
@@ -1867,6 +1874,19 @@ module.exports = {
                 '过期': 'bg-gray-100 text-gray-800'
             };
             return classMap[status] || 'bg-gray-100 text-gray-800';
+        },
+        getEventClass(events) {
+            if (!events || !events.length) {
+                return 'bg-gray-100 text-gray-800'
+            }
+
+            for (let v of events) {
+                if (v.type === 'Warning') {
+                    return 'bg-yellow-100 text-yellow-800'
+                }
+            }
+
+            return 'bg-green-100 text-green-800'
         },
         // 上一页
         prevPage() {
