@@ -743,7 +743,10 @@ function getTimeElapsed(startTime, endTime = null) {
     const now = endTime ? new Date(endTime) : new Date();
     const start = new Date(startTime);
     const diffMs = now - start;
+    return getTimeElapsedDiffMs(diffMs);
+}
 
+function getTimeElapsedDiffMs(diffMs) {
     // 转换为秒
     const diffSeconds = Math.floor(diffMs / 1000);
 
@@ -834,4 +837,4 @@ function fetchWithToken(url, options) {
     return res
 }
 
-const mixins = { methods: { byteFormat, getTimeElapsed} }
+const mixins = { methods: { byteFormat, getTimeElapsed, getTimeElapsedDiffMs } }

@@ -107,7 +107,7 @@
                                 <span v-if="!user.statistics?.total">
                                     -
                                 </span>
-                                <span v-if="user.statistics?.total">
+                                <span v-if="user.statistics?.total" class="text-sm font-medium text-orange-400">
                                     <span v-if="user.statistics.total >= 0.1">
                                         {{ Math.round(user.statistics?.total * 10) / 10 }} CNY
                                     </span>
@@ -118,9 +118,9 @@
 
                                 <span v-if="user.statistics?.millis">
                                     <br>
-                                    <span>
-                                            {{ (user.statistics?.millis / 1000 / 60).toFixed(1) }} 分钟
-                                    </span>
+                                    <strong class="text-sm text-gray-600">
+                                            {{ getTimeElapsedDiffMs(user.statistics?.millis) }}
+                                    </strong>
                                 </span>
                             </td>
                             <td class="px-4 py-3 text-sm border-b">
