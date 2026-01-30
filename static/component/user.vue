@@ -70,7 +70,7 @@
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">邮箱</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">昵称</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">角色</th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">消耗</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">总消耗</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">状态</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">最后登录时间</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">最后登录IP</th>
