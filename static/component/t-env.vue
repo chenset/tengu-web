@@ -132,7 +132,7 @@ module.exports = {
                 }
 
                 await this.refreshControlPanel()
-                if (this.controlPanel.sleepMs < 60000) {
+                if (this.controlPanel.sleepMs < 10000) {
                     this.controlPanel.sleepMs += 100
                 }
             }
