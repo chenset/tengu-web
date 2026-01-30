@@ -579,7 +579,9 @@
                                     class="text-green-600 hover:text-green-900 mr-3">打开</button>
                                 <button @click="refreshItem(item)"
                                     class="text-blue-600 hover:text-blue-900 mr-3">刷新</button>
-                                <button @click="releaseItem(item)" class="text-red-600 hover:text-red-900">释放</button>
+                                <button @click="releaseItem(item)" class="hover:text-red-900"
+                                 :class="{'text-red-300':this.currentLoginAccount?.email!==item.rawData.email,'text-red-600':this.currentLoginAccount?.email===item.rawData.email}"
+                                 >释放</button>
                             </td>
                         </tr>
                     </tbody>
