@@ -339,6 +339,16 @@
             </button> -->
         </app-header>
 
+
+        <!-- 创建容器组组件 -->
+        <!-- <create-container 
+        :visible="showCreateDialog" 
+        :api-base-url="apiBaseUrl" 
+        @close="showCreateDialog = false"
+        @created="handleContainerCreated">
+        </create-container> -->
+
+
         <!-- 筛选条件 -->
         <div class="mb-4 bg-white rounded-lg shadow p-4">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
@@ -392,12 +402,12 @@
                                         class="text-gray-400">请选择状态</span>
                                 </div>
                                 <button v-if="filterParams.containerGroupStatusList.length > 0" type="button"
-                                    @click.stop="clearAllStatus"
-                                    style="margin-top: 2px;"  
+                                    @click.stop="clearAllStatus" style="margin-top: 2px;"
                                     class="ml-2 flex-shrink-0 inline-flex items-center justify-center w-5 h-5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
                                     title="清空所有选项">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12"></path>
                                     </svg>
                                 </button>
                             </div>
@@ -553,7 +563,7 @@
                                     {{ item.rawData.currency }}
                                 </div>
                                 <div v-if="item.rawData.price > 0" class="text-xs text-gray-500">{{ item.rawData.price
-                                }} {{ item.rawData.currency }} / 秒</div>
+                                    }} {{ item.rawData.currency }} / 秒</div>
                             </td>
 
                             <!-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -587,12 +597,12 @@
                                 <!-- <button @click="viewDetail(item)" -->
                                 <!-- class="text-indigo-600 hover:text-indigo-900 mr-3">详情</button> -->
                                 <button @click="openItem(item)" v-if="item.rawData.host"
-                                    class=" hover:text-green-900 mr-3" :class="{'text-green-600':item.rawData.status==='Running','text-gray-400':item.rawData.status!=='Running'}">打开</button>
+                                    class=" hover:text-green-900 mr-3"
+                                    :class="{ 'text-green-600': item.rawData.status === 'Running', 'text-gray-400': item.rawData.status !== 'Running' }">打开</button>
                                 <button @click="refreshItem(item)"
                                     class="text-blue-600 hover:text-blue-900 mr-3">刷新</button>
                                 <button @click="releaseItem(item)" class="hover:text-red-900"
-                                 :class="{'text-red-300':this.currentLoginAccount?.email!==item.rawData.email,'text-red-600':this.currentLoginAccount?.email===item.rawData.email}"
-                                 >释放</button>
+                                    :class="{ 'text-red-300': this.currentLoginAccount?.email !== item.rawData.email, 'text-red-600': this.currentLoginAccount?.email === item.rawData.email }">释放</button>
                             </td>
                         </tr>
                     </tbody>
@@ -615,7 +625,7 @@
                     <div>
                         <p class="text-sm text-gray-700">
                             第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
-                                }}</span> 条，
+                            }}</span> 条，
                             共 <span class="font-medium">{{ totalItems }}</span> 条
                         </p>
                     </div>
@@ -993,7 +1003,7 @@
                                 <div v-else class="el-price-text">
                                     <div>{{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒</div>
                                     <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }} {{ priceInfo.currency
-                                        }}/小时</div>
+                                    }}/小时</div>
                                 </div>
                             </div>
 
@@ -1023,7 +1033,7 @@
                         <!-- 对话框头部 -->
                         <div class="el-dialog-header-custom">
                             <span class="el-dialog-title-custom">事件详情 - {{ currentEventsItem?.containerGroupName
-                            }}</span>
+                                }}</span>
                             <button @click="closeEventsDialog" class="el-dialog-close-custom">
                                 <svg viewBox="0 0 1024 1024" width="16" height="16">
                                     <path fill="currentColor"
@@ -1092,6 +1102,9 @@
 <script>
 module.exports = {
     mixins: [mixins],
+    components: {
+        'create-container': Vue.defineAsyncComponent(httpVueLoaderVersion('/static/component/create-container.vue'))
+    },
     data() {
         return {
             currentLoginAccount: { email: "", role: "", nickname: "" },
