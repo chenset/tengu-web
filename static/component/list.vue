@@ -378,17 +378,28 @@
                     <div class="relative" ref="statusDropdown">
                         <div @click.stop="toggleStatusDropdown"
                             class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 bg-white cursor-pointer hover:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm min-h-[38px]">
-                            <div class="flex flex-wrap gap-1">
-                                <span v-for="status in filterParams.containerGroupStatusList" :key="status"
-                                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800">
-                                    {{ getStatusLabel(status) }}
-                                    <button type="button" @click.stop="removeStatus(status)"
-                                        class="ml-1 inline-flex items-center justify-center w-4 h-4 text-indigo-400 hover:bg-indigo-200 hover:text-indigo-600 rounded-full">
-                                        ×
-                                    </button>
-                                </span>
-                                <span v-if="filterParams.containerGroupStatusList.length === 0"
-                                    class="text-gray-400">请选择状态</span>
+                            <div class="flex items-center">
+                                <div class="flex flex-wrap gap-1 flex-1">
+                                    <span v-for="status in filterParams.containerGroupStatusList" :key="status"
+                                        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800">
+                                        {{ getStatusLabel(status) }}
+                                        <button type="button" @click.stop="removeStatus(status)"
+                                            class="ml-1 inline-flex items-center justify-center w-4 h-4 text-indigo-400 hover:bg-indigo-200 hover:text-indigo-600 rounded-full">
+                                            ×
+                                        </button>
+                                    </span>
+                                    <span v-if="filterParams.containerGroupStatusList.length === 0"
+                                        class="text-gray-400">请选择状态</span>
+                                </div>
+                                <button v-if="filterParams.containerGroupStatusList.length > 0" type="button"
+                                    @click.stop="clearAllStatus"
+                                    style="margin-top: 2px;"  
+                                    class="ml-2 flex-shrink-0 inline-flex items-center justify-center w-5 h-5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                                    title="清空所有选项">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                         <div v-if="showStatusDropdown"
@@ -1356,6 +1367,10 @@ module.exports = {
                 this.filterParams.containerGroupStatusList.splice(index, 1);
                 this.handleFilterChange();
             }
+        },
+        clearAllStatus() {
+            this.filterParams.containerGroupStatusList = [];
+            this.handleFilterChange();
         },
         getStatusLabel(value) {
             const option = this.statusOptions.find(opt => opt.value === value);
