@@ -1031,11 +1031,11 @@
                                 <table class="events-table">
                                     <thead>
                                         <tr>
-                                            <th style="width: 80px;">类型</th>
-                                            <th style="width: 60px;">次数</th>
-                                            <th style="width: 180px;">首次/最后时间</th>
+                                            <th style="width: 115px;">类型 / 次数</th>
+                                            <!-- <th style="width: 60px;">次数</th> -->
+                                            <th style="width: 150px;">首次 / 最后时间</th>
                                             <!-- <th style="width: 300px;">名称</th> -->
-                                            <th>消息</th>
+                                            <th style="">消息</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1043,14 +1043,19 @@
                                             <td>
                                                 <span
                                                     :class="event.type === 'Warning' ? 'event-type-warning' : 'event-type-normal'">
-                                                    {{ event.type }}
+                                                    {{ event.type }} / {{ event.count }}
                                                 </span>
                                             </td>
-                                            <td>{{ event.count }}</td>
-                                            <td>{{ formatEventTime(event.firstTimestamp) }}</br>
-                                                {{ formatEventTime(event.lastTimestamp) }}</td>
+                                            <!-- <td>{{ event.count }}</td> -->
+                                            <td>
+                                                {{ formatEventTime(event.firstTimestamp) }}</br>
+                                                <span v-if="event.firstTimestamp !== event.lastTimestamp">
+                                                    {{ formatEventTime(event.lastTimestamp) }}
+                                                </span>
+                                            </td>
                                             <!-- <td style="word-break: break-all;">{{ event.name }}</td> -->
-                                            <td style="word-break: break-word;">{{ event.message }}</td>
+                                            <!-- <td style="white-space:nowrap;">{{ event.message }}</td> -->
+                                            <td style="">{{ event.message }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -2015,8 +2020,7 @@ module.exports = {
         // 格式化事件时间
         formatEventTime(timestamp) {
             if (!timestamp) return '-';
-            const date = new Date(timestamp);
-            return date.toISOString().slice(0, 19).replace('T', ' ');
+            return new Date(timestamp).getTime().timestamp2yyyymmddhmShangHaiTime()
         },
         // 查询容器组价格
         async fetchContainerGroupPrice() {
