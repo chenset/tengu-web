@@ -19,16 +19,6 @@
     justify-content: center;
 }
 
-.el-create-dialog-container {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-    display: flex;
-    flex-direction: column;
-    width: 1000px;
-    max-width: 95%;
-    max-height: 90vh;
-}
 
 .el-dialog-header-custom {
     padding: 20px 24px;
@@ -122,11 +112,6 @@
     color: #606266;
 }
 
-.el-form-container {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
 
 .el-dialog-footer-custom {
     padding: 16px 24px;
@@ -137,43 +122,6 @@
     flex-shrink: 0;
 }
 
-.el-price-info {
-    flex: 1;
-    font-size: 14px;
-    color: #e6a23c;
-}
-
-.el-price-loading {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.el-price-spinner {
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    border: 2px solid #f3f3f3;
-    border-top: 2px solid #e6a23c;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-.el-price-error {
-    color: #f56c6c;
-}
-
-.el-price-text {
-    /* font-weight: 500; */
-    /* font-size: 10px; */
-}
-
-.el-price-hour {
-    margin-top: -3px;
-    /* font-size: 10px; */
-    /* margin-top: 2px; */
-    /* opacity: 0.8; */
-}
 
 .el-dialog-buttons {
     display: flex;
@@ -230,16 +178,6 @@
     border-color: #66b1ff;
 }
 
-.el-btn-loading {
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    margin-right: 6px;
-    border: 2px solid #f3f3f3;
-    border-top: 2px solid #fff;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
 
 /* 对话框动画 */
 .el-dialog-fade-enter-active {
@@ -341,12 +279,12 @@
 
 
         <!-- 创建容器组组件 -->
-        <!-- <create-container 
-        :visible="showCreateDialog" 
-        :api-base-url="apiBaseUrl" 
-        @close="showCreateDialog = false"
-        @created="handleContainerCreated">
-        </create-container> -->
+        <create-container
+            :visible="showCreateDialog"
+            :api-base-url="apiBaseUrl"
+            @close="showCreateDialog = false"
+            @created="handleContainerCreated">
+        </create-container>
 
 
         <!-- 筛选条件 -->
@@ -650,385 +588,10 @@
             </div>
         </div>
 
-        <!-- 创建实例对话框 - Element Plus 风格 -->
-        <transition name="el-dialog-fade">
-            <div v-if="showCreateDialog" class="el-dialog-overlay" @click="handleDialogMaskClick">
-                <div class="el-dialog-wrapper" @click.stop>
-                    <div class="el-create-dialog-container">
-                        <!-- 对话框头部 -->
-                        <div class="el-dialog-header-custom">
-                            <span class="el-dialog-title-custom">创建容器组实例</span>
-                            <button @click="closeCreateDialog" class="el-dialog-close-custom">
-                                <svg viewBox="0 0 1024 1024" width="16" height="16">
-                                    <path fill="currentColor"
-                                        d="M764.288 214.592 512 466.88 259.712 214.592a31.936 31.936 0 0 0-45.12 45.12L466.752 512 214.528 764.224a31.936 31.936 0 1 0 45.12 45.184L512 557.184l252.288 252.288a31.936 31.936 0 0 0 45.12-45.12L557.12 512.064l252.288-252.352a31.936 31.936 0 1 0-45.12-45.184z" />
-                                </svg>
-                            </button>
-                        </div>
-
-                        <!-- 对话框内容 -->
-                        <div class="el-dialog-body-custom">
-                            <!-- 加载状态 -->
-                            <div v-if="loadingDictOptions" class="el-loading-container">
-                                <div class="el-loading-spinner"></div>
-                                <p class="el-loading-text">加载配置选项中...</p>
-                            </div>
-
-                            <!-- 表单内容 -->
-                            <form v-else @submit.prevent="submitCreate" class="el-form-container">
-
-
-
-
-                                <!-- 规格配置 -->
-                                <div class="border-b pb-4">
-                                    <h4 class="text-md font-semibold text-gray-700 mb-3">规格配置</h4>
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <!-- CPU规格 -->
-                                        <!-- <div>
-                                            <label class="block text-sm font-medium text-gray-700">CPU规格</label>
-                                            <select v-model="formData.cpu" @change="onCpuChange"
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                <option value="">请选择CPU</option>
-                                                <option v-for="option in getOptions('cpu')" :key="option.dictValue"
-                                                    :value="option.dictValue">
-                                                    {{ option.dictName }} <span v-if="option.remark"
-                                                        class="text-gray-500">({{ option.remark }})</span>
-                                                </option>
-                                            </select>
-                                        </div> -->
-
-                                        <!-- 内存规格（级联） -->
-                                        <!-- <div>
-                                            <label class="block text-sm font-medium text-gray-700">内存规格</label>
-                                            <select v-model="formData.memory" :disabled="!formData.cpu"
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100">
-                                                <option value="">请选择内存</option>
-                                                <option v-for="option in memoryOptions" :key="option.dictValue"
-                                                    :value="option.dictValue">
-                                                    {{ option.dictName }}
-                                                </option>
-                                            </select>
-                                        </div> -->
-
-                                        <!-- ECS实例规格 -->
-                                        <div class="col-span-2">
-                                            <label class="block text-sm font-medium text-gray-700">ECS实例规格 <span
-                                                    class="text-red-500">*</span></label>
-                                            <select v-model="formData.instanceType"
-                                                :disabled="readonlyFields.instanceType" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
-                                                <option value="">请选择实例规格</option>
-                                                <option v-for="option in getOptions('instanceType')"
-                                                    :key="option.dictValue" :value="option.dictValue">
-                                                    {{ option.dictName }} <span v-if="option.remark"
-                                                        class="text-gray-500">({{ option.remark }})</span>
-                                                </option>
-                                            </select>
-                                        </div>
-
-                                        <!-- 付费模式 -->
-                                        <div class="col-span-2">
-                                            <label class="block text-sm font-medium text-gray-700">付费模式 <span
-                                                    class="text-red-500">*</span></label>
-                                            <select v-model="formData.spotStrategy"
-                                                :disabled="readonlyFields.spotStrategy" @change="onSpotStrategyChange"
-                                                required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
-                                                <option value="">请选择付费模式</option>
-                                                <option v-for="option in getOptions('spotStrategy')"
-                                                    :key="option.dictValue" :value="option.dictValue">
-                                                    {{ option.dictName }} <span v-if="option.remark"
-                                                        class="text-gray-500">({{ option.remark }})</span>
-                                                </option>
-                                            </select>
-                                        </div>
-
-                                        <!-- 价格上限（抢占式时显示） -->
-                                        <div v-if="formData.spotStrategy === 'SpotWithPriceLimit'" class="col-span-2">
-                                            <label class="block text-sm font-medium text-gray-700">价格上限 <span
-                                                    class="text-red-500">*</span></label>
-                                            <input v-model.number="formData.spotPriceLimit" type="number" step="0.01"
-                                                min="0" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                                placeholder="请输入价格上限（元/小时）">
-                                        </div>
-
-                                        <!-- 重启策略 -->
-                                        <div class="col-span-2">
-                                            <label class="block text-sm font-medium text-gray-700">重启策略 <span
-                                                    class="text-red-500">*</span></label>
-                                            <select v-model="formData.restartPolicy"
-                                                :disabled="readonlyFields.restartPolicy" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
-                                                <option value="">请选择重启策略</option>
-                                                <option v-for="option in getOptions('restartPolicy')"
-                                                    :key="option.dictValue" :value="option.dictValue">
-                                                    {{ option.dictName }} <span v-if="option.remark"
-                                                        class="text-gray-500">({{ option.remark }})</span>
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                                <!-- 基础配置 -->
-                                <div class="border-b pb-4">
-                                    <h4 class="text-md font-semibold text-gray-700 mb-3">基础配置</h4>
-                                    <div class="grid grid-cols-1 gap-4">
-                                        <!-- 容器组名称 -->
-                                        <!-- <div>
-                                            <label class="block text-sm font-medium text-gray-700">容器组名称 <span
-                                                    class="text-red-500">*</span></label>
-                                            <input v-model="formData.containerGroupName" type="text" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                                placeholder="请输入容器组名称">
-                                        </div> -->
-
-                                        <!-- 选择通道账号 -->
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700">通道账号选择 <span
-                                                    class="text-red-500">*</span></label>
-                                            <select v-model="formData.channelCode"
-                                                :disabled="readonlyFields.channelCode" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
-                                                <option>请选择通道账号</option>
-                                                <option v-for="option in getOptions('channelCode')"
-                                                    :key="option.dictValue" :value="option.dictValue">
-                                                    {{ option.dictName }} <span v-if="option.remark"
-                                                        class="text-gray-500">({{ option.remark }})</span>
-                                                </option>
-                                            </select>
-                                        </div>
-
-                                        <!-- 地域选择 -->
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700">地域选择 <span
-                                                    class="text-red-500">*</span></label>
-                                            <select v-model="formData.regionId" :disabled="readonlyFields.regionId"
-                                                required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
-                                                <option value="">请选择地域</option>
-                                                <option v-for="option in getOptions('regionId')" :key="option.dictValue"
-                                                    :value="option.dictValue">
-                                                    {{ option.dictName }} <span v-if="option.remark"
-                                                        class="text-gray-500">({{ option.remark }})</span>
-                                                </option>
-                                            </select>
-                                        </div>
-
-                                        <!-- 专有网络 -->
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700">专有网络 <span
-                                                    class="text-red-500">*</span></label>
-                                            <select v-model="formData.vpcId" :disabled="readonlyFields.vpcId" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
-                                                <option value="">请选择专有网络</option>
-                                                <option v-for="option in getOptions('vpcId')" :key="option.dictValue"
-                                                    :value="option.dictValue">
-                                                    {{ option.dictName }} <span v-if="option.remark"
-                                                        class="text-gray-500">({{ option.remark }})</span>
-                                                </option>
-                                            </select>
-                                        </div>
-
-                                        <!-- 交换机 -->
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700">交换机 <span
-                                                    class="text-red-500">*</span></label>
-                                            <select v-model="formData.vSwitchId" :disabled="readonlyFields.vSwitchId"
-                                                required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
-                                                <option value="">请选择交换机</option>
-                                                <option v-for="option in getOptions('vSwitchId')"
-                                                    :key="option.dictValue" :value="option.dictValue">
-                                                    {{ option.dictName }} <span v-if="option.remark"
-                                                        class="text-gray-500">({{ option.remark }})</span>
-                                                </option>
-                                            </select>
-                                        </div>
-
-                                        <!-- 安全组 -->
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700">安全组 <span
-                                                    class="text-red-500">*</span></label>
-                                            <select v-model="formData.securityGroupId"
-                                                :disabled="readonlyFields.securityGroupId" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
-                                                <option value="">请选择安全组</option>
-                                                <option v-for="option in getOptions('securityGroupId')"
-                                                    :key="option.dictValue" :value="option.dictValue">
-                                                    {{ option.dictName }} <span v-if="option.remark"
-                                                        class="text-gray-500">({{ option.remark }})</span>
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- 容器配置 -->
-                                <div>
-                                    <h4 class="text-md font-semibold text-gray-700 mb-3">容器配置</h4>
-                                    <div class="space-y-4 border border-gray-200 rounded-md p-4 bg-gray-50">
-                                        <!-- 容器名称 -->
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700">容器名称 <span
-                                                    class="text-red-500">*</span></label>
-                                            <input v-model="container.name" type="text" required
-                                                :disabled="readonlyFields.containers"
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
-                                                placeholder="请输入容器名称">
-                                        </div>
-
-                                        <!-- 镜像 -->
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700">镜像地址 <span
-                                                    class="text-red-500">*</span></label>
-                                            <!-- :disabled="readonlyFields.containers" -->
-                                            <input v-model="container.image" type="text" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm  disabled:bg-gray-100 disabled:cursor-not-allowed"
-                                                placeholder="请输入镜像地址">
-                                        </div>
-
-                                        <!-- 镜像拉取策略 -->
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700">镜像拉取策略</label>
-                                            <select v-model="container.imagePullPolicy"
-                                                :disabled="readonlyFields.imagePullPolicy"
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
-                                                <option value="">请选择拉取策略</option>
-                                                <option v-for="option in getOptions('imagePullPolicy')"
-                                                    :key="option.dictValue" :value="option.dictValue">
-                                                    {{ option.dictName }} <span v-if="option.remark"
-                                                        class="text-gray-500">({{ option.remark }})</span>
-                                                </option>
-                                            </select>
-                                        </div>
-
-                                        <!-- 启动命令 -->
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700">启动命令</label>
-                                            <div class="space-y-2">
-                                                <div v-for="(cmd, index) in container.command" :key="'cmd-' + index"
-                                                    class="flex gap-2">
-                                                    <input v-model="container.command[index]" type="text"
-                                                        :disabled="readonlyFields.containers"
-                                                        class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
-                                                        placeholder="请输入命令">
-                                                    <button type="button" @click="removeCommand(index)"
-                                                        v-if="!readonlyFields.containers"
-                                                        class="px-3 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50">删除</button>
-                                                </div>
-                                                <button type="button" @click="addCommand"
-                                                    v-if="!readonlyFields.containers"
-                                                    class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+
-                                                    添加命令</button>
-                                            </div>
-                                        </div>
-
-                                        <!-- 启动参数 -->
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700">启动参数</label>
-                                            <div class="space-y-2">
-                                                <div v-for="(arg, index) in container.args" :key="'arg-' + index"
-                                                    class="flex gap-2">
-                                                    <input v-model="container.args[index]" type="text"
-                                                        :disabled="readonlyFields.containers"
-                                                        class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm  disabled:bg-gray-100 disabled:cursor-not-allowed"
-                                                        placeholder="请输入参数">
-                                                    <button type="button" @click="removeArg(index)"
-                                                        v-if="!readonlyFields.containers"
-                                                        class="px-3 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50">删除</button>
-                                                </div>
-                                                <button type="button" @click="addArg" v-if="!readonlyFields.containers"
-                                                    class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+
-                                                    添加参数</button>
-                                            </div>
-                                        </div>
-
-                                        <!-- 端口配置 -->
-                                        <div v-if="!readonlyFields.containers && container.ports.length">
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">端口配置</label>
-                                            <div class="space-y-2">
-                                                <div v-for="(port, index) in container.ports" :key="'port-' + index"
-                                                    class="flex gap-2">
-                                                    <input v-model.number="port.port" type="number" min="1" max="65535"
-                                                        :disabled="readonlyFields.containers"
-                                                        class="flex-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                                        placeholder="端口号">
-                                                    <select v-model="port.protocol"
-                                                        :disabled="readonlyFields.containers"
-                                                        class="block w-32 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                        <option v-for="option in getOptions('protocol')"
-                                                            :key="option.dictValue" :value="option.dictValue">
-                                                            {{ option.dictName }}
-                                                        </option>
-                                                    </select>
-                                                    <button type="button" @click="removePort(index)"
-                                                        v-if="!readonlyFields.containers"
-                                                        class="px-3 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50">删除</button>
-                                                </div>
-                                                <button type="button" @click="addPort"
-                                                    :disabled="readonlyFields.containers"
-                                                    v-if="!readonlyFields.containers"
-                                                    class="w-full px-3 py-2 border border-dashed border-gray-300 text-gray-600 rounded-md hover:border-indigo-500 hover:text-indigo-600">+
-                                                    添加端口</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-
-                        <!-- 对话框底部 -->
-                        <div class="el-dialog-footer-custom">
-                            <!-- 价格信息 -->
-                            <div class="el-price-info">
-                                <span v-if="priceInfo.loading" class="el-price-loading">
-                                    <span class="el-price-spinner"></span>
-                                    查询价格中...
-                                </span>
-                                <span v-else-if="priceInfo.errorMsg" class="el-price-error">
-                                    {{ priceInfo.errorMsg }}
-                                </span>
-                                <div v-else-if="priceInfo.isRange" class="el-price-text">
-                                    <div>{{ priceInfo.minPrice }}~{{ priceInfo.maxPrice }} {{ priceInfo.currency }}/秒
-                                    </div>
-                                    <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }}~{{ priceInfo.maxPrice *
-                                        3600 }} {{ priceInfo.currency }}/小时</div>
-                                </div>
-                                <div v-else class="el-price-text">
-                                    <div>{{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒</div>
-                                    <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }} {{ priceInfo.currency
-                                    }}/小时</div>
-                                </div>
-                            </div>
-
-                            <!-- 按钮组 -->
-                            <div class="el-dialog-buttons">
-                                <button @click="closeCreateDialog" :disabled="submitting" type="button"
-                                    class="el-btn el-btn-default">
-                                    取消
-                                </button>
-                                <button @click="submitCreate" :disabled="submitting || loadingDictOptions" type="button"
-                                    class="el-btn el-btn-primary">
-                                    <span v-if="submitting" class="el-btn-loading"></span>
-                                    {{ submitting ? '创建中...' : '创建' }}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </transition>
-
         <!-- 事件详情对话框 -->
         <transition name="el-dialog-fade">
             <div v-if="showEventsDialog" class="el-dialog-overlay" @click="closeEventsDialog">
-                <div class="el-dialog-wrapper" @click.stop>
+                <div class="el-dialog-wrapper" @click.stop">
                     <div class="events-dialog-container">
                         <!-- 对话框头部 -->
                         <div class="el-dialog-header-custom">
@@ -1085,7 +648,6 @@
 
                         <!-- 对话框底部 -->
                         <div class="el-dialog-footer-custom">
-                            <div class="el-price-info"></div>
                             <div class="el-dialog-buttons">
                                 <button @click="closeEventsDialog" type="button" class="el-btn el-btn-primary">
                                     关闭
@@ -1143,60 +705,6 @@ module.exports = {
             ],
             // 创建对话框相关
             showCreateDialog: false,
-            loadingDictOptions: false,
-            submitting: false,
-            dictOptions: [],
-            // 表单数据
-            formData: {
-                channelCode: 'ALIYUN-CHEN',
-                containerGroupName: '',
-                regionId: '',
-                channelCode: '',
-                vpcId: '',
-                vSwitchId: '',
-                securityGroupId: '',
-                cpu: '',
-                memory: '',
-                instanceType: '',
-                spotStrategy: '',
-                spotPriceLimit: null,
-                restartPolicy: '',
-                autoMatchImageCache: 1
-            },
-            // 容器配置
-            container: {
-                name: '',
-                image: '',
-                imagePullPolicy: '',
-                command: [],
-                args: [],
-                ports: []
-            },
-            // 价格信息
-            priceInfo: {
-                loading: false,
-                currency: 'CNY',
-                minPrice: 0,
-                maxPrice: 0,
-                errorMsg: "",
-                isRange: false // 是否是价格区间
-            },
-            // 只读字段映射
-            readonlyFields: {
-                channelCode: false,
-                regionId: false,
-                vpcId: false,
-                vSwitchId: false,
-                securityGroupId: false,
-                cpu: false,
-                memory: false,
-                instanceType: false,
-                spotStrategy: false,
-                restartPolicy: false,
-                imagePullPolicy: false,
-                containerGroupName: false,
-                containers: false,
-            },
             // 事件弹窗
             showEventsDialog: false,
             currentEventsItem: null
@@ -1231,75 +739,9 @@ module.exports = {
             }
             return pages;
         },
-        // 内存选项（根据CPU级联）
-        memoryOptions() {
-            if (!this.formData.cpu) return [];
-            const cpuDict = this.dictOptions.find(d => d.dictCode === 'cpu');
-            if (!cpuDict) return [];
-            const cpuOption = cpuDict.options.find(o => o.dictValue === this.formData.cpu);
-            return cpuOption && cpuOption.children ? cpuOption.children : [];
-        },
         // API基础URL
         apiBaseUrl() {
             return window.apiBaseUrl()
-        }
-    },
-    watch: {
-        // 监听表单关键字段变化，重新查询价格
-        'formData.channelCode'() {
-            if (this.showCreateDialog) {
-                this.fetchContainerGroupPrice();
-            }
-        },
-        'formData.regionId'() {
-            if (this.showCreateDialog) {
-                this.fetchContainerGroupPrice();
-            }
-        },
-        'formData.vpcId'() {
-            if (this.showCreateDialog) {
-                this.fetchContainerGroupPrice();
-            }
-        },
-        'formData.vSwitchId'() {
-            if (this.showCreateDialog) {
-                this.fetchContainerGroupPrice();
-            }
-        },
-        'formData.securityGroupId'() {
-            if (this.showCreateDialog) {
-                this.fetchContainerGroupPrice();
-            }
-        },
-        'formData.cpu'() {
-            if (this.showCreateDialog) {
-                this.fetchContainerGroupPrice();
-            }
-        },
-        'formData.memory'() {
-            if (this.showCreateDialog) {
-                this.fetchContainerGroupPrice();
-            }
-        },
-        'formData.instanceType'() {
-            if (this.showCreateDialog) {
-                this.fetchContainerGroupPrice();
-            }
-        },
-        'formData.spotStrategy'() {
-            if (this.showCreateDialog) {
-                this.fetchContainerGroupPrice();
-            }
-        },
-        'formData.spotPriceLimit'() {
-            if (this.showCreateDialog) {
-                this.fetchContainerGroupPrice();
-            }
-        },
-        'formData.restartPolicy'() {
-            if (this.showCreateDialog) {
-                this.fetchContainerGroupPrice();
-            }
         }
     },
     mounted() {
@@ -1388,6 +830,54 @@ module.exports = {
         getStatusLabel(value) {
             const option = this.statusOptions.find(opt => opt.value === value);
             return option ? option.label : value;
+        },
+        // 根据状态返回不同的样式类
+        getStatusClass(status) {
+            const classMap = {
+                '运行中': 'bg-green-100 text-green-800',
+                '运行成功': 'bg-green-100 text-green-800',
+                '启动中': 'bg-blue-100 text-blue-800',
+                '创建中': 'bg-blue-100 text-blue-800',
+                '重启中': 'bg-blue-100 text-blue-800',
+                '更新中': 'bg-blue-100 text-blue-800',
+                '运行失败': 'bg-red-100 text-red-800',
+                '创建失败': 'bg-red-100 text-red-800',
+                '终止中': 'bg-yellow-100 text-yellow-800',
+                '已终止': 'bg-gray-100 text-gray-800',
+                '过期': 'bg-gray-100 text-gray-800'
+            };
+            return classMap[status] || 'bg-gray-100 text-gray-800';
+        },
+        getEventClass(events) {
+            if (!events || !events.length) {
+                return 'bg-gray-100 text-gray-800'
+            }
+
+            for (let v of events) {
+                if (v.type === 'Warning') {
+                    return 'bg-yellow-100 text-yellow-800'
+                }
+            }
+            return 'bg-green-100 text-green-800'
+        },
+                // 打开事件弹窗
+        openEventsDialog(item) {
+            if (!item.events || item.events.length === 0) {
+                window.$message('暂无事件信息', 'info');
+                return;
+            }
+            this.currentEventsItem = item;
+            this.showEventsDialog = true;
+        },
+        // 关闭事件弹窗
+        closeEventsDialog() {
+            this.showEventsDialog = false;
+            this.currentEventsItem = null;
+        },
+        // 格式化事件时间
+        formatEventTime(timestamp) {
+            if (!timestamp) return '-';
+            return new Date(timestamp).getTime().timestamp2yyyymmddhmShangHaiTime()
         },
         // 加载列表数据
         async loadTableData() {
@@ -1490,464 +980,9 @@ module.exports = {
             this.currentPage = 1;
             this.loadTableData();
         },
-        // 获取字典选项
-        getOptions(dictCode) {
-            const dict = this.dictOptions.find(d => d.dictCode === dictCode);
-            if (!dict) return [];
-            // 按weight排序
-            return dict.options.sort((a, b) => (b.weight || 0) - (a.weight || 0));
-        },
         // 打开创建对话框
-        async openCreateDialog() {
+        openCreateDialog() {
             this.showCreateDialog = true;
-            this.resetForm();
-            await this.loadDictOptions();
-            // 加载默认值后查询价格
-            this.$nextTick(() => {
-                this.fetchContainerGroupPrice();
-            });
-        },
-        // 关闭创建对话框
-        closeCreateDialog() {
-            if (this.submitting) return;
-            this.showCreateDialog = false;
-            this.resetForm();
-        },
-        // 处理对话框遮罩点击
-        handleDialogMaskClick() {
-            // 不允许点击遮罩关闭对话框，保持与之前逻辑一致
-            // 如果需要点击遮罩关闭，可以调用 closeCreateDialog()
-        },
-        // 重置表单
-        resetForm() {
-            this.formData = {
-                channelCode: 'ALIYUN-CHEN',
-                containerGroupName: '',
-                regionId: '',
-                channelCode: '',
-                vpcId: '',
-                vSwitchId: '',
-                securityGroupId: '',
-                cpu: '',
-                memory: '',
-                instanceType: '',
-                spotStrategy: '',
-                spotPriceLimit: null,
-                restartPolicy: '',
-                autoMatchImageCache: 1
-            };
-            this.container = {
-                name: '',
-                image: '',
-                imagePullPolicy: '',
-                command: [],
-                args: [],
-                ports: []
-            };
-            // 重置只读字段状态
-            this.readonlyFields = {
-                channelCode: false,
-                regionId: false,
-                vpcId: false,
-                vSwitchId: false,
-                securityGroupId: false,
-                cpu: false,
-                memory: false,
-                instanceType: false,
-                spotStrategy: false,
-                restartPolicy: false,
-                imagePullPolicy: false,
-                containers: false,
-                containerGroupName: false
-            };
-        },
-        // 加载字典选项
-        async loadDictOptions() {
-            this.loadingDictOptions = true;
-            try {
-                const response = await fetchWithToken(`${this.apiBaseUrl}/tengu/instance/getContainerGroupDictOptions`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({})
-                });
-                const result = await response.json();
-                if (!response.ok) {
-                    console.error('网络响应错误:', response.statusText);
-                    window.$message('加载数据失败: ' + response.statusText, 'error');
-                } else if (result.resultCode === 1 && result.data && result.data.dictOptions) {
-                    this.dictOptions = result.data.dictOptions.sort((a, b) => (b.weight || 0) - (a.weight || 0));
-                    // 自动填充默认值
-                    this.applyDefaultValues();
-                    // 设置为只读 readonly
-                    this.applyReadonly();
-                } else {
-                    window.$message('加载配置选项失败', 'error');
-                }
-            } catch (error) {
-                console.error('加载字典选项失败:', error);
-                window.$message('加载配置选项失败: ' + error.message, 'error');
-            } finally {
-                this.loadingDictOptions = false;
-            }
-        },
-        // 设置为只读 readonly
-        applyReadonly() {
-            this.dictOptions.forEach(dict => {
-                if (dict.readonly) {
-                    // 根据dictCode设置对应字段为只读
-                    switch (dict.dictCode) {
-                        case 'regionId':
-                            this.readonlyFields.regionId = true;
-                            break;
-                        case 'channelCode':
-                            this.readonlyFields.channelCode = true;
-                            break;
-                        case 'vpcId':
-                            this.readonlyFields.vpcId = true;
-                            break;
-                        case 'vSwitchId':
-                            this.readonlyFields.vSwitchId = true;
-                            break;
-                        case 'securityGroupId':
-                            this.readonlyFields.securityGroupId = true;
-                            break;
-                        case 'cpu':
-                            this.readonlyFields.cpu = true;
-                            break;
-                        case 'memory':
-                            this.readonlyFields.memory = true;
-                            break;
-                        case 'instanceType':
-                            this.readonlyFields.instanceType = true;
-                            break;
-                        case 'spotStrategy':
-                            this.readonlyFields.spotStrategy = true;
-                            break;
-                        case 'restartPolicy':
-                            this.readonlyFields.restartPolicy = true;
-                            break;
-                        case 'imagePullPolicy':
-                            this.readonlyFields.imagePullPolicy = true;
-                            break;
-                        case 'containerGroupName':
-                            this.readonlyFields.containerGroupName = true;
-                            break;
-                        case 'containers':
-                            this.readonlyFields.containers = true;
-                            break;
-                    }
-                }
-            });
-        },
-        // 应用默认值
-        applyDefaultValues() {
-            this.dictOptions.forEach(dict => {
-                if (dict.defaultOptionsDictValue) {
-                    // 根据dictCode设置对应的formData字段
-                    switch (dict.dictCode) {
-                        case 'regionId':
-                            this.formData.regionId = dict.defaultOptionsDictValue;
-                            break;
-                        case 'channelCode':
-                            this.formData.channelCode = dict.defaultOptionsDictValue;
-                            break;
-                        case 'vpcId':
-                            this.formData.vpcId = dict.defaultOptionsDictValue;
-                            break;
-                        case 'vSwitchId':
-                            this.formData.vSwitchId = dict.defaultOptionsDictValue;
-                            break;
-                        case 'securityGroupId':
-                            this.formData.securityGroupId = dict.defaultOptionsDictValue;
-                            break;
-                        case 'cpu':
-                            this.formData.cpu = dict.defaultOptionsDictValue;
-                            // CPU改变时需要更新内存选项
-                            this.updateMemoryOptionsForDefaultCpu(dict.defaultOptionsDictValue);
-                            break;
-                        case 'instanceType':
-                            this.formData.instanceType = dict.defaultOptionsDictValue;
-                            break;
-                        case 'spotStrategy':
-                            this.formData.spotStrategy = dict.defaultOptionsDictValue;
-                            break;
-                        case 'restartPolicy':
-                            this.formData.restartPolicy = dict.defaultOptionsDictValue;
-                            break;
-                        case 'imagePullPolicy':
-                            this.container.imagePullPolicy = dict.defaultOptionsDictValue;
-                            break;
-                        case 'containerGroupName':
-                            this.formData.containerGroupName = dict.defaultOptionsDictValue;
-                            break;
-                    }
-                }
-
-                // 处理容器列表的默认值
-                if (dict.dictCode === 'containers' && dict.options && dict.options.length > 0) {
-                    //目前只处理第一个容器的默认值
-                    const containerOption = dict.options[0];
-                    if (containerOption.defaultOptionsDictValue) {
-                        this.applyContainerDefaultValues(containerOption.defaultOptionsDictValue);
-                    }
-                }
-            });
-        },
-        // 应用容器默认值
-        applyContainerDefaultValues(containerDefaults) {
-            if (containerDefaults.name) {
-                this.container.name = containerDefaults.name;
-            }
-            if (containerDefaults.image) {
-                this.container.image = containerDefaults.image;
-            }
-            if (containerDefaults.imagePullPolicy) {
-                this.container.imagePullPolicy = containerDefaults.imagePullPolicy;
-            }
-            if (containerDefaults.command && Array.isArray(containerDefaults.command)) {
-                this.container.command = [...containerDefaults.command];
-            }
-            if (containerDefaults.args && Array.isArray(containerDefaults.args)) {
-                this.container.args = [...containerDefaults.args];
-            }
-            if (containerDefaults.ports && Array.isArray(containerDefaults.ports)) {
-                this.container.ports = containerDefaults.ports.map(port => ({
-                    port: port.port || null,
-                    protocol: port.protocol || 'TCP'
-                }));
-            }
-        },
-        // 为默认CPU更新内存选项
-        updateMemoryOptionsForDefaultCpu(cpuValue) {
-            const cpuDict = this.dictOptions.find(d => d.dictCode === 'cpu');
-            if (cpuDict) {
-                const cpuOption = cpuDict.options.find(o => o.dictValue === cpuValue);
-                if (cpuOption && cpuOption.children && cpuOption.children.length > 0) {
-                    // 自动选择第一个内存选项（weight最高的）
-                    const sortedMemory = cpuOption.children.sort((a, b) => (b.weight || 0) - (a.weight || 0));
-                    this.formData.memory = sortedMemory[0].dictValue;
-                }
-            }
-        },
-        // CPU改变时重置内存
-        onCpuChange() {
-            this.formData.memory = '';
-        },
-        // 付费模式改变
-        onSpotStrategyChange() {
-            if (this.formData.spotStrategy !== 'SpotWithPriceLimit') {
-                this.formData.spotPriceLimit = null;
-            }
-        },
-        // 添加命令
-        addCommand() {
-            this.container.command.push('');
-        },
-        // 删除命令
-        removeCommand(index) {
-            this.container.command.splice(index, 1);
-        },
-        // 添加参数
-        addArg() {
-            this.container.args.push('');
-        },
-        // 删除参数
-        removeArg(index) {
-            this.container.args.splice(index, 1);
-        },
-        // 添加端口
-        addPort() {
-            this.container.ports.push({
-                port: null,
-                protocol: 'TCP'
-            });
-        },
-        // 删除端口
-        removePort(index) {
-            this.container.ports.splice(index, 1);
-        },
-        // 提交创建
-        async submitCreate() {
-            // 验证必填项
-            //         if (!this.formData.containerGroupName) {
-            //            window.$message('请输入容器组名称', 'warning');
-            //            return;
-            //       }
-            if (!this.formData.regionId) {
-                window.$message('请选择地域', 'warning');
-                return;
-            }
-            // if (!this.formData.vpcId) {
-            //     window.$message('请选择专有网络', 'warning');
-            //     return;
-            // }
-            // if (!this.formData.vSwitchId) {
-            //     window.$message('请选择交换机', 'warning');
-            //     return;
-            // }
-            // if (!this.formData.securityGroupId) {
-            //     window.$message('请选择安全组', 'warning');
-            //     return;
-            // }
-            //if (!this.formData.instanceType) {
-            //   indow.$message('请选择ECS实例规格', 'warning');
-            //   return;
-            //}
-            if (!this.formData.spotStrategy) {
-                window.$message('请选择付费模式', 'warning');
-                return;
-            }
-            if (this.formData.spotStrategy === 'SpotWithPriceLimit' && !this.formData.spotPriceLimit) {
-                window.$message('请输入价格上限', 'warning');
-                return;
-            }
-            if (!this.formData.restartPolicy) {
-                window.$message('请选择重启策略', 'warning');
-                return;
-            }
-            if (!this.container.name) {
-                window.$message('请输入容器名称', 'warning');
-                return;
-            }
-            if (!this.container.image) {
-                window.$message('请输入镜像地址', 'warning');
-                return;
-            }
-
-            // 构建请求数据
-            const requestData = {
-                channelCode: this.formData.channelCode,
-                regionId: this.formData.regionId,
-                channelCode: this.formData.channelCode,
-                containerGroupName: this.formData.containerGroupName,
-                vpcId: this.formData.vpcId,
-                vSwitchId: this.formData.vSwitchId,
-                securityGroupId: this.formData.securityGroupId,
-                instanceType: this.formData.instanceType,
-                spotStrategy: this.formData.spotStrategy,
-                restartPolicy: this.formData.restartPolicy,
-                autoMatchImageCache: this.formData.autoMatchImageCache,
-                containers: [
-                    {
-                        name: this.container.name,
-                        image: this.container.image
-                    }
-                ]
-            };
-
-            // 可选字段
-            if (this.formData.cpu) {
-                requestData.cpu = parseFloat(this.formData.cpu);
-            }
-            if (this.formData.memory) {
-                requestData.memory = parseFloat(this.formData.memory);
-            }
-            if (this.formData.spotStrategy === 'SpotWithPriceLimit' && this.formData.spotPriceLimit) {
-                requestData.spotPriceLimit = this.formData.spotPriceLimit;
-            }
-            if (this.container.imagePullPolicy) {
-                requestData.containers[0].imagePullPolicy = this.container.imagePullPolicy;
-            }
-            if (this.container.command.length > 0) {
-                requestData.containers[0].command = this.container.command.filter(cmd => cmd.trim() !== '');
-            }
-            if (this.container.args.length > 0) {
-                requestData.containers[0].args = this.container.args.filter(arg => arg.trim() !== '');
-            }
-            if (this.container.ports.length > 0) {
-                requestData.containers[0].ports = this.container.ports.filter(p => p.port);
-            }
-
-            this.submitting = true;
-            try {
-                const response = await fetchWithToken(`${this.apiBaseUrl}/tengu/instance/createContainerGroup`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestData)
-                });
-                const result = await response.json();
-
-                if (result.resultCode === 1) {
-                    window.$message('创建成功！容器组ID: ' + (result.data?.containerGroupId || ''), 'success');
-                    // 刷新列表
-                    this.refreshList();
-                    setTimeout(() => {
-                        this.closeCreateDialog();
-                    }, 200);
-                } else {
-                    window.$message('创建失败: ' + (result.message || '未知错误'), 'error');
-                }
-            } catch (error) {
-                console.error('创建容器组失败:', error);
-                window.$message('创建失败: ' + error.message, 'error');
-            } finally {
-                this.submitting = false;
-            }
-        },
-        // 刷新列表
-        refreshList() {
-            this.currentPage = 1;
-            this.loadTableData();
-        },
-        // 根据状态返回不同的样式类
-        getStatusClass(status) {
-            const classMap = {
-                '运行中': 'bg-green-100 text-green-800',
-                '运行成功': 'bg-green-100 text-green-800',
-                '启动中': 'bg-blue-100 text-blue-800',
-                '创建中': 'bg-blue-100 text-blue-800',
-                '重启中': 'bg-blue-100 text-blue-800',
-                '更新中': 'bg-blue-100 text-blue-800',
-                '运行失败': 'bg-red-100 text-red-800',
-                '创建失败': 'bg-red-100 text-red-800',
-                '终止中': 'bg-yellow-100 text-yellow-800',
-                '已终止': 'bg-gray-100 text-gray-800',
-                '过期': 'bg-gray-100 text-gray-800'
-            };
-            return classMap[status] || 'bg-gray-100 text-gray-800';
-        },
-        getEventClass(events) {
-            if (!events || !events.length) {
-                return 'bg-gray-100 text-gray-800'
-            }
-
-            for (let v of events) {
-                if (v.type === 'Warning') {
-                    return 'bg-yellow-100 text-yellow-800'
-                }
-            }
-
-            return 'bg-green-100 text-green-800'
-        },
-        // 上一页
-        prevPage() {
-            if (this.currentPage > 1) {
-                this.currentPage--;
-                this.loadTableData();
-            }
-        },
-        // 下一页
-        nextPage() {
-            if (this.currentPage < this.totalPages) {
-                this.currentPage++;
-                this.loadTableData();
-            }
-        },
-        // 跳转到指定页
-        goToPage(page) {
-            if (this.currentPage !== page) {
-                this.currentPage = page;
-                this.loadTableData();
-            }
-        },
-        // 查看详情
-        viewDetail(item) {
-            console.log('查看详情:', item);
-            window.$message(`查看详情: ${item.containerGroupName}`, 'info');
         },
         // 打开
         openItem(item) {
@@ -2031,128 +1066,11 @@ module.exports = {
                 window.$message('释放失败: ' + error.message, 'error');
             }
         },
-        // 打开事件弹窗
-        openEventsDialog(item) {
-            if (!item.events || item.events.length === 0) {
-                window.$message('暂无事件信息', 'info');
-                return;
-            }
-            this.currentEventsItem = item;
-            this.showEventsDialog = true;
-        },
-        // 关闭事件弹窗
-        closeEventsDialog() {
-            this.showEventsDialog = false;
-            this.currentEventsItem = null;
-        },
-        // 格式化事件时间
-        formatEventTime(timestamp) {
-            if (!timestamp) return '-';
-            return new Date(timestamp).getTime().timestamp2yyyymmddhmShangHaiTime()
-        },
-        // 查询容器组价格
-        async fetchContainerGroupPrice() {
-            // 构建请求数据 - 使用与 createContainerGroup 相同的参数
-            const requestData = {
-                channelCode: this.formData.channelCode,
-                regionId: this.formData.regionId,
-                containerGroupName: this.formData.containerGroupName,
-                vpcId: this.formData.vpcId,
-                vSwitchId: this.formData.vSwitchId,
-                securityGroupId: this.formData.securityGroupId,
-                instanceType: this.formData.instanceType,
-                spotStrategy: this.formData.spotStrategy,
-                restartPolicy: this.formData.restartPolicy,
-                autoMatchImageCache: this.formData.autoMatchImageCache,
-                containers: [
-                    {
-                        name: this.container.name,
-                        image: this.container.image
-                    }
-                ]
-            };
-
-            // 可选字段
-            if (this.formData.cpu) {
-                requestData.cpu = parseFloat(this.formData.cpu);
-            }
-            if (this.formData.memory) {
-                requestData.memory = parseFloat(this.formData.memory);
-            }
-            if (this.formData.spotStrategy === 'SpotWithPriceLimit' && this.formData.spotPriceLimit) {
-                requestData.spotPriceLimit = this.formData.spotPriceLimit;
-            }
-            if (this.container.imagePullPolicy) {
-                requestData.containers[0].imagePullPolicy = this.container.imagePullPolicy;
-            }
-            if (this.container.command.length > 0) {
-                requestData.containers[0].command = this.container.command.filter(cmd => cmd.trim() !== '');
-            }
-            if (this.container.args.length > 0) {
-                requestData.containers[0].args = this.container.args.filter(arg => arg.trim() !== '');
-            }
-            if (this.container.ports.length > 0) {
-                requestData.containers[0].ports = this.container.ports.filter(p => p.port);
-            }
-
-            this.priceInfo.errorMsg = ""
-            this.priceInfo.loading = true;
-            try {
-                const response = await fetchWithToken(`${this.apiBaseUrl}/tengu/instance/describeContainerGroupPrice`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestData)
-                });
-
-                const result = await response.json();
-
-                if (!response.ok) {
-                    if (result.message) {
-                        this.priceInfo.errorMsg = result.message
-                    } else {
-                        this.priceInfo.errorMsg = "查询价格失败"
-                    }
-                } else if (result.resultCode === 1 && result.data && result.data.priceInfo) {
-                    const priceInfo = result.data.priceInfo;
-                    this.priceInfo.currency = priceInfo.currency || 'CNY';
-
-                    // 判断是单一价格还是价格区间
-                    if (priceInfo.spotPrices && Array.isArray(priceInfo.spotPrices) && priceInfo.spotPrices.length > 0) {
-                        // 价格区间：从 spotPrices 中找出最低和最高的 spotPrice
-                        const spotPrices = priceInfo.spotPrices.map(item => item.spotPrice);
-                        this.priceInfo.minPrice = Math.min(...spotPrices);
-                        this.priceInfo.maxPrice = Math.max(...spotPrices);
-                        this.priceInfo.isRange = this.priceInfo.minPrice !== this.priceInfo.maxPrice;
-                    } else if (priceInfo.tradePrice !== undefined) {
-                        // 单一价格
-                        this.priceInfo.minPrice = priceInfo.tradePrice;
-                        this.priceInfo.maxPrice = priceInfo.tradePrice;
-                        this.priceInfo.isRange = false;
-                    } else {
-                        // 没有价格信息，重置
-                        this.priceInfo.minPrice = 0;
-                        this.priceInfo.maxPrice = 0;
-                        this.priceInfo.isRange = false;
-                    }
-                } else {
-                    console.error('查询价格失败:', result);
-                    // 失败时重置价格
-                    this.priceInfo.minPrice = 0;
-                    this.priceInfo.maxPrice = 0;
-                    this.priceInfo.isRange = false;
-                }
-            } catch (error) {
-                this.priceInfo.errorMsg = error
-                console.error('查询价格失败:', error);
-                // 失败时重置价格
-                this.priceInfo.minPrice = 0;
-                this.priceInfo.maxPrice = 0;
-                this.priceInfo.isRange = false;
-            } finally {
-                this.priceInfo.loading = false;
-            }
+        // 处理容器创建成功
+        handleContainerCreated: function(containerData) {
+            this.showCreateDialog = false;
+            window.$message('容器组创建成功', 'success');
+            this.loadTableData();
         }
     }
 }
