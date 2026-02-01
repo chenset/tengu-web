@@ -500,8 +500,7 @@
 
                                     {{ item.rawData.currency }}
                                 </div>
-                                <div v-if="item.rawData.price > 0" class="text-xs text-gray-500">{{ item.rawData.price
-                                    }} {{ item.rawData.currency }} / 秒</div>
+                                <div v-if="item.rawData.price > 0" class="text-xs text-gray-500">{{Math.round( item.rawData.price * 3600* 1000) / 1000 }} {{ item.rawData.currency }} / 小时</div>
                             </td>
 
                             <!-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
