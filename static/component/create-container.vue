@@ -626,7 +626,7 @@
                                 <div v-else class="el-price-text">
                                     <div>{{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒</div>
                                     <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }} {{ priceInfo.currency
-                                    }}/小时</div>
+                                        }}/小时</div>
                                 </div>
                             </div>
 
@@ -662,7 +662,7 @@ module.exports = {
             required: true
         }
     },
-    data: function() {
+    data: function () {
         return {
             loadingDictOptions: false,
             submitting: false,
@@ -721,72 +721,72 @@ module.exports = {
     },
     computed: {
         // 内存选项（根据CPU级联）
-        memoryOptions: function() {
+        memoryOptions: function () {
             if (!this.formData.cpu) return [];
-            var cpuDict = this.dictOptions.find(function(d) { return d.dictCode === 'cpu'; });
+            var cpuDict = this.dictOptions.find(function (d) { return d.dictCode === 'cpu'; });
             if (!cpuDict) return [];
-            var cpuOption = cpuDict.options.find(function(o) { return o.dictValue === this.formData.cpu; });
+            var cpuOption = cpuDict.options.find(function (o) { return o.dictValue === this.formData.cpu; });
             return cpuOption && cpuOption.children ? cpuOption.children : [];
         }
     },
     watch: {
-        visible: function(newVal) {
+        visible: function (newVal) {
             if (newVal) {
                 this.resetForm();
                 this.loadDictOptions();
             }
         },
-        'formData.channelCode': function() {
+        'formData.channelCode': function () {
             if (this.visible) {
                 this.fetchContainerGroupPrice();
             }
         },
-        'formData.regionId': function() {
+        'formData.regionId': function () {
             if (this.visible) {
                 this.fetchContainerGroupPrice();
             }
         },
-        'formData.vpcId': function() {
+        'formData.vpcId': function () {
             if (this.visible) {
                 this.fetchContainerGroupPrice();
             }
         },
-        'formData.vSwitchId': function() {
+        'formData.vSwitchId': function () {
             if (this.visible) {
                 this.fetchContainerGroupPrice();
             }
         },
-        'formData.securityGroupId': function() {
+        'formData.securityGroupId': function () {
             if (this.visible) {
                 this.fetchContainerGroupPrice();
             }
         },
-        'formData.cpu': function() {
+        'formData.cpu': function () {
             if (this.visible) {
                 this.fetchContainerGroupPrice();
             }
         },
-        'formData.memory': function() {
+        'formData.memory': function () {
             if (this.visible) {
                 this.fetchContainerGroupPrice();
             }
         },
-        'formData.instanceType': function() {
+        'formData.instanceType': function () {
             if (this.visible) {
                 this.fetchContainerGroupPrice();
             }
         },
-        'formData.spotStrategy': function() {
+        'formData.spotStrategy': function () {
             if (this.visible) {
                 this.fetchContainerGroupPrice();
             }
         },
-        'formData.spotPriceLimit': function() {
+        'formData.spotPriceLimit': function () {
             if (this.visible) {
                 this.fetchContainerGroupPrice();
             }
         },
-        'formData.restartPolicy': function() {
+        'formData.restartPolicy': function () {
             if (this.visible) {
                 this.fetchContainerGroupPrice();
             }
@@ -794,16 +794,16 @@ module.exports = {
     },
     methods: {
         // 关闭创建对话框
-        closeCreateDialog: function() {
+        closeCreateDialog: function () {
             if (this.submitting) return;
             this.$emit('close');
         },
         // 处理对话框遮罩点击
-        handleDialogMaskClick: function() {
+        handleDialogMaskClick: function () {
             // 不允许点击遮罩关闭对话框，保持与之前逻辑一致
         },
         // 加载字典选项
-        loadDictOptions: async function() {
+        loadDictOptions: async function () {
             var self = this;
             self.loadingDictOptions = true;
             try {
@@ -819,7 +819,7 @@ module.exports = {
                     console.error('网络响应错误:', response.statusText);
                     window.$message('加载数据失败: ' + response.statusText, 'error');
                 } else if (result.resultCode === 1 && result.data && result.data.dictOptions) {
-                    self.dictOptions = result.data.dictOptions.sort(function(a, b) {
+                    self.dictOptions = result.data.dictOptions.sort(function (a, b) {
                         return (b.weight || 0) - (a.weight || 0);
                     });
                     // 自动填充默认值
@@ -827,7 +827,7 @@ module.exports = {
                     // 设置为只读 readonly
                     self.applyReadonly();
                     // 加载默认值后查询价格
-                    self.$nextTick(function() {
+                    self.$nextTick(function () {
                         self.fetchContainerGroupPrice();
                     });
                 } else {
@@ -841,16 +841,16 @@ module.exports = {
             }
         },
         // 获取字典选项
-        getOptions: function(dictCode) {
-            var dict = this.dictOptions.find(function(d) { return d.dictCode === dictCode; });
+        getOptions: function (dictCode) {
+            var dict = this.dictOptions.find(function (d) { return d.dictCode === dictCode; });
             if (!dict) return [];
             // 按weight排序
-            return dict.options.sort(function(a, b) {
+            return dict.options.sort(function (a, b) {
                 return (b.weight || 0) - (a.weight || 0);
             });
         },
         // 重置表单
-        resetForm: function() {
+        resetForm: function () {
             this.formData = {
                 channelCode: 'ALIYUN-CHEN',
                 containerGroupName: '',
@@ -892,7 +892,7 @@ module.exports = {
             };
         },
         // 提交创建
-        submitCreate: async function() {
+        submitCreate: async function () {
             var self = this;
             // 验证必填项
             if (!self.formData.regionId) {
@@ -954,17 +954,17 @@ module.exports = {
                 requestData.containers[0].imagePullPolicy = self.container.imagePullPolicy;
             }
             if (self.container.command.length > 0) {
-                requestData.containers[0].command = self.container.command.filter(function(cmd) {
+                requestData.containers[0].command = self.container.command.filter(function (cmd) {
                     return cmd.trim() !== '';
                 });
             }
             if (self.container.args.length > 0) {
-                requestData.containers[0].args = self.container.args.filter(function(arg) {
+                requestData.containers[0].args = self.container.args.filter(function (arg) {
                     return arg.trim() !== '';
                 });
             }
             if (self.container.ports.length > 0) {
-                requestData.containers[0].ports = self.container.ports.filter(function(p) {
+                requestData.containers[0].ports = self.container.ports.filter(function (p) {
                     return p.port;
                 });
             }
@@ -984,7 +984,7 @@ module.exports = {
                     window.$message('创建成功！容器组ID: ' + (result.data && result.data.containerGroupId || ''), 'success');
                     // 触发创建成功事件
                     self.$emit('created', result.data);
-                    setTimeout(function() {
+                    setTimeout(function () {
                         self.closeCreateDialog();
                     }, 200);
                 } else {
@@ -998,7 +998,13 @@ module.exports = {
             }
         },
         // 查询容器组价格
-        fetchContainerGroupPrice: async function() {
+        fetchContainerGroupPrice: async function () {
+            clearTimeout(window._fetchPriceTimer__);
+            window._fetchPriceTimer__ = setTimeout(() => {
+                this.fetchContainerGroupPrice0()
+            }, 200);
+        },
+        fetchContainerGroupPrice0: async function () {
             var self = this;
             // 构建请求数据 - 使用与 createContainerGroup 相同的参数
             var requestData = {
@@ -1034,17 +1040,17 @@ module.exports = {
                 requestData.containers[0].imagePullPolicy = self.container.imagePullPolicy;
             }
             if (self.container.command.length > 0) {
-                requestData.containers[0].command = self.container.command.filter(function(cmd) {
+                requestData.containers[0].command = self.container.command.filter(function (cmd) {
                     return cmd.trim() !== '';
                 });
             }
             if (self.container.args.length > 0) {
-                requestData.containers[0].args = self.container.args.filter(function(arg) {
+                requestData.containers[0].args = self.container.args.filter(function (arg) {
                     return arg.trim() !== '';
                 });
             }
             if (self.container.ports.length > 0) {
-                requestData.containers[0].ports = self.container.ports.filter(function(p) {
+                requestData.containers[0].ports = self.container.ports.filter(function (p) {
                     return p.port;
                 });
             }
@@ -1075,7 +1081,7 @@ module.exports = {
                     // 判断是单一价格还是价格区间
                     if (priceInfo.spotPrices && Array.isArray(priceInfo.spotPrices) && priceInfo.spotPrices.length > 0) {
                         // 价格区间：从 spotPrices 中找出最低和最高的 spotPrice
-                        var spotPrices = priceInfo.spotPrices.map(function(item) {
+                        var spotPrices = priceInfo.spotPrices.map(function (item) {
                             return item.spotPrice;
                         });
                         self.priceInfo.minPrice = Math.min.apply(Math, spotPrices);
@@ -1111,46 +1117,46 @@ module.exports = {
             }
         },
         // CPU改变时重置内存
-        onCpuChange: function() {
+        onCpuChange: function () {
             this.formData.memory = '';
         },
         // 付费模式改变
-        onSpotStrategyChange: function() {
+        onSpotStrategyChange: function () {
             if (this.formData.spotStrategy !== 'SpotWithPriceLimit') {
                 this.formData.spotPriceLimit = null;
             }
         },
         // 添加命令
-        addCommand: function() {
+        addCommand: function () {
             this.container.command.push('');
         },
         // 删除命令
-        removeCommand: function(index) {
+        removeCommand: function (index) {
             this.container.command.splice(index, 1);
         },
         // 添加参数
-        addArg: function() {
+        addArg: function () {
             this.container.args.push('');
         },
         // 删除参数
-        removeArg: function(index) {
+        removeArg: function (index) {
             this.container.args.splice(index, 1);
         },
         // 添加端口
-        addPort: function() {
+        addPort: function () {
             this.container.ports.push({
                 port: null,
                 protocol: 'TCP'
             });
         },
         // 删除端口
-        removePort: function(index) {
+        removePort: function (index) {
             this.container.ports.splice(index, 1);
         },
         // 设置为只读 readonly
-        applyReadonly: function() {
+        applyReadonly: function () {
             var self = this;
-            self.dictOptions.forEach(function(dict) {
+            self.dictOptions.forEach(function (dict) {
                 if (dict.readonly) {
                     // 根据dictCode设置对应字段为只读
                     switch (dict.dictCode) {
@@ -1198,9 +1204,9 @@ module.exports = {
             });
         },
         // 应用默认值
-        applyDefaultValues: function() {
+        applyDefaultValues: function () {
             var self = this;
-            self.dictOptions.forEach(function(dict) {
+            self.dictOptions.forEach(function (dict) {
                 if (dict.defaultOptionsDictValue) {
                     // 根据dictCode设置对应的formData字段
                     switch (dict.dictCode) {
@@ -1253,7 +1259,7 @@ module.exports = {
             });
         },
         // 应用容器默认值
-        applyContainerDefaultValues: function(containerDefaults) {
+        applyContainerDefaultValues: function (containerDefaults) {
             if (containerDefaults.name) {
                 this.container.name = containerDefaults.name;
             }
@@ -1270,7 +1276,7 @@ module.exports = {
                 this.container.args = containerDefaults.args.slice();
             }
             if (containerDefaults.ports && Array.isArray(containerDefaults.ports)) {
-                this.container.ports = containerDefaults.ports.map(function(port) {
+                this.container.ports = containerDefaults.ports.map(function (port) {
                     return {
                         port: port.port || null,
                         protocol: port.protocol || 'TCP'
@@ -1279,13 +1285,13 @@ module.exports = {
             }
         },
         // 为默认CPU更新内存选项
-        updateMemoryOptionsForDefaultCpu: function(cpuValue) {
-            var cpuDict = this.dictOptions.find(function(d) { return d.dictCode === 'cpu'; });
+        updateMemoryOptionsForDefaultCpu: function (cpuValue) {
+            var cpuDict = this.dictOptions.find(function (d) { return d.dictCode === 'cpu'; });
             if (cpuDict) {
-                var cpuOption = cpuDict.options.find(function(o) { return o.dictValue === cpuValue; });
+                var cpuOption = cpuDict.options.find(function (o) { return o.dictValue === cpuValue; });
                 if (cpuOption && cpuOption.children && cpuOption.children.length > 0) {
                     // 自动选择第一个内存选项（weight最高的）
-                    var sortedMemory = cpuOption.children.sort(function(a, b) {
+                    var sortedMemory = cpuOption.children.sort(function (a, b) {
                         return (b.weight || 0) - (a.weight || 0);
                     });
                     this.formData.memory = sortedMemory[0].dictValue;
