@@ -102,7 +102,7 @@
 
                             <td class="px-4 py-3 text-sm border-b">
                                 <span class="px-2 py-1 ml-1 rounded text-xs font-medium"
-                                    :class="permission=== 'R_WAN' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'"
+                                    :class="permission=== 'R_WAN' ? 'bg-orange-100 text-orange-800' : 'bg-green-100 text-green-800'"
                                     v-for="permission in user.permissionList" :key="permission">
                                     {{ permission }}
                                 </span>
