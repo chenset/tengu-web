@@ -141,6 +141,10 @@
                                         class="bg-white hover:bg-gray-50 text-gray-700 font-medium py-1 px-3 border border-gray-300 rounded text-xs transition duration-200">
                                         重置密码
                                     </button>
+                                    <button @click="showChangePermissionDialog(user)"
+                                        class="bg-white hover:bg-gray-50 text-gray-700 font-medium py-1 px-3 border border-gray-300 rounded text-xs transition duration-200">
+                                        权限
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -271,6 +275,13 @@ module.exports = {
 
                 if (result.resultCode === 1) {
                     this.userList = result.data.rows || [];
+                    this.userList.forEach(user => {
+                        if (user.permission && user.permission.startsWith('[') && user.permission.endsWith(']')) {
+                            user.permissionList = JSON.parse(user.permission)
+                        } else {
+                            user.permissionList = []
+                        }
+                    });
                     this.pagination.total = result.data.total || 0;
                 } else {
                     window.$message(result.message || '获取列表失败', 'error');
@@ -318,7 +329,9 @@ module.exports = {
                 window.$message(action + '失败: ' + error.message, 'error');
             }
         },
+        async showChangePermissionDialog(user) {
 
+        },
         async handleResetPassword(user) {
             const confirmed = await window.$confirm(
                 '确定要重置用户 "' + user.email + '" 的密码吗?',
@@ -408,3 +421,5 @@ module.exports = {
 <style scoped>
 /* 使用全局样式 */
 </style>
+
+完成 showChangePermissionDialog “权限” 编辑功能, 点击用户权限按钮弹出对话框, 显示用户当前权限, 允许修改后保存.
