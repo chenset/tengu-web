@@ -59,9 +59,9 @@
                     <thead>
                         <tr class="bg-gray-50">
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">ID</th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">邮箱</th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">昵称</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">用户</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">角色</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">权限</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">总消耗</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">状态</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">最后登录时间</th>
@@ -86,8 +86,12 @@
                         </tr>
                         <tr v-else v-for="user in userList" :key="user.id" class="hover:bg-gray-50 transition">
                             <td class="px-4 py-3 text-sm text-gray-900 border-b">{{ user.id }}</td>
-                            <td class="px-4 py-3 text-sm text-gray-900 border-b">{{ user.email }}</td>
-                            <td class="px-4 py-3 text-sm text-gray-900 border-b">{{ user.nickname || '-' }}</td>
+                            <td class="px-4 text-sm text-gray-900 border-b">{{ user.email }}
+                                <br>
+                                <small class="text-gray-400">
+                                    {{ user.nickname || '-' }}
+                                </small>
+                            </td>
                             <td class="px-4 py-3 text-sm border-b">
                                 <span
                                     :class="user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'"
@@ -95,6 +99,16 @@
                                     {{ user.role }}
                                 </span>
                             </td>
+
+                            <td class="px-4 py-3 text-sm border-b">
+                                <span class="px-2 py-1 ml-1 rounded text-xs font-medium"
+                                    :class="permission=== 'R_WAN' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'"
+                                    v-for="permission in user.permissionList" :key="permission">
+                                    {{ permission }}
+                                </span>
+                                <span v-if="user.permissionList.length === 0"> - </span>
+                            </td>
+
                             <td class="px-4 text-sm text-gray-900 border-b">
                                 <span v-if="!user.statistics?.total">
                                     -
@@ -372,7 +386,7 @@ module.exports = {
                 showFooter: true,
                 cancelText: '取消',
                 confirmText: '保存',
-                onConfirm: async function() {
+                onConfirm: async function () {
                     // 收集选中的权限
                     const selectedPermissions = [];
                     for (const key in self.permissionOptions) {
@@ -501,4 +515,3 @@ module.exports = {
 <style scoped>
 /* 使用全局样式 */
 </style>
-
