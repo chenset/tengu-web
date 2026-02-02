@@ -23,14 +23,6 @@
                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
 
-                <!-- <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            密码 <span class="text-red-500">*</span>
-                        </label>
-                        <input type="password" v-model="createForm.password" required placeholder="请输入密码"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                    </div> -->
-
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">
                         角色
@@ -119,7 +111,7 @@
                                 <span v-if="user.statistics?.millis">
                                     <br>
                                     <strong class="text-sm text-gray-600">
-                                            {{ getTimeElapsedDiffMs(user.statistics?.millis) }}
+                                        {{ getTimeElapsedDiffMs(user.statistics?.millis) }}
                                     </strong>
                                 </span>
                             </td>
@@ -184,6 +176,10 @@ module.exports = {
     mixins: [mixins],
     data() {
         return {
+            permissionOptions: {
+                R_LAN: "风控部门内网权限组",
+                R_WAN: "风控部门外网权限组",
+            },
             createForm: {
                 email: '',
                 nickname: '',
