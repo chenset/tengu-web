@@ -660,6 +660,10 @@ module.exports = {
         apiBaseUrl: {
             type: String,
             required: true
+        },
+        containerScene: {
+            type: String,
+            required: true
         }
     },
     data: function () {
@@ -812,7 +816,9 @@ module.exports = {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({})
+                    body: JSON.stringify({
+                        "containerScene": this.containerScene
+                    })
                 });
                 var result = await response.json();
                 if (!response.ok) {
@@ -922,6 +928,7 @@ module.exports = {
 
             // 构建请求数据
             var requestData = {
+                containerScene: self.containerScene,
                 channelCode: self.formData.channelCode,
                 regionId: self.formData.regionId,
                 containerGroupName: self.formData.containerGroupName,
@@ -969,6 +976,7 @@ module.exports = {
                 });
             }
 
+      
             self.submitting = true;
             try {
                 var response = await fetchWithToken(self.apiBaseUrl + '/tengu/instance/createContainerGroup', {
@@ -1008,6 +1016,7 @@ module.exports = {
             var self = this;
             // 构建请求数据 - 使用与 createContainerGroup 相同的参数
             var requestData = {
+                containerScene: self.containerScene,
                 channelCode: self.formData.channelCode,
                 regionId: self.formData.regionId,
                 containerGroupName: self.formData.containerGroupName,

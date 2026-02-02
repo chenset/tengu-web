@@ -279,10 +279,8 @@
 
 
         <!-- 创建容器组组件 -->
-        <create-container
-            :visible="showCreateDialog"
-            :api-base-url="apiBaseUrl"
-            @close="showCreateDialog = false"
+        <create-container :visible="showCreateDialog" :api-base-url="apiBaseUrl" @close="showCreateDialog = false"
+            :container-scene="containerScene"
             @created="handleContainerCreated">
         </create-container>
 
@@ -370,7 +368,7 @@
                     </button>
                     <button @click="openCreateDialog"
                         class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        创建实例
+                        创建内网实例
                     </button>
                 </div>
             </div>
@@ -500,7 +498,8 @@
 
                                     {{ item.rawData.currency }}
                                 </div>
-                                <div v-if="item.rawData.price > 0" class="text-xs text-gray-500">{{Math.round( item.rawData.price * 3600* 1000) / 1000 }} {{ item.rawData.currency }} / 小时</div>
+                                <div v-if="item.rawData.price > 0" class="text-xs text-gray-500">{{ Math.round(
+                                    item.rawData.price * 3600* 1000) / 1000 }} {{ item.rawData.currency }} / 小时</div>
                             </td>
 
                             <!-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -562,7 +561,7 @@
                     <div>
                         <p class="text-sm text-gray-700">
                             第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
-                            }}</span> 条，
+                                }}</span> 条，
                             共 <span class="font-medium">{{ totalItems }}</span> 条
                         </p>
                     </div>
@@ -595,7 +594,7 @@
                         <!-- 对话框头部 -->
                         <div class="el-dialog-header-custom">
                             <span class="el-dialog-title-custom">事件详情 - {{ currentEventsItem?.containerGroupName
-                                }}</span>
+                            }}</span>
                             <button @click="closeEventsDialog" class="el-dialog-close-custom">
                                 <svg viewBox="0 0 1024 1024" width="16" height="16">
                                     <path fill="currentColor"
@@ -668,6 +667,7 @@ module.exports = {
     },
     data() {
         return {
+            containerScene: "risk-lan", // risk-wan (风控公网) / risk-lan （风控内网）
             currentLoginAccount: { email: "", role: "", nickname: "" },
             currentPage: 1,
             pageSize: 20,
@@ -859,7 +859,7 @@ module.exports = {
             }
             return 'bg-green-100 text-green-800'
         },
-                // 打开事件弹窗
+        // 打开事件弹窗
         openEventsDialog(item) {
             if (!item.events || item.events.length === 0) {
                 window.$message('暂无事件信息', 'info');
@@ -1066,7 +1066,7 @@ module.exports = {
             }
         },
         // 处理容器创建成功
-        handleContainerCreated: function(containerData) {
+        handleContainerCreated: function (containerData) {
             this.showCreateDialog = false;
             window.$message('容器组创建成功', 'success');
             this.loadTableData();
