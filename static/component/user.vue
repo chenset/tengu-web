@@ -422,4 +422,3 @@ module.exports = {
 /* 使用全局样式 */
 </style>
 
-完成 showChangePermissionDialog “权限” 编辑功能, 点击用户权限按钮弹出对话框, 显示用户当前权限, 允许修改后保存.
