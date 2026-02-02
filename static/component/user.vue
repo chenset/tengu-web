@@ -330,7 +330,87 @@ module.exports = {
             }
         },
         async showChangePermissionDialog(user) {
+            const self = this;
 
+            // 生成复选框HTML
+            let checkboxesHtml = '';
+            for (const key in this.permissionOptions) {
+                const isChecked = user.permissionList && user.permissionList.indexOf(key) !== -1;
+                const checkboxId = 'permission-' + key;
+                checkboxesHtml += `
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: flex; align-items: center; cursor: pointer;">
+                            <input type="checkbox"
+                                   id="${checkboxId}"
+                                   value="${key}"
+                                   ${isChecked ? 'checked' : ''}
+                                   style="width: 16px; height: 16px; margin-right: 8px; cursor: pointer;">
+                            <span style="font-size: 14px; color: #606266;">${this.permissionOptions[key]}</span>
+                        </label>
+                    </div>
+                `;
+            }
+
+            const content = `
+                <div style="padding: 20px;">
+                    <p style="margin-bottom: 15px; font-size: 14px; color: #606266;">
+                        为用户 <strong>${user.email}</strong> 设置权限：
+                    </p>
+                    <div style="background: #f5f7fa; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+                        ${checkboxesHtml}
+                    </div>
+                    <p style="font-size: 12px; color: #909399;">
+                        请勾选需要授予的权限，可以不选择任何权限。
+                    </p>
+                </div>
+            `;
+
+            window.$dialog({
+                title: '编辑用户权限',
+                content: content,
+                width: 'w-96',
+                showFooter: true,
+                cancelText: '取消',
+                confirmText: '保存',
+                onConfirm: async function() {
+                    // 收集选中的权限
+                    const selectedPermissions = [];
+                    for (const key in self.permissionOptions) {
+                        const checkbox = document.getElementById('permission-' + key);
+                        if (checkbox && checkbox.checked) {
+                            selectedPermissions.push(key);
+                        }
+                    }
+
+                    // 调用API保存
+                    try {
+                        const response = await fetchWithToken(self.apiBaseUrl + '/tengu/account/permission/update', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                id: user.id,
+                                permissionList: selectedPermissions
+                            })
+                        });
+
+                        const result = await response.json();
+
+                        if (result.resultCode === 1) {
+                            window.$message('权限更新成功', 'success');
+                            self.fetchUserList();
+                        } else {
+                            window.$message(result.message || '权限更新失败', 'error');
+                            throw new Error(result.message || '权限更新失败');
+                        }
+                    } catch (error) {
+                        console.error('更新权限错误:', error);
+                        window.$message('权限更新失败: ' + error.message, 'error');
+                        throw error;
+                    }
+                }
+            });
         },
         async handleResetPassword(user) {
             const confirmed = await window.$confirm(
