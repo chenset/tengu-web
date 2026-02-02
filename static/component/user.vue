@@ -368,7 +368,7 @@ module.exports = {
             window.$dialog({
                 title: '编辑用户权限',
                 content: content,
-                width: 'w-96',
+                width: 'w-120',
                 showFooter: true,
                 cancelText: '取消',
                 confirmText: '保存',
