@@ -147,6 +147,11 @@ module.exports = {
 
             // console.log(result.data)
             this.currentLoginAccount = result.data || {};
+            if (this.currentLoginAccount.permission && this.currentLoginAccount.permission.startsWith('[') && this.currentLoginAccount.permission.endsWith(']')) {
+                this.currentLoginAccount.permissionList = JSON.parse(this.currentLoginAccount.permission)
+            } else {
+                this.currentLoginAccount.permissionList = []
+            }
             localStorage.setItem('_current_login_account', JSON.stringify(this.currentLoginAccount));
             this.menuControlByAccount()
         },
