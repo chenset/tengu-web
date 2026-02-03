@@ -219,7 +219,12 @@ module.exports = {
             if (!price && price !== 0) {
                 return '0.00';
             }
-            return parseFloat(price).toFixed(2);
+
+            if (price >= 0.1) {
+                return Math.round(price * 10) / 10
+            }
+
+            return Math.round(price * 100000) / 100000
         },
         async fetchSessionAccount() {
             const response = await fetchWithToken(apiBaseUrl() + '/tengu/account/my', {
