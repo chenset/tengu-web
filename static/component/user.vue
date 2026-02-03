@@ -55,7 +55,7 @@
 
             <!-- 表格 -->
             <div class="overflow-x-auto">
-                <table class="w-full border-collapse">
+                <table class="w-full border-collapse" style="min-width: 1400px;">
                     <thead>
                         <tr class="bg-gray-50">
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">ID</th>
