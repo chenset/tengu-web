@@ -18,6 +18,11 @@
     gap: 1rem;
 }
 
+.header-right-item {
+    /* background: red; */
+    /* margin-left: 10px; */
+}
+
 .logout-btn {
     display: inline-flex;
     align-items: center;
@@ -111,7 +116,7 @@
             <slot></slot>
 
             <!-- 用户信息显示 -->
-            <div class="user-info" v-if="currentLoginAccount.email">
+            <div class="user-info header-right-item" v-if="currentLoginAccount.email">
                 <div class="user-info-item">
                     <!-- <span class="user-info-label">邮箱:</span> -->
                     <span class="user-info-value">{{ currentLoginAccount.email }}</span>
@@ -131,8 +136,8 @@
             </div>
 
             <!-- 用户管理按钮 -->
-            <div style="display: none;" id="user-menu-btn">
-                <router-link v-if="!isActive('/user')" :to="{ path: '/user', query: {} }" >
+            <div style="display: none;" id="user-menu-btn" class="header-right-item">
+                <router-link v-if="!isActive('/user')" :to="{ path: '/user', query: {} }">
                     <button class="logout-btn">
                         用户管理
                     </button>
@@ -140,7 +145,7 @@
             </div>
 
             <!-- 容器列表 -->
-            <div style="display: none;" id="container-menu-btn">
+            <div style="display: none;" id="container-menu-btn" class="header-right-item">
                 <router-link v-if="!isActive('/', '/list')" :to="{ path: '/', query: {} }">
                     <button class="logout-btn">
                         容器组
@@ -149,7 +154,7 @@
             </div>
 
             <!-- 登出按钮 -->
-            <button @click="handleLogout" class="logout-btn">
+            <button @click="handleLogout" class="logout-btn header-right-item">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
