@@ -353,7 +353,7 @@
                             <div v-for="option in statusOptions" :key="option.value" @click="toggleStatus(option.value)"
                                 class="flex items-center px-3 py-2 cursor-pointer hover:bg-gray-100">
                                 <input type="checkbox"
-                                    :checked="filterParams.containerGroupStatusList.includes(option.value)"
+                                    :checked="filterParams?.containerGroupStatusList?.includes(option.value)"
                                     class="h-4 w-4 text-indigo-600 border-gray-300 rounded mr-2 pointer-events-none">
                                 <span class="text-sm text-gray-900">{{ option.label }}</span>
                             </div>
@@ -366,12 +366,12 @@
                         查询
                     </button>
                     <button @click="openCreateLanDialog"
-                        v-if="currentLoginAccount.permissionList?.includes('R_LAN')"
+                        v-if="currentLoginAccount?.permissionList?.includes('R_LAN')"
                         class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-500 hover:bg-green-600 disabled:bg-green-300 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         创建内网实例
                     </button>
                     <button @click="openCreateWanDialog"
-                        v-if="currentLoginAccount.permissionList.includes('R_WAN')"
+                        v-if="currentLoginAccount?.permissionList.includes('R_WAN')"
                         class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 disabled:bg-orange-300 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
                         创建公网实例
                     </button>
