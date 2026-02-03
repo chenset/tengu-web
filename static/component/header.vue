@@ -64,6 +64,43 @@
     background-color: #4b5563;
     border-color: #6b7280;
 }
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.75rem;
+    color: #374151;
+}
+
+.user-info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    white-space: nowrap;
+}
+
+.user-info-label {
+    font-weight: 500;
+    color: #6b7280;
+}
+
+.user-info-value {
+    font-weight: 600;
+    color: #111827;
+}
+
+.dark .user-info {
+    color: #f9fafb;
+}
+
+.dark .user-info-label {
+    color: #9ca3af;
+}
+
+.dark .user-info-value {
+    color: #f9fafb;
+}
 </style>
 
 <template>
@@ -73,21 +110,43 @@
             <!-- 插槽：允许父组件传入自定义按钮 -->
             <slot></slot>
 
+            <!-- 用户信息显示 -->
+            <div class="user-info" v-if="currentLoginAccount.email">
+                <div class="user-info-item">
+                    <!-- <span class="user-info-label">邮箱:</span> -->
+                    <span class="user-info-value">{{ currentLoginAccount.email }}</span>
+                </div>
+                <!-- <div class="user-info-item">
+                    <span class="user-info-label">总时长:</span>
+                    <span class="user-info-value">{{ formatSeconds(currentLoginAccount.totalSeconds) }}</span>
+                </div> -->
+                <div class="user-info-item">
+                    <span class="user-info-label">24h费用:</span>
+                    <span class="user-info-value">¥{{ formatPrice(currentLoginAccount.price_24h) }}</span>
+                </div>
+                <div class="user-info-item">
+                    <span class="user-info-label">总费用:</span>
+                    <span class="user-info-value">¥{{ formatPrice(currentLoginAccount.totalPrice) }}</span>
+                </div>
+            </div>
+
             <!-- 用户管理按钮 -->
-            <router-link v-if="!isActive('/user')" :to="{ path: '/user', query: {} }" style="display: none;"
-                id="user-menu-btn">
-                <button class="logout-btn">
-                    用户管理
-                </button>
-            </router-link>
+            <div style="display: none;" id="user-menu-btn">
+                <router-link v-if="!isActive('/user')" :to="{ path: '/user', query: {} }" >
+                    <button class="logout-btn">
+                        用户管理
+                    </button>
+                </router-link>
+            </div>
 
             <!-- 容器列表 -->
-            <router-link v-if="!isActive('/', '/list')" :to="{ path: '/', query: {} }" style="display: none;"
-                id="container-menu-btn">
-                <button class="logout-btn">
-                    容器组
-                </button>
-            </router-link>
+            <div style="display: none;" id="container-menu-btn">
+                <router-link v-if="!isActive('/', '/list')" :to="{ path: '/', query: {} }">
+                    <button class="logout-btn">
+                        容器组
+                    </button>
+                </router-link>
+            </div>
 
             <!-- 登出按钮 -->
             <button @click="handleLogout" class="logout-btn">
@@ -114,7 +173,10 @@ module.exports = {
     data() {
         return {
             isLoggingOut: false,
-            currentLoginAccount: {}
+            currentLoginAccount: {
+                email: "", role: "", nickname: "", permissionList: [],
+                totalSeconds: 0, price_24h: 0, totalPrice: 0
+            }
         }
     },
     mounted() {
@@ -130,6 +192,29 @@ module.exports = {
                 }
             }
             return false
+        },
+        formatSeconds(seconds) {
+            if (!seconds || seconds <= 0) {
+                return '0秒';
+            }
+            var days = Math.floor(seconds / 86400);
+            var hours = Math.floor((seconds % 86400) / 3600);
+            var minutes = Math.floor((seconds % 3600) / 60);
+            var secs = Math.floor(seconds % 60);
+
+            var parts = [];
+            if (days > 0) parts.push(days + '天');
+            if (hours > 0) parts.push(hours + '时');
+            if (minutes > 0) parts.push(minutes + '分');
+            if (secs > 0 || parts.length === 0) parts.push(secs + '秒');
+
+            return parts.join('');
+        },
+        formatPrice(price) {
+            if (!price && price !== 0) {
+                return '0.00';
+            }
+            return parseFloat(price).toFixed(2);
         },
         async fetchSessionAccount() {
             const response = await fetchWithToken(apiBaseUrl() + '/tengu/account/my', {
@@ -161,11 +246,13 @@ module.exports = {
                 if (userMenuBtn) {
                     // userMenuBtn.style.display = 'inline-flex';
                     userMenuBtn.style.display = 'block';
+                    // userMenuBtn.style.display = 'flex';
                 }
                 const containerMenuBtn = document.getElementById('container-menu-btn');
                 if (containerMenuBtn) {
                     // containerMenuBtn.style.display = 'inline-flex';
                     containerMenuBtn.style.display = 'block';
+                    // containerMenuBtn.style.display = 'flex';
                 }
             }
 
