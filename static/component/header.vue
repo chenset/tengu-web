@@ -126,7 +126,7 @@
                     <span class="user-info-value">{{ formatSeconds(currentLoginAccount.totalSeconds) }}</span>
                 </div> -->
                 <div class="user-info-item">
-                    <span class="user-info-label">24h费用:</span>
+                    <span class="user-info-label">近24h费用:</span>
                     <span class="user-info-value">¥{{ formatPrice(currentLoginAccount.price_24h) }}</span>
                 </div>
                 <div class="user-info-item">
