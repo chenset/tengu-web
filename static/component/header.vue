@@ -127,7 +127,7 @@
                 </div> -->
                 <div class="user-info-item">
                     <span class="user-info-label">近24h费用:</span>
-                    <span class="user-info-value">¥{{ formatPrice(currentLoginAccount.price_24h) }}</span>
+                    <span class="user-info-value">¥{{ formatPrice(currentLoginAccount.price24h) }}</span>
                 </div>
                 <div class="user-info-item">
                     <span class="user-info-label">总费用:</span>
@@ -180,7 +180,7 @@ module.exports = {
             isLoggingOut: false,
             currentLoginAccount: {
                 email: "", role: "", nickname: "", permissionList: [],
-                totalSeconds: 0, price_24h: 0, totalPrice: 0
+                totalSeconds: 0, price24h: 0, totalPrice: 0, hisCount:0
             }
         }
     },
