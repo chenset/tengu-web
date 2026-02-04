@@ -28,7 +28,7 @@
                         角色
                     </label>
                     <select v-model="createForm.role"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        class="w-full px-3 py-[10px] border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="user">user</option>
                         <option value="admin">admin</option>
                     </select>
