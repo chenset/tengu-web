@@ -429,7 +429,7 @@
                                     <span v-if="item?.rawData?.spotStrategy === 'SpotAsPriceGo'"
                                     title="抢占式"
                                         class="bg-green-100 text-green-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer hover:opacity-80">
-                                       省钱 
+                                       抢占式
                                     </span>
                                 </div>
                             </td>
