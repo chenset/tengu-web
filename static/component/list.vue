@@ -410,7 +410,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 规格</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                所在可用区</th>
+                                可用区</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 总价/单价</th>
 
@@ -426,10 +426,9 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-gray-900">{{ item.containerGroupId }}</div>
                                 <div class="text-sm text-gray-500">{{ item.containerGroupName }}
-                                    <span v-if="item?.rawData?.spotStrategy === 'SpotAsPriceGo'"
-                                    title="抢占式"
+                                    <span v-if="item?.rawData?.spotStrategy === 'SpotAsPriceGo'" title="抢占式"
                                         class="bg-green-100 text-green-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer hover:opacity-80">
-                                       抢占式
+                                        抢占式
                                     </span>
                                 </div>
                             </td>
@@ -489,7 +488,7 @@
                                     {{ item.zone }}
                                 </span>
                                 <span v-if="item.rawData.zoneId">
-                                    {{ item.rawData.zoneId }}
+                                    {{ getZoneDesc(item.rawData.zoneId) }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -711,6 +710,125 @@ module.exports = {
                 { value: 'Expired', label: '过期' },
                 { value: 'Terminated', label: '已终止' }
             ],
+            zoneIdMap: {
+                "cn-qingdao-b": "青岛B",
+                "cn-qingdao-c": "青岛C",
+                "cn-beijing-a": "北京A",
+                "cn-beijing-b": "北京B",
+                "cn-beijing-c": "北京C",
+                "cn-beijing-d": "北京D",
+                "cn-beijing-e": "北京E",
+                "cn-beijing-f": "北京F",
+                "cn-beijing-g": "北京G",
+                "cn-beijing-h": "北京H",
+                "cn-beijing-i": "北京I",
+                "cn-beijing-j": "北京J",
+                "cn-beijing-k": "北京K",
+                "cn-beijing-l": "北京L",
+                "cn-zhangjiakou-a": "张家口A",
+                "cn-zhangjiakou-b": "张家口B",
+                "cn-zhangjiakou-c": "张家口C",
+                "cn-huhehaote-a": "呼和浩特A",
+                "cn-huhehaote-b": "呼和浩特B",
+                "cn-wulanchabu-a": "乌兰察布A",
+                "cn-wulanchabu-b": "乌兰察布B",
+                "cn-wulanchabu-c": "乌兰察布C",
+                "cn-hangzhou-b": "杭州B",
+                "cn-hangzhou-e": "杭州E",
+                "cn-hangzhou-f": "杭州F",
+                "cn-hangzhou-g": "杭州G",
+                "cn-hangzhou-h": "杭州H",
+                "cn-hangzhou-i": "杭州I",
+                "cn-hangzhou-j": "杭州J",
+                "cn-hangzhou-k": "杭州K",
+                "cn-shanghai-a": "上海A",
+                "cn-shanghai-b": "上海B",
+                "cn-shanghai-c": "上海C",
+                "cn-shanghai-d": "上海D",
+                "cn-shanghai-e": "上海E",
+                "cn-shanghai-f": "上海F",
+                "cn-shanghai-g": "上海G",
+                "cn-shanghai-k": "上海K",
+                "cn-shanghai-l": "上海L",
+                "cn-shanghai-m": "上海M",
+                "cn-shanghai-n": "上海N",
+                "cn-shanghai-o": "上海O",
+                "cn-nanjing-a": "南京A",
+                "cn-fuzhou-a": "福州A",
+                "cn-wuhan-lr-a": "武汉A",
+                "cn-shenzhen-a": "深圳A",
+                "cn-shenzhen-b": "深圳B",
+                "cn-shenzhen-c": "深圳C",
+                "cn-shenzhen-d": "深圳D",
+                "cn-shenzhen-e": "深圳E",
+                "cn-shenzhen-f": "深圳F",
+                "cn-heyuan-a": "河源A",
+                "cn-heyuan-b": "河源B",
+                "cn-guangzhou-a": "广州A",
+                "cn-guangzhou-b": "广州B",
+                "cn-chengdu-a": "成都A",
+                "cn-chengdu-b": "成都B",
+                "cn-hongkong-b": "香港B",
+                "cn-hongkong-c": "香港C",
+                "cn-hongkong-d": "香港D",
+                "ap-southeast-1a": "新加坡A",
+                "ap-southeast-1b": "新加坡B",
+                "ap-southeast-1c": "新加坡C",
+                "ap-southeast-3a": "吉隆坡A",
+                "ap-southeast-3b": "吉隆坡B",
+                "ap-southeast-3c": "吉隆坡C",
+                "ap-southeast-5a": "雅加达A",
+                "ap-southeast-5b": "雅加达B",
+                "ap-southeast-5c": "雅加达C",
+                "ap-southeast-6a": "马尼拉A",
+                "ap-southeast-6b": "马尼拉B",
+                "ap-southeast-7a": "曼谷A",
+                "ap-southeast-7b": "曼谷B",
+                "ap-northeast-1a": "东京A",
+                "ap-northeast-1b": "东京B",
+                "ap-northeast-1c": "东京C",
+                "ap-northeast-2a": "首尔A",
+                "ap-northeast-2b": "首尔B",
+                "us-west-1a": "硅谷A",
+                "us-west-1b": "硅谷B",
+                "us-east-1a": "弗吉尼亚A",
+                "us-east-1b": "弗吉尼亚B",
+                "eu-central-1a": "法兰克福A",
+                "eu-central-1b": "法兰克福B",
+                "eu-central-1c": "法兰克福C",
+                "eu-west-1a": "伦敦A",
+                "eu-west-1b": "伦敦B",
+                "me-east-1a": "迪拜A",
+                "me-east-1b": "迪拜B",
+                "me-central-1a": "利雅得A",
+                "me-central-1b": "利雅得B",
+                "na-south-1a": "墨西哥A",
+                "cn-hangzhou-finance-b": "杭州金融B",
+                "cn-hangzhou-finance-c": "杭州金融C",
+                "cn-hangzhou-finance-d": "杭州金融D",
+                "cn-hangzhou-finance-h": "杭州金融H",
+                "cn-hangzhou-finance-i": "杭州金融I",
+                "cn-hangzhou-finance-j": "杭州金融J",
+                "cn-hangzhou-finance-k": "杭州金融K",
+                "cn-shanghai-finance-1a": "上海金融A",
+                "cn-shanghai-finance-1b": "上海金融B",
+                "cn-shanghai-finance-1f": "上海金融F",
+                "cn-shanghai-finance-1g": "上海金融G",
+                "cn-shanghai-finance-1k": "上海金融K",
+                "cn-shanghai-finance-1z": "上海金融Z",
+                "cn-shenzhen-finance-1a": "深圳金融A",
+                "cn-shenzhen-finance-1b": "深圳金融B",
+                "cn-shenzhen-finance-1d": "深圳金融D",
+                "cn-shenzhen-finance-1e": "深圳金融E",
+                "cn-beijing-finance-1f": "北京金融F",
+                "cn-beijing-finance-1k": "北京金融K",
+                "cn-beijing-finance-1l": "北京金融L",
+                "cn-north-2-gov-1a": "北京政务A",
+                "cn-north-2-gov-1b": "北京政务B",
+                "cn-north-2-gov-1c": "北京政务C",
+                "cn-north-2-gov-1d": "北京政务D",
+                "cn-north-2-gov-1e": "北京政务E"
+            },
             // 创建对话框相关
             showCreateDialog: false,
             // 事件弹窗
@@ -768,6 +886,12 @@ module.exports = {
         document.removeEventListener('click', this.handleClickOutside);
     },
     methods: {
+        getZoneDesc(zoneId) {
+            if (!zoneId) {
+                return "-"
+            }
+            return this.zoneIdMap[zoneId] || zoneId
+        },
         // 处理点击外部区域
         handleClickOutside(event) {
             // 检查地域下拉框
