@@ -365,13 +365,11 @@
                         class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                         查询
                     </button>
-                    <button @click="openCreateLanDialog"
-                        v-if="currentLoginAccount?.permissionList?.includes('R_LAN')"
+                    <button @click="openCreateLanDialog" v-if="currentLoginAccount?.permissionList?.includes('R_LAN')"
                         class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-500 hover:bg-green-600 disabled:bg-green-300 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         创建内网实例
                     </button>
-                    <button @click="openCreateWanDialog"
-                        v-if="currentLoginAccount?.permissionList?.includes('R_WAN')"
+                    <button @click="openCreateWanDialog" v-if="currentLoginAccount?.permissionList?.includes('R_WAN')"
                         class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 disabled:bg-orange-300 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
                         创建公网实例
                     </button>
@@ -427,7 +425,13 @@
                         <tr v-for="item in this.tableData" :key="item.id" class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-gray-900">{{ item.containerGroupId }}</div>
-                                <div class="text-sm text-gray-500">{{ item.containerGroupName }}</div>
+                                <div class="text-sm text-gray-500">{{ item.containerGroupName }}
+                                    <span v-if="item?.rawData?.spotStrategy === 'SpotAsPriceGo'"
+                                    title="抢占式"
+                                        class="bg-green-100 text-green-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer hover:opacity-80">
+                                       省钱 
+                                    </span>
+                                </div>
                             </td>
 
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -566,7 +570,7 @@
                     <div>
                         <p class="text-sm text-gray-700">
                             第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
-                            }}</span> 条，
+                                }}</span> 条，
                             共 <span class="font-medium">{{ totalItems }}</span> 条
                         </p>
                     </div>
@@ -599,7 +603,7 @@
                         <!-- 对话框头部 -->
                         <div class="el-dialog-header-custom">
                             <span class="el-dialog-title-custom">事件详情 - {{ currentEventsItem?.containerGroupName
-                                }}</span>
+                            }}</span>
                             <button @click="closeEventsDialog" class="el-dialog-close-custom">
                                 <svg viewBox="0 0 1024 1024" width="16" height="16">
                                     <path fill="currentColor"
