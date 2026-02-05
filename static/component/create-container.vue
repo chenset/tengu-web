@@ -350,6 +350,21 @@
                                             </select>
                                         </div>
 
+
+                                        <div class="col-span-2">
+                                            <span class="block text-sm font-medium text-gray-400">
+                                                付费模式：选择
+                                                <strong class="text-green-600">
+                                                    "抢占式"
+                                                </strong>
+                                                能节省最多
+                                                <strong class="text-green-600">
+                                                    90%
+                                                </strong>
+                                                的费用，代价是一般 <span class="text-orange-600">1天~5天</span> 会被强制释放。
+                                            </span>
+                                        </div>
+
                                         <!-- 付费模式 -->
                                         <div class="col-span-2">
                                             <label class="block text-sm font-medium text-gray-700">付费模式 <span
@@ -618,13 +633,12 @@
                                     {{ priceInfo.errorMsg }}
                                 </span>
                                 <div v-else-if="priceInfo.isRange" class="el-price-text">
-                                    <div>{{ priceInfo.minPrice }}~{{ priceInfo.maxPrice }} {{ priceInfo.currency }}/秒
-                                    </div>
+                                    <!-- <div>{{ priceInfo.minPrice }}~{{ priceInfo.maxPrice }} {{ priceInfo.currency }}/秒 </div> -->
                                     <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }}~{{ priceInfo.maxPrice *
                                         3600 }} {{ priceInfo.currency }}/小时</div>
                                 </div>
                                 <div v-else class="el-price-text">
-                                    <div>{{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒</div>
+                                    <!-- <div>{{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒</div> -->
                                     <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }} {{ priceInfo.currency
                                         }}/小时</div>
                                 </div>
@@ -976,7 +990,7 @@ module.exports = {
                 });
             }
 
-      
+
             self.submitting = true;
             try {
                 var response = await fetchWithToken(self.apiBaseUrl + '/tengu/instance/createContainerGroup', {
