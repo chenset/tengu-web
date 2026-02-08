@@ -1126,6 +1126,20 @@ module.exports = {
         openItem(item) {
             window.open(`${this.apiBaseUrl}/tengu/container/open/redirect?id=${item.id}&X-API-ACCESS-TOKEN=` + getApiAccessToken(), '_blank');
         },
+        // 下一页
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+                this.loadTableData();
+            }
+        },
+        // 跳转到指定页
+        goToPage(page) {
+            if (this.currentPage !== page) {
+                this.currentPage = page;
+                this.loadTableData();
+            }
+        },
         // 刷新
         async refreshItem(item) {
             try {
