@@ -422,7 +422,7 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        <tr v-for="item in this.tableData" :key="item.id" class="hover:bg-gray-50" :class="{'opacity-50':item.rawData.email !== this.currentLoginAccount.email && this.currentLoginAccount?.email}">
+                        <tr v-for="item in this.tableData" :key="item.id" class="hover:bg-gray-50" :class="{'opacity-70':item.rawData.email !== this.currentLoginAccount.email && this.currentLoginAccount?.email}">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-gray-900">{{ item.containerGroupId }}</div>
                                 <div class="text-sm text-gray-500">{{ item.containerGroupName }}
