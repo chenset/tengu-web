@@ -84,7 +84,7 @@
                                 暂无数据
                             </td>
                         </tr>
-                        <tr v-else v-for="user in userList" :key="user.id" class="hover:bg-gray-50 transition">
+                        <tr v-else v-for="user in userList" :key="user.id" class="hover:bg-gray-50 transition" :class="{'opacity-50':user.status!==1}">
                             <td class="px-4 py-3 text-sm text-gray-900 border-b">{{ user.id }}</td>
                             <td class="px-4 text-sm text-gray-900 border-b">{{ user.email }}
                                 <br>
@@ -152,15 +152,15 @@
                             <td class="px-4 py-3 text-sm border-b">
                                 <div class="flex justify-center gap-2">
                                     <button @click="handleToggleStatus(user)"
-                                        class="bg-white hover:bg-gray-50 text-gray-700 font-medium py-1 px-3 border border-gray-300 rounded text-xs transition duration-200">
+                                        class="cursor-pointer bg-white hover:bg-gray-50 text-gray-700 font-medium py-1 px-3 border border-gray-300 rounded text-xs transition duration-200">
                                         {{ user.status === 1 ? '禁用' : '启用' }}
                                     </button>
                                     <button @click="handleResetPassword(user)"
-                                        class="bg-white hover:bg-gray-50 text-gray-700 font-medium py-1 px-3 border border-gray-300 rounded text-xs transition duration-200">
+                                        class="cursor-pointer bg-white hover:bg-gray-50 text-gray-700 font-medium py-1 px-3 border border-gray-300 rounded text-xs transition duration-200">
                                         重置密码
                                     </button>
                                     <button @click="showChangePermissionDialog(user)"
-                                        class="bg-white hover:bg-gray-50 text-gray-700 font-medium py-1 px-3 border border-gray-300 rounded text-xs transition duration-200">
+                                        class="cursor-pointer bg-white hover:bg-gray-50 text-gray-700 font-medium py-1 px-3 border border-gray-300 rounded text-xs transition duration-200">
                                         权限
                                     </button>
                                 </div>
