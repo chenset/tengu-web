@@ -623,7 +623,7 @@
                                         <tr>
                                             <th style="width: 115px;">类型 / 次数</th>
                                             <!-- <th style="width: 60px;">次数</th> -->
-                                            <th style="width: 150px;">首次 / 最后时间</th>
+                                            <th style="width: 170px;">首次 / 最后时间</th>
                                             <!-- <th style="width: 300px;">名称</th> -->
                                             <th style="">消息</th>
                                         </tr>
@@ -1009,7 +1009,7 @@ module.exports = {
         // 格式化事件时间
         formatEventTime(timestamp) {
             if (!timestamp) return '-';
-            return new Date(timestamp).getTime().timestamp2yyyymmddhmShangHaiTime()
+            return new Date(timestamp).getTime().timestamp2yyyymmddhmsShangHaiTime()
         },
         // 加载列表数据
         async loadTableData() {

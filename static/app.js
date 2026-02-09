@@ -120,6 +120,21 @@ Number.prototype.timestamp2yyyymmddhmShangHaiTime = function () {
     // return pad2(d.getMonth() + 1) + "/" + pad2(d.getDate());
 };
 
+// +8 时区时间 yyyymmddhms
+Number.prototype.timestamp2yyyymmddhmsShangHaiTime = function () {
+    let v = this.valueOf()
+    if (v) {
+        v += _utc0zoneOffset + 8 * 60 * 60 * 1000
+    }
+    const d = new Date(v);
+    if (d.getFullYear() !== _currentYear) {
+        return d.getFullYear() + "/" + pad2(d.getMonth() + 1) + "/" + pad2(d.getDate()) + " " + pad2(d.getHours()) + ":" + pad2(d.getMinutes()) + ":" + pad2(d.getSeconds()) + "(+8)";
+    } else {
+        return pad2(d.getMonth() + 1) + "/" + pad2(d.getDate()) + " " + pad2(d.getHours()) + ":" + pad2(d.getMinutes()) + ":" + pad2(d.getSeconds()) + "(+8)";
+    }
+    // return pad2(d.getMonth() + 1) + "/" + pad2(d.getDate());
+};
+
 // -6 时区时间
 Number.prototype.timestamp2yyyymmddhmMEXICOTime = function () {
     let v = this.valueOf()
