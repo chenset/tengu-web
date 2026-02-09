@@ -422,7 +422,7 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        <tr v-for="item in this.tableData" :key="item.id" class="hover:bg-gray-50" :class="{'opacity-70':item.rawData.email !== this.currentLoginAccount.email && this.currentLoginAccount?.email}">
+                        <tr v-for="item in this.tableData" :key="item.id" class="hover:bg-gray-50" :class="{'opacity-60':item.rawData.email !== this.currentLoginAccount.email && this.currentLoginAccount?.email}">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-gray-900">{{ item.containerGroupId }}</div>
                                 <div class="text-sm text-gray-500">{{ item.containerGroupName }}
@@ -541,11 +541,11 @@
                                 <!-- <button @click="viewDetail(item)" -->
                                 <!-- class="text-indigo-600 hover:text-indigo-900 mr-3">详情</button> -->
                                 <button @click="openItem(item)" v-if="item.rawData.host"
-                                    class=" hover:text-green-900 mr-3"
+                                    class=" hover:text-green-900 mr-3 cursor-pointer"
                                     :class="{ 'text-green-600': item.rawData.status === 'Running', 'text-gray-400': item.rawData.status !== 'Running' }">打开</button>
                                 <button @click="refreshItem(item)"
-                                    class="text-blue-600 hover:text-blue-900 mr-3">刷新</button>
-                                <button @click="releaseItem(item)" class="hover:text-red-900 text-red-600">释放</button>
+                                    class="text-blue-600 hover:text-blue-900 mr-3 cursor-pointer">刷新</button>
+                                <button @click="releaseItem(item)" class="hover:text-red-900 text-red-600 cursor-pointer">释放</button>
                             </td>
                         </tr>
                     </tbody>
