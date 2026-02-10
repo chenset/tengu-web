@@ -436,7 +436,7 @@
                                 </div>
                                 <div class="text-sm text-gray-500">{{ item.containerGroupName }}
                                     <span v-if="item?.rawData?.spotStrategy === 'SpotAsPriceGo'" title="抢占式"
-                                        class="bg-green-100 text-green-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer hover:opacity-80">
+                                        class="bg-green-100 text-green-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full  hover:opacity-80">
                                         抢占式
                                     </span>
                                 </div>
