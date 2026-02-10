@@ -674,7 +674,7 @@ module.exports = {
     },
     data() {
         return {
-            containerScene: "risk-lan", // risk-wan (风控公网) / risk-lan （风控内网）
+            containerScene: "R_LANn", // R_WAN (风控公网) / R_LAN （风控内网）
             currentLoginAccount: { email: "", role: "", nickname: "", permissionList: [] },
             currentPage: 1,
             pageSize: 20,
@@ -1113,12 +1113,12 @@ module.exports = {
         },
         // 打开创建内网实例对话框
         openCreateLanDialog() {
-            this.containerScene = 'risk-lan';
+            this.containerScene = 'R_LAN';
             this.showCreateDialog = true;
         },
         // 打开创建公网实例对话框
         openCreateWanDialog() {
-            this.containerScene = 'risk-wan';
+            this.containerScene = 'R_WAN';
             this.showCreateDialog = true;
         },
         // 打开

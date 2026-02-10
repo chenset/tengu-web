@@ -145,7 +145,7 @@ The application communicates with a backend API:
 3. **Container Management**:
    - Dynamic form with cascading options (CPU → Memory filtering)
    - Real-time pricing calculator (fetches hourly cost from backend)
-   - Container scene support (`risk-lan` vs `risk-wan`)
+   - Container scene support (`R_LAN` vs `R_WAN`)
    - Backend-controlled form behavior (read-only fields, defaults, available options)
    - Spot instance support with price limits
 
