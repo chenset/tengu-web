@@ -42,7 +42,6 @@
 .el-dialog-title-custom {
     font-size: 18px;
     font-weight: 500;
-    color: #303133;
     line-height: 1;
 }
 
@@ -280,7 +279,10 @@
                     <div class="el-create-dialog-container">
                         <!-- 对话框头部 -->
                         <div class="el-dialog-header-custom">
-                            <span class="el-dialog-title-custom">创建容器组实例</span>
+                            <span class="el-dialog-title-custom">
+                                <span v-if=" this.containerScene==='R_LAN'" class="text-green-600">创建容器组【内网】实例</span>
+                                <span v-if=" this.containerScene==='R_WAN'" class="text-orange-600">创建容器组【公网】实例</span>
+                            </span>
                             <button @click="closeCreateDialog" class="el-dialog-close-custom">
                                 <svg viewBox="0 0 1024 1024" width="16" height="16">
                                     <path fill="currentColor"
@@ -640,7 +642,7 @@
                                 <div v-else class="el-price-text">
                                     <!-- <div>{{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒</div> -->
                                     <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }} {{ priceInfo.currency
-                                        }}/小时</div>
+                                    }}/小时</div>
                                 </div>
                             </div>
 
