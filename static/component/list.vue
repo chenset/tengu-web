@@ -424,7 +424,16 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         <tr v-for="item in this.tableData" :key="item.id" class="hover:bg-gray-50" :class="{'opacity-60':item.rawData.email !== this.currentLoginAccount.email && this.currentLoginAccount?.email}">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">{{ item.containerGroupId }}</div>
+                                <div class="text-sm font-medium text-gray-900">
+                                    <span v-if="item?.rawData?.containerScene === 'R_LAN'" title="内网" class="px-2 py-1 mr-1 rounded text-xs font-medium bg-green-100 text-green-800">
+                                       内网 
+                                    </span>
+
+                                    <span v-if="item?.rawData?.containerScene === 'R_WAN'" title="公网" class="px-2 py-1 mr-1 rounded text-xs font-medium bg-orange-100 text--800">
+                                        公网
+                                    </span>
+         {{ item.containerGroupId }}
+                                </div>
                                 <div class="text-sm text-gray-500">{{ item.containerGroupName }}
                                     <span v-if="item?.rawData?.spotStrategy === 'SpotAsPriceGo'" title="抢占式"
                                         class="bg-green-100 text-green-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer hover:opacity-80">
