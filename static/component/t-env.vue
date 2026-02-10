@@ -41,7 +41,7 @@
     cursor: move;
     user-select: none;
     border-radius: 4px;
-    background: rgb(79, 193, 255);
+    /* background: rgb(79, 193, 255); */
     color: white;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.21);
     white-space: nowrap;
@@ -58,10 +58,14 @@
 <template>
     <div class="iframe-container">
         <div class="drag-overlay" :class="{ active: isDragging }"></div>
-        <div class="control-panel-container" ref="controlPanel" @mousedown="startDrag"
+        <div class="control-panel-container" :class="{'bg-orange-300': this.payload?.containerScene==='R_WAN','bg-green-400': this.payload?.containerScene==='R_LAN'}" ref="controlPanel" @mousedown="startDrag"
             v-show="this.controlPanel.costStr"
             :style="{ top: position.y + 'px', left: position.x + 'px', right: 'auto', zIndex: isDragging ? 10000 : 1000 }">
             <div class="control-panel-cost text-xs">
+
+                <span v-if="this.payload?.containerScene==='R_WAN'">[公网]</span>
+                <span v-if="this.payload?.containerScene==='R_LAN'">[内网]</span>
+
                 <!-- 需要展示 cpu/内存/磁盘/网络（丢包率）/时间/成本  -->
                 消费:{{ this.controlPanel.costStr }} / {{ this.controlPanel.statusStr }}:{{
                     this.controlPanel.timeElapsedStr }}
@@ -97,6 +101,7 @@ module.exports = {
                 'Expired': '过期',
                 'Terminated': '已终止'
             },
+            payload:{},
             controlPanel: {
                 count: 0,
                 break: false, //break the loop
@@ -169,6 +174,7 @@ module.exports = {
                 if (result.resultCode != 1) {
                     return
                 }
+                this.payload = result.data
 
                 // Math.round(item.rawData.price * (new Date().getTime()-(item.rawData.createTime))/1000*10000)/10000 }} 
 
