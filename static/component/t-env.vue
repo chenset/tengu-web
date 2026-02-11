@@ -185,7 +185,13 @@ module.exports = {
                 let releaseItemWrap = document.getElementById('releaseItemWrap')
                 if (result.data.deleteTime) {
                     this.controlPanel.timeElapsedStr = getTimeElapsed(result.data.createTime, result.data.deleteTime)
-                    this.controlPanel.costStr = (Math.round(result.data.price * (result.data.deleteTime - result.data.createTime) / 1000 * 10000) / 10000) + " " + result.data.currency
+
+                    let amt = result.data.price * (result.data.deleteTime - result.data.createTime) / 1000
+                    if (amt >= 1.0) {
+                        this.controlPanel.costStr = (Math.round(amt * 10) / 10) + " " + result.data.currency
+                    } else {
+                        this.controlPanel.costStr = (Math.round(amt * 10000) / 10000) + " " + result.data.currency
+                    }
 
                     let controlPanelContainer = document.querySelector('.control-panel-container')
                     if (controlPanelContainer) {
