@@ -205,7 +205,14 @@ module.exports = {
 
                 } else {
                     this.controlPanel.timeElapsedStr = getTimeElapsed(result.data.createTime)
-                    this.controlPanel.costStr = (Math.round(result.data.price * (result.data.currentTime - result.data.createTime) / 1000 * 10000) / 10000) + " " + result.data.currency
+                    let amt = result.data.price * (result.data.currentTime - result.data.createTime) / 1000;
+
+                    if (amt >= 1.0) {
+                        this.controlPanel.costStr = (Math.round(amt * 10) / 10) + " " + result.data.currency
+                    } else {
+                        this.controlPanel.costStr = (Math.round(amt * 10000) / 10000) + " " + result.data.currency
+                    }
+
                     if (releaseItemWrap) {
                         releaseItemWrap.style.display = 'inline'
                     }
