@@ -58,14 +58,16 @@
 <template>
     <div class="iframe-container">
         <div class="drag-overlay" :class="{ active: isDragging }"></div>
-        <div class="control-panel-container" :class="{'bg-orange-300': this.payload?.containerScene==='R_WAN','bg-green-400': this.payload?.containerScene==='R_LAN'}" ref="controlPanel" @mousedown="startDrag"
-            v-show="this.controlPanel.costStr"
+        <div class="control-panel-container"
+            :class="{ 'bg-orange-300': this.payload?.containerScene === 'R_WAN', 'bg-green-400': this.payload?.containerScene === 'R_LAN' }"
+            ref="controlPanel" @mousedown="startDrag" v-show="this.controlPanel.costStr"
             :style="{ top: position.y + 'px', left: position.x + 'px', right: 'auto', zIndex: isDragging ? 10000 : 1000 }">
             <div class="control-panel-cost text-xs">
 
-                <span v-if="this.payload?.containerScene==='R_WAN'">[公网]</span>
-                <span v-if="this.payload?.containerScene==='R_LAN'">[内网]</span>
-
+                <span v-if="this.payload?.containerScene === 'R_WAN'">[公网]</span>
+                <span v-if="this.payload?.containerScene === 'R_LAN'">[内网]</span>
+                CPU: {{ this.controlPanel.cpuStr }} /
+                内存: {{ this.controlPanel.memStr }} /
                 <!-- 需要展示 cpu/内存/磁盘/网络（丢包率）/时间/成本  -->
                 消费:{{ this.controlPanel.costStr }} / {{ this.controlPanel.statusStr }}:{{
                     this.controlPanel.timeElapsedStr }}
@@ -101,11 +103,13 @@ module.exports = {
                 'Expired': '过期',
                 'Terminated': '已终止'
             },
-            payload:{},
+            payload: {},
             controlPanel: {
                 count: 0,
                 break: false, //break the loop
                 sleepMs: 1000,
+                cpuStr: "-",
+                memStr: "-",
                 costStr: "",
                 statusStr: "",
                 timeElapsedStr: "",
@@ -200,6 +204,14 @@ module.exports = {
                         releaseItemWrap.style.display = 'inline'
                     }
 
+                }
+
+                if (result.data?.metrics?.limit && result.data?.metrics?.load >= 0) {
+                    this.controlPanel.cpuStr = Math.round(result.data.metrics.load / result.data.metrics.limit * 10) / 10 + "%"
+                }
+
+                if (result.data?.metrics?.availableBytes && result.data?.metrics?.rss >= 0) {
+                    this.controlPanel.memStr = Math.round(result.data.metrics.rss / result.data.metrics.availableBytes * 1000) / 10 + "%"
                 }
 
                 this.controlPanel.statusStr = this.statusDict[result.data.status] || result.data.status
