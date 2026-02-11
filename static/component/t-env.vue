@@ -207,7 +207,7 @@ module.exports = {
                 }
 
                 if (result.data?.metrics?.limit && result.data?.metrics?.load >= 0) {
-                    this.controlPanel.cpuStr = Math.round(result.data.metrics.load / result.data.metrics.limit * 10) / 10 + "%"
+                    this.controlPanel.cpuStr = Math.round(result.data.metrics.load / result.data.metrics.limit * 1000) / 10 + "%"
                 }
 
                 if (result.data?.metrics?.availableBytes && result.data?.metrics?.rss >= 0) {
