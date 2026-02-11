@@ -220,6 +220,50 @@
     flex-direction: column;
 }
 
+/* 日志弹窗样式 */
+.log-dialog-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    width: 90%;
+    max-width: 1200px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.log-content {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    padding: 16px;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.log-content::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.log-content::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 4px;
+}
+
+.log-content::-webkit-scrollbar-thumb:hover {
+    background-color: #666;
+}
+
+.log-content::-webkit-scrollbar-track {
+    background-color: #2d2d2d;
+}
+
 .events-table-wrapper {
     overflow-x: auto;
     overflow-y: auto;
@@ -554,6 +598,9 @@
                                     :class="{ 'text-green-600': item.rawData.status === 'Running', 'text-gray-400': item.rawData.status !== 'Running' }">打开</button>
                                 <button @click="refreshItem(item)"
                                     class="text-blue-600 hover:text-blue-900 mr-3 cursor-pointer">刷新</button>
+                                <button @click="viewLog(item)"
+                                    v-if="this.currentLoginAccount?.role==='admin'"
+                                    class="text-purple-600 hover:text-purple-900 mr-3 cursor-pointer">日志</button>
                                 <button @click="releaseItem(item)" class="hover:text-red-900 text-red-600 cursor-pointer">释放</button>
                             </td>
                         </tr>
@@ -664,6 +711,47 @@
                         <div class="el-dialog-footer-custom">
                             <div class="el-dialog-buttons">
                                 <button @click="closeEventsDialog" type="button" class="el-btn el-btn-primary">
+                                    关闭
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
+
+        <!-- 日志详情对话框 -->
+        <transition name="el-dialog-fade">
+            <div v-if="showLogDialog" class="el-dialog-overlay" @click="closeLogDialog">
+                <div class="el-dialog-wrapper" @click.stop>
+                    <div class="log-dialog-container">
+                        <!-- 对话框头部 -->
+                        <div class="el-dialog-header-custom">
+                            <span class="el-dialog-title-custom">容器日志 - {{ currentLogItem?.containerGroupName }}</span>
+                            <button @click="closeLogDialog" class="el-dialog-close-custom">
+                                <svg viewBox="0 0 1024 1024" width="16" height="16">
+                                    <path fill="currentColor"
+                                        d="M764.288 214.592 512 466.88 259.712 214.592a31.936 31.936 0 0 0-45.12 45.12L466.752 512 214.528 764.224a31.936 31.936 0 1 0 45.12 45.184L512 557.184l252.288 252.288a31.936 31.936 0 0 0 45.12-45.12L557.12 512.064l252.288-252.352a31.936 31.936 0 1 0-45.12-45.184z" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- 对话框内容 -->
+                        <div class="el-dialog-body-custom">
+                            <div v-if="logLoading" class="el-loading-container">
+                                <div class="el-loading-spinner"></div>
+                                <div class="el-loading-text">加载日志中...</div>
+                            </div>
+                            <div v-else-if="!logContent" class="text-center py-8 text-gray-500">
+                                暂无日志信息
+                            </div>
+                            <div v-else class="log-content">{{ logContent }}</div>
+                        </div>
+
+                        <!-- 对话框底部 -->
+                        <div class="el-dialog-footer-custom">
+                            <div class="el-dialog-buttons">
+                                <button @click="closeLogDialog" type="button" class="el-btn el-btn-primary">
                                     关闭
                                 </button>
                             </div>
@@ -841,7 +929,12 @@ module.exports = {
             showCreateDialog: false,
             // 事件弹窗
             showEventsDialog: false,
-            currentEventsItem: null
+            currentEventsItem: null,
+            // 日志弹窗
+            showLogDialog: false,
+            currentLogItem: null,
+            logContent: '',
+            logLoading: false
         }
     },
     computed: {
@@ -1231,6 +1324,45 @@ module.exports = {
             this.showCreateDialog = false;
             window.$message('容器组创建成功', 'success');
             this.loadTableData();
+        },
+        // 查看容器日志
+        async viewLog(item) {
+            this.currentLogItem = item;
+            this.showLogDialog = true;
+            this.logLoading = true;
+            this.logContent = '';
+
+            try {
+                const response = await fetchWithToken(`${this.apiBaseUrl}/tengu/instance/describeContainerLog`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: item.id,
+                        tail: 3000
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.resultCode === 1 && result.data) {
+                    this.logContent = result.data.content || '暂无日志内容';
+                } else {
+                    this.logContent = '获取日志失败: ' + (result.message || '未知错误');
+                }
+            } catch (error) {
+                console.error('获取容器日志失败:', error);
+                this.logContent = '获取日志失败: ' + error.message;
+            } finally {
+                this.logLoading = false;
+            }
+        },
+        // 关闭日志弹窗
+        closeLogDialog() {
+            this.showLogDialog = false;
+            this.currentLogItem = null;
+            this.logContent = '';
         }
     }
 }
