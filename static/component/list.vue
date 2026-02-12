@@ -546,7 +546,7 @@
 
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 <div v-if="this.monitorMetrics[item.rawData.containerGroupId]"
-                                    class="text-sm font-medium" style="width:70px">
+                                    class="text-sm font-medium" style="width:67px">
                                     负载 {{ this.monitorMetrics[item.rawData.containerGroupId]?.loadStr || '-' }} <br> 内存
                                     {{ this.monitorMetrics[item.rawData.containerGroupId]?.memStr || '-' }}
                                 </div>
