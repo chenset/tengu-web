@@ -1356,6 +1356,13 @@ module.exports = {
                 this.logContent = '获取日志失败: ' + error.message;
             } finally {
                 this.logLoading = false;
+                // 滚动到底部
+                this.$nextTick(function() {
+                    var logContentElement = document.querySelector('.log-content');
+                    if (logContentElement) {
+                        logContentElement.scrollTop = logContentElement.scrollHeight;
+                    }
+                });
             }
         },
         // 关闭日志弹窗
