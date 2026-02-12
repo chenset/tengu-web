@@ -532,7 +532,7 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                <div v-if="item.rawData.containerGroupId" class="text-sm font-medium">
+                                <div v-if="this.monitorMetrics[item.rawData.containerGroupId]" class="text-sm font-medium">
                                     负载 {{ this.monitorMetrics[item.rawData.containerGroupId]?.loadStr || '-' }} <br> 内存 {{this.monitorMetrics[item.rawData.containerGroupId]?.memStr || '-' }}
                                 </div>
                             </td>
@@ -782,10 +782,7 @@ module.exports = {
     },
     data() {
         return {
-            monitorMetrics: {
-                loadStr: "-",
-                memStr: "-",
-            },
+            monitorMetrics: {},
             containerScene: "R_LANn", // R_WAN (风控公网) / R_LAN （风控内网）
             currentLoginAccount: { email: "", role: "", nickname: "", permissionList: [] },
             currentPage: 1,
