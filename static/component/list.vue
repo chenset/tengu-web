@@ -454,7 +454,7 @@
                                 事件</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 规格</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="width:50px">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 监控</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 可用区</th>
@@ -546,6 +546,7 @@
 
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 <div v-if="this.monitorMetrics[item.rawData.containerGroupId]"
+                                    style="width: 65px;"
                                     class="text-sm font-medium">
                                     负载 {{ this.monitorMetrics[item.rawData.containerGroupId]?.loadStr || '-' }} <br> 内存
                                     {{ this.monitorMetrics[item.rawData.containerGroupId]?.memStr || '-' }}
