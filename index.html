@@ -14,6 +14,13 @@
     <script src="/static/app.min.js?_2"></script>
     <script src="/static/app.js?_7"></script>
     <script src="/static/tailwind.4.1.17.prod.js"></script>
+    <style>
+        .container {
+            @media (width >=110rem) {
+                max-width: 110rem;
+            }
+        }
+    </style>
 </head>
 
 <body style="height: 100%">
@@ -27,7 +34,7 @@
         <common></common>
     </div>
     <script>
-        const version = "31";
+        const version = "32";
         //由于原生的 HTML 解析行为的限制，单个闭合标签可能会导致一些例外情况，所以请使用双封闭标签
         const app = Vue.createApp({})
             .component("common", Vue.defineAsyncComponent(httpVueLoaderVersion('/static/component/common.vue')))
@@ -59,7 +66,7 @@
                     {
                         //list
                         path: '/',
-                        alias: ['/list/','/list'],
+                        alias: ['/list/', '/list'],
                         component: Vue.defineAsyncComponent(httpVueLoaderVersion('/static/component/list.vue')),
                         meta: { title: "TENGU - 容器组" },
                     },
