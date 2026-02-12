@@ -226,7 +226,7 @@
     border-radius: 8px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
     width: 100%;
-    max-width: 1200px;
+    max-width: 1600px;
     max-height: 80vh;
     display: flex;
     flex-direction: column;
