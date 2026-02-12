@@ -467,17 +467,20 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        <tr v-for="item in this.tableData" :key="item.id" class="hover:bg-gray-50" :class="{'opacity-60':item.rawData.email !== this.currentLoginAccount.email && this.currentLoginAccount?.email}">
+                        <tr v-for="item in this.tableData" :key="item.id" class="hover:bg-gray-50"
+                            :class="{ 'opacity-60': item.rawData.email !== this.currentLoginAccount.email && this.currentLoginAccount?.email }">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-gray-900">
-                                    <span v-if="item?.rawData?.containerScene === 'R_LAN'" title="内网" class="px-2 py-1 mr-1 rounded text-xs font-medium bg-green-100 text-green-800">
-                                       内网 
+                                    <span v-if="item?.rawData?.containerScene === 'R_LAN'" title="内网"
+                                        class="px-2 py-1 mr-1 rounded text-xs font-medium bg-green-100 text-green-800">
+                                        内网
                                     </span>
 
-                                    <span v-if="item?.rawData?.containerScene === 'R_WAN'" title="公网" class="px-2 py-1 mr-1 rounded text-xs font-medium bg-orange-100 text--800">
+                                    <span v-if="item?.rawData?.containerScene === 'R_WAN'" title="公网"
+                                        class="px-2 py-1 mr-1 rounded text-xs font-medium bg-orange-100 text--800">
                                         公网
                                     </span>
-         {{ item.containerGroupId }}
+                                    {{ item.containerGroupId }}
                                 </div>
                                 <div class="text-sm text-gray-500">{{ item.containerGroupName }}
                                     <span v-if="item?.rawData?.spotStrategy === 'SpotAsPriceGo'" title="抢占式"
@@ -599,10 +602,10 @@
                                     :class="{ 'text-green-600': item.rawData.status === 'Running', 'text-gray-400': item.rawData.status !== 'Running' }">打开</button>
                                 <button @click="refreshItem(item)"
                                     class="text-blue-600 hover:text-blue-900 mr-3 cursor-pointer">刷新</button>
-                                <button @click="viewLog(item)"
-                                    v-if="this.currentLoginAccount?.role==='admin'"
+                                <button @click="viewLog(item)" v-if="this.currentLoginAccount?.role === 'admin'"
                                     class="text-purple-600 hover:text-purple-900 mr-3 cursor-pointer">日志</button>
-                                <button @click="releaseItem(item)" class="hover:text-red-900 text-red-600 cursor-pointer">释放</button>
+                                <button @click="releaseItem(item)"
+                                    class="hover:text-red-900 text-red-600 cursor-pointer">释放</button>
                             </td>
                         </tr>
                     </tbody>
@@ -1148,6 +1151,10 @@ module.exports = {
                 } else if (result.resultCode === 1 && result.data) {
                     this.tableData = this.formatTableData(result.data.rows || []);
                     this.totalItems = result.data.total || 0;
+                    //加载性能数据
+
+                    this.fetchMetricData(result.data.rows);
+
                 } else {
                     console.error('加载数据失败:', result);
                     this.tableData = [];
@@ -1161,6 +1168,36 @@ module.exports = {
             } finally {
                 this.loading = false;
             }
+        },
+        async fetchMetricData(rows) {
+            if (!rows || rows.length === 0) {
+                return;
+            }
+            let containerGroupIdList = rows.map(item => item.containerGroupId)
+            if (containerGroupIdList.length === 0) {
+                return;
+            }
+
+            const response = await fetchWithToken(`${this.apiBaseUrl}/tengu/instance/describeContainerGroupMetric`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    containerGroupIdList: containerGroupIdList
+                })
+            });
+
+            if (!response.ok) {
+                return
+            }
+            const result = await response.json();
+            if (result.resultCode !== 1) {
+                return
+            }
+
+            console.log('性能数据:', result.data);
+
         },
         // 格式化表格数据
         formatTableData(rows) {
@@ -1358,7 +1395,7 @@ module.exports = {
             } finally {
                 this.logLoading = false;
                 // 滚动到底部
-                this.$nextTick(function() {
+                this.$nextTick(function () {
                     var logContentElement = document.querySelector('.log-content');
                     if (logContentElement) {
                         logContentElement.scrollTop = logContentElement.scrollHeight;
