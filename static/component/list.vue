@@ -546,13 +546,12 @@
 
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 <div v-if="this.monitorMetrics[item.rawData.containerGroupId]"
-                                    style="width: 65px;"
                                     class="text-sm font-medium">
                                     负载 {{ this.monitorMetrics[item.rawData.containerGroupId]?.loadStr || '-' }} <br> 内存
                                     {{ this.monitorMetrics[item.rawData.containerGroupId]?.memStr || '-' }}
                                 </div>
                             </td>
-                            
+
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 <span v-if="!item.rawData.zoneId">
                                     {{ item.zone }}
@@ -1192,6 +1191,11 @@ module.exports = {
                 return;
             }
 
+            this.monitorMetrics = {}
+            for (let key of containerGroupIdList) {
+                this.monitorMetrics[key] = {}
+            }
+
             const response = await fetchWithToken(`${this.apiBaseUrl}/tengu/instance/describeContainerGroupMetric`, {
                 method: 'POST',
                 headers: {
@@ -1210,10 +1214,7 @@ module.exports = {
                 return
             }
 
-
-            this.monitorMetrics = {}
             for (let key in result.data) {
-                this.monitorMetrics[key] = {}
                 let metrics = result.data[key];
                 //load
                 if (metrics?.limit && metrics?.load >= 0) {
