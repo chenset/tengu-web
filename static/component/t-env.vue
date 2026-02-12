@@ -224,8 +224,8 @@ module.exports = {
                     this.controlPanel.loadStr = Math.round(result.data.metrics.load / result.data.metrics.limit * 1000) / 10 + "%"
                 }
                 //mem
-                if (result.data?.metrics?.availableBytes && result.data?.metrics?.rss >= 0) {
-                    this.controlPanel.memStr = Math.round(result.data.metrics.rss / result.data.metrics.availableBytes * 1000) / 10 + "%"
+                if (result.data?.metrics?.availableBytes>=0 && result.data?.metrics?.rss >= 0) {
+                    this.controlPanel.memStr = Math.round(result.data.metrics.rss / (result.data.metrics.availableBytes+result.data.metrics.rss) * 1000) / 10 + "%"
                 }
 
                 this.controlPanel.statusStr = this.statusDict[result.data.status] || result.data.status
