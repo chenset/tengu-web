@@ -455,6 +455,8 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 规格</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                监控</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 可用区</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 总价/单价</th>
@@ -528,6 +530,11 @@
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer hover:opacity-80">
                                     {{ item.events?.length || '-' }}
                                 </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <div v-if="item.rawData.containerGroupId" class="text-sm font-medium">
+                                    负载 {{ this.monitorMetrics[item.rawData.containerGroupId]?.loadStr || '-' }} <br> 内存 {{this.monitorMetrics[item.rawData.containerGroupId]?.memStr || '-' }}
+                                </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 <div v-if="item.rawData.cpu" class="text-sm font-medium">
@@ -628,7 +635,7 @@
                     <div>
                         <p class="text-sm text-gray-700">
                             第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
-                                }}</span> 条，
+                            }}</span> 条，
                             共 <span class="font-medium">{{ totalItems }}</span> 条
                         </p>
                     </div>
@@ -661,7 +668,7 @@
                         <!-- 对话框头部 -->
                         <div class="el-dialog-header-custom">
                             <span class="el-dialog-title-custom">事件详情 - {{ currentEventsItem?.containerGroupName
-                            }}</span>
+                                }}</span>
                             <button @click="closeEventsDialog" class="el-dialog-close-custom">
                                 <svg viewBox="0 0 1024 1024" width="16" height="16">
                                     <path fill="currentColor"
@@ -775,6 +782,10 @@ module.exports = {
     },
     data() {
         return {
+            monitorMetrics: {
+                loadStr: "-",
+                memStr: "-",
+            },
             containerScene: "R_LANn", // R_WAN (风控公网) / R_LAN （风控内网）
             currentLoginAccount: { email: "", role: "", nickname: "", permissionList: [] },
             currentPage: 1,
@@ -1196,7 +1207,24 @@ module.exports = {
                 return
             }
 
-            console.log('性能数据:', result.data);
+
+            this.monitorMetrics = {}
+            for (let key in result.data) {
+                this.monitorMetrics[key] = {}
+                let metrics = result.data[key];
+                //load
+                if (metrics?.limit && metrics?.load >= 0) {
+                    this.monitorMetrics[key].loadStr = Math.round(metrics.load / metrics.limit * 1000) / 10 + "%"
+                }
+                //mem
+                if (metrics?.availableBytes >= 0 && metrics?.rss >= 0 && metrics?.cache >= 0) {
+                    this.monitorMetrics[key].memStr = Math.round(metrics.rss / (metrics.availableBytes - metrics.cache + metrics.rss) * 1000) / 10 + "%"
+                }
+            }
+
+
+
+            // console.log('性能数据:', result.data);
 
         },
         // 格式化表格数据
