@@ -66,7 +66,7 @@
 
                 <span v-if="this.payload?.containerScene === 'R_WAN'">[公网]</span>
                 <span v-if="this.payload?.containerScene === 'R_LAN'">[内网]</span>
-                CPU: {{ this.controlPanel.cpuStr }} /
+                负载: {{ this.controlPanel.loadStr }} /
                 内存: {{ this.controlPanel.memStr }} /
                 <!-- 需要展示 cpu/内存/磁盘/网络（丢包率）/时间/成本  -->
                 消费:{{ this.controlPanel.costStr }} / {{ this.controlPanel.statusStr }}:{{
@@ -108,7 +108,7 @@ module.exports = {
                 count: 0,
                 break: false, //break the loop
                 sleepMs: 1000,
-                cpuStr: "-",
+                loadStr: "-",
                 memStr: "-",
                 costStr: "",
                 statusStr: "",
@@ -219,10 +219,11 @@ module.exports = {
 
                 }
 
+                //load
                 if (result.data?.metrics?.limit && result.data?.metrics?.load >= 0) {
-                    this.controlPanel.cpuStr = Math.round(result.data.metrics.load / result.data.metrics.limit * 1000) / 10 + "%"
+                    this.controlPanel.loadStr = Math.round(result.data.metrics.load / result.data.metrics.limit * 1000) / 10 + "%"
                 }
-
+                //mem
                 if (result.data?.metrics?.availableBytes && result.data?.metrics?.rss >= 0) {
                     this.controlPanel.memStr = Math.round(result.data.metrics.rss / result.data.metrics.availableBytes * 1000) / 10 + "%"
                 }
