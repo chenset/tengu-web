@@ -110,28 +110,32 @@
 
 <template>
     <div class="header-container">
-        <h1 class="header-title">{{ title }}</h1>
+        <h1 class="header-title hidden md:block">{{ title }}</h1>
         <div class="header-right">
             <!-- 插槽：允许父组件传入自定义按钮 -->
-            <slot></slot>
+            <div class="hidden md:block">
 
-            <!-- 用户信息显示 -->
-            <div class="user-info header-right-item" v-if="currentLoginAccount.email">
-                <div class="user-info-item">
-                    <!-- <span class="user-info-label">邮箱:</span> -->
-                    <span class="user-info-value">{{ currentLoginAccount.email }}</span>
-                </div>
-                <!-- <div class="user-info-item">
+                <slot></slot>
+
+                <!-- 用户信息显示 -->
+                <div class="user-info header-right-item" v-if="currentLoginAccount.email">
+                    <div class="user-info-item">
+                        <!-- <span class="user-info-label">邮箱:</span> -->
+                        <span class="user-info-value">{{ currentLoginAccount.email }}</span>
+                    </div>
+                    <!-- <div class="user-info-item">
                     <span class="user-info-label">总时长:</span>
                     <span class="user-info-value">{{ formatSeconds(currentLoginAccount.totalSeconds) }}</span>
                 </div> -->
-                <div class="user-info-item">
-                    <span class="user-info-label">近24h费用:</span>
-                    <span class="user-info-value">¥{{ formatPrice(currentLoginAccount.price24h) }}</span>
-                </div>
-                <div class="user-info-item">
-                    <span class="user-info-label">总费用:</span>
-                    <span class="user-info-value">¥{{ formatPrice(currentLoginAccount.totalPrice) }}</span>
+                    <div class="user-info-item">
+                        <span class="user-info-label">近24h费用:</span>
+                        <span class="user-info-value">¥{{ formatPrice(currentLoginAccount.price24h) }}</span>
+                    </div>
+                    <div class="user-info-item">
+                        <span class="user-info-label">总费用:</span>
+                        <span class="user-info-value">¥{{ formatPrice(currentLoginAccount.totalPrice) }}</span>
+                    </div>
+
                 </div>
             </div>
 
@@ -180,7 +184,7 @@ module.exports = {
             isLoggingOut: false,
             currentLoginAccount: {
                 email: "", role: "", nickname: "", permissionList: [],
-                totalSeconds: 0, price24h: 0, totalPrice: 0, hisCount:0
+                totalSeconds: 0, price24h: 0, totalPrice: 0, hisCount: 0
             }
         }
     },
