@@ -331,7 +331,7 @@
 
         <!-- 筛选条件 -->
         <div class="mb-4 bg-white rounded-lg shadow p-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 items-end">
                 <!-- 地域多选 -->
                 <!-- <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">地域</label>
@@ -363,7 +363,7 @@
                     </div>
                 </div> -->
                 <!-- 状态多选 -->
-                <div class="md:col-span-2">
+                <div class="lg:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-1">容器状态</label>
                     <div class="relative" ref="statusDropdown">
                         <div @click.stop="toggleStatusDropdown"
@@ -405,17 +405,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex items-end gap-2 md:col-span-1">
+                <div class="flex items-end gap-2 lg:col-span-1">
                     <button @click="loadTableData"
                         class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                         查询
                     </button>
                     <button @click="openCreateLanDialog" v-if="currentLoginAccount?.permissionList?.includes('R_LAN')"
-                        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-500 hover:bg-green-600 disabled:bg-green-300 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        class="min-w-[80px] inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-500 hover:bg-green-600 disabled:bg-green-300 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         创建内网实例
                     </button>
                     <button @click="openCreateWanDialog" v-if="currentLoginAccount?.permissionList?.includes('R_WAN')"
-                        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 disabled:bg-orange-300 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
+                        class="min-w-[80px] inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 disabled:bg-orange-300 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
                         创建公网实例
                     </button>
                 </div>
