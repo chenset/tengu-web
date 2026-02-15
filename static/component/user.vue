@@ -64,7 +64,7 @@
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">权限</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">总消耗</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">状态</th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">最后登录时间</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">最后登录/操作</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">最后登录IP</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">创建时间</th>
                             <th class="px-4 py-3 text-center text-sm font-medium text-gray-700 border-b">操作</th>
@@ -84,7 +84,8 @@
                                 暂无数据
                             </td>
                         </tr>
-                        <tr v-else v-for="user in userList" :key="user.id" class="hover:bg-gray-50 transition" :class="{'opacity-50':user.status!==1}">
+                        <tr v-else v-for="user in userList" :key="user.id" class="hover:bg-gray-50 transition"
+                            :class="{ 'opacity-50': user.status !== 1 }">
                             <td class="px-4 py-3 text-sm text-gray-900 border-b">{{ user.id }}</td>
                             <td class="px-4 text-sm text-gray-900 border-b">{{ user.email }}
                                 <br>
@@ -140,8 +141,12 @@
                                     {{ user.status === 1 ? '正常' : '禁用' }}
                                 </span>
                             </td>
-                            <td class="px-4 py-3 text-sm text-gray-600 border-b">
+                            <td class="px-4 text-sm text-gray-600 border-b">
                                 {{ formatTime(user.lastLoginTime) }}
+                                <small v-if="user.lastActiveTime" class="text-gray-400">
+                                    <br>
+                                    {{ formatTime(user.lastActiveTime) }}
+                                </small>
                             </td>
                             <td class="px-4 py-3 text-sm text-gray-600 border-b">
                                 {{ user.lastLoginIp || '-' }}
