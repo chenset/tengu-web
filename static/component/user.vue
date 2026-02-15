@@ -64,9 +64,8 @@
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">权限</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">总消耗</th>
                             <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">状态</th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">最后登录/操作</th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">最后登录IP</th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">创建时间</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">登录/IP</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">创建/操作</th>
                             <th class="px-4 py-3 text-center text-sm font-medium text-gray-700 border-b">操作</th>
                         </tr>
                     </thead>
@@ -143,16 +142,17 @@
                             </td>
                             <td class="px-4 text-sm text-gray-600 border-b">
                                 {{ formatTime(user.lastLoginTime) }}
+                                <small v-if="user.lastLoginIp" class="text-gray-400">
+                                      <br>
+                                    {{ user.lastLoginIp || '-' }}
+                                </small>
+                            </td>
+                            <td class="px-4 text-sm text-gray-600 border-b">
+                                {{ formatTime(user.createTime) }}
                                 <small v-if="user.lastActiveTime" class="text-gray-400">
                                     <br>
                                     {{ formatTime(user.lastActiveTime) }}
                                 </small>
-                            </td>
-                            <td class="px-4 py-3 text-sm text-gray-600 border-b">
-                                {{ user.lastLoginIp || '-' }}
-                            </td>
-                            <td class="px-4 py-3 text-sm text-gray-600 border-b">
-                                {{ formatTime(user.createTime) }}
                             </td>
                             <td class="px-4 py-3 text-sm border-b">
                                 <div class="flex justify-center gap-2">
