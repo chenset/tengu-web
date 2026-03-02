@@ -59,7 +59,7 @@
                     class="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-52" />
 
                 <div class="flex items-center gap-1">
-                    <span class="text-sm text-gray-500 mr-1">状态:</span>
+                    <span class="text-sm mr-1 font-medium text-gray-700">状态</span>
                     <button @click="toggleFilter('statusList', '1')"
                         :class="filter.statusList.indexOf('1') !== -1 ? 'bg-green-500 text-white border-green-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
                         class="py-1 px-3 border rounded text-xs font-medium transition duration-200">正常</button>
@@ -67,9 +67,9 @@
                         :class="filter.statusList.indexOf('0') !== -1 ? 'bg-red-500 text-white border-red-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
                         class="py-1 px-3 border rounded text-xs font-medium transition duration-200">禁用</button>
                 </div>
-
+                
                 <div class="flex items-center gap-1">
-                    <span class="text-sm text-gray-500 mr-1">角色:</span>
+                    <span class="text-sm mr-1 font-medium text-gray-700">角色</span>
                     <button @click="toggleFilter('roleList', 'admin')"
                         :class="filter.roleList.indexOf('admin') !== -1 ? 'bg-purple-500 text-white border-purple-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
                         class="py-1 px-3 border rounded text-xs font-medium transition duration-200">admin</button>
