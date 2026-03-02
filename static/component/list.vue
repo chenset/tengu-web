@@ -563,10 +563,13 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 <div v-if="item.rawData.price > 0" class="text-sm font-medium text-orange-400">
 
-                                    <span v-if="!item.rawData.deleteTime">
-                                        {{ Math.round(item.rawData.price * (new Date().getTime() -
-                                            (item.rawData.createTime)) / 1000 * 10000) / 10000 }}
-                                    </span>
+                                    <template v-if="!item.rawData.deleteTime">
+                                        <span v-if="!item.rawData.containerGroupId"> - </span>
+                                        <span v-else>
+                                            {{ Math.round(item.rawData.price * (new Date().getTime() -
+                                                (item.rawData.createTime)) / 1000 * 10000) / 10000 }}
+                                        </span>
+                                    </template>
 
                                     <span v-if="item.rawData.deleteTime">
                                         {{ Math.round(item.rawData.price * (item.rawData.deleteTime -
@@ -585,9 +588,13 @@
 
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 <strong>
-                                    <span v-if="!item.rawData.deleteTime">
-                                        {{ getTimeElapsed(item.rawData.createTime, new Date().getTime()) }}
-                                    </span>
+
+                                    <template v-if="!item.rawData.deleteTime">
+                                        <span v-if="!item.rawData.containerGroupId"> - </span>
+                                        <span v-else>
+                                             {{ getTimeElapsed(item.rawData.createTime, new Date().getTime()) }}
+                                        </span>
+                                    </template>
 
                                     <span v-if="item.rawData.deleteTime">
                                         {{ getTimeElapsed(item.rawData.createTime, item.rawData.deleteTime) }}
@@ -640,7 +647,7 @@
                     <div>
                         <p class="text-sm text-gray-700">
                             第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
-                                }}</span> 条，
+                            }}</span> 条，
                             共 <span class="font-medium">{{ totalItems }}</span> 条
                         </p>
                     </div>
@@ -673,7 +680,7 @@
                         <!-- 对话框头部 -->
                         <div class="el-dialog-header-custom">
                             <span class="el-dialog-title-custom">事件详情 - {{ currentEventsItem?.containerGroupName
-                            }}</span>
+                                }}</span>
                             <button @click="closeEventsDialog" class="el-dialog-close-custom">
                                 <svg viewBox="0 0 1024 1024" width="16" height="16">
                                     <path fill="currentColor"
