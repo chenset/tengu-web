@@ -258,7 +258,7 @@ module.exports = {
             },
             filter: {
                 keyword: '',
-                statusList: [],
+                statusList: ['1'],
                 roleList: []
             }
         }
@@ -559,7 +559,7 @@ module.exports = {
 
         resetFilter() {
             this.filter.keyword = '';
-            this.filter.statusList = [];
+            this.filter.statusList = ['1'];
             this.filter.roleList = [];
             this.handleSearch();
         },
