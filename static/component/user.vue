@@ -56,7 +56,7 @@
             <!-- 筛选 -->
             <div class="flex flex-wrap gap-3 mb-4 items-center">
                 <input v-model="filter.keyword" @keyup.enter="handleSearch" type="text" placeholder="搜索邮箱/昵称"
-                    class="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-52" />
+                    class="px-3 py-1.5 border border-gray-300 rounded-md text-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-52" />
 
                 <div class="flex items-center gap-1">
                     <span class="text-sm mr-1 font-medium text-gray-700">状态</span>
@@ -67,7 +67,7 @@
                         :class="filter.statusList.indexOf('0') !== -1 ?  'bg-red-100 text-red-800 border-red-100 hover:bg-red-50' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
                         class="py-1 px-3 border rounded text-xs font-medium transition duration-200">禁用</button>
                 </div>
-                
+
                 <div class="flex items-center gap-1">
                     <span class="text-sm mr-1 font-medium text-gray-700">角色</span>
                     <button @click="toggleFilter('roleList', 'admin')"
@@ -79,7 +79,7 @@
                 </div>
 
                 <button @click="handleSearch"
-                    class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-1.5 px-4 rounded-md text-sm transition duration-200">
+                    class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-1.5 px-4 rounded-md text-md transition duration-200">
                     搜索
                 </button>
                 <!-- <button @click="resetFilter"
