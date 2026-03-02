@@ -61,20 +61,20 @@
                 <div class="flex items-center gap-1">
                     <span class="text-sm mr-1 font-medium text-gray-700">状态</span>
                     <button @click="toggleFilter('statusList', '1')"
-                        :class="filter.statusList.indexOf('1') !== -1 ? 'bg-green-100 text-green-800 border-green-100 hover:bg-green-50' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                        :class="filter.statusList.indexOf('1') !== -1 ? 'bg-green-100 text-green-800 border-green-100 hover:bg-green-50' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'"
                         class="py-1 px-3 border rounded text-xs font-medium transition duration-200">正常</button>
                     <button @click="toggleFilter('statusList', '0')"
-                        :class="filter.statusList.indexOf('0') !== -1 ?  'bg-red-100 text-red-800 border-red-100 hover:bg-red-50' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                        :class="filter.statusList.indexOf('0') !== -1 ?  'bg-red-100 text-red-800 border-red-100 hover:bg-red-50' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'"
                         class="py-1 px-3 border rounded text-xs font-medium transition duration-200">禁用</button>
                 </div>
 
                 <div class="flex items-center gap-1">
                     <span class="text-sm mr-1 font-medium text-gray-700">角色</span>
                     <button @click="toggleFilter('roleList', 'admin')"
-                        :class="filter.roleList.indexOf('admin') !== -1 ? 'bg-purple-100 text-purple-800 border-purple-100 hover:bg-purple-50' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                        :class="filter.roleList.indexOf('admin') !== -1 ? 'bg-purple-100 text-purple-800 border-purple-100 hover:bg-purple-50' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'"
                         class="py-1 px-3 border rounded text-xs font-medium transition duration-200">admin</button>
                     <button @click="toggleFilter('roleList', 'user')"
-                        :class="filter.roleList.indexOf('user') !== -1 ? 'bg-blue-100 text-blue-800 border-blue-100 hover:bg-blue-50' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                        :class="filter.roleList.indexOf('user') !== -1 ? 'bg-blue-100 text-blue-800 border-blue-100 hover:bg-blue-50' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'"
                         class="py-1 px-3 border rounded text-xs font-medium transition duration-200">user</button>
                 </div>
 
