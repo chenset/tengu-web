@@ -47,10 +47,45 @@
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-semibold text-gray-800">用户列表</h2>
-                <button @click="fetchUserList"
+                <!-- <button @click="fetchUserList"
                     class="bg-white hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 border border-gray-300 rounded-md transition duration-200">
                     刷新
+                </button> -->
+            </div>
+
+            <!-- 筛选 -->
+            <div class="flex flex-wrap gap-3 mb-4 items-center">
+                <input v-model="filter.keyword" @keyup.enter="handleSearch" type="text" placeholder="搜索邮箱/昵称"
+                    class="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-52" />
+
+                <div class="flex items-center gap-1">
+                    <span class="text-sm text-gray-500 mr-1">状态:</span>
+                    <button @click="toggleFilter('statusList', '1')"
+                        :class="filter.statusList.indexOf('1') !== -1 ? 'bg-green-500 text-white border-green-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                        class="py-1 px-3 border rounded text-xs font-medium transition duration-200">正常</button>
+                    <button @click="toggleFilter('statusList', '0')"
+                        :class="filter.statusList.indexOf('0') !== -1 ? 'bg-red-500 text-white border-red-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                        class="py-1 px-3 border rounded text-xs font-medium transition duration-200">禁用</button>
+                </div>
+
+                <div class="flex items-center gap-1">
+                    <span class="text-sm text-gray-500 mr-1">角色:</span>
+                    <button @click="toggleFilter('roleList', 'admin')"
+                        :class="filter.roleList.indexOf('admin') !== -1 ? 'bg-purple-500 text-white border-purple-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                        class="py-1 px-3 border rounded text-xs font-medium transition duration-200">admin</button>
+                    <button @click="toggleFilter('roleList', 'user')"
+                        :class="filter.roleList.indexOf('user') !== -1 ? 'bg-blue-500 text-white border-blue-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                        class="py-1 px-3 border rounded text-xs font-medium transition duration-200">user</button>
+                </div>
+
+                <button @click="handleSearch"
+                    class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-1.5 px-4 rounded-md text-sm transition duration-200">
+                    搜索
                 </button>
+                <!-- <button @click="resetFilter"
+                    class="bg-white hover:bg-gray-50 text-gray-700 font-medium py-1.5 px-4 border border-gray-300 rounded-md text-sm transition duration-200">
+                    重置
+                </button> -->
             </div>
 
             <!-- 表格 -->
@@ -220,6 +255,11 @@ module.exports = {
                 page: 1,
                 size: 20,
                 total: 0
+            },
+            filter: {
+                keyword: '',
+                statusList: [],
+                roleList: []
             }
         }
     },
@@ -290,7 +330,10 @@ module.exports = {
                     },
                     body: JSON.stringify({
                         page: this.pagination.page,
-                        size: this.pagination.size
+                        size: this.pagination.size,
+                        keyword: this.filter.keyword || undefined,
+                        statusList: this.filter.statusList,
+                        roleList: this.filter.roleList
                     })
                 });
 
@@ -497,6 +540,28 @@ module.exports = {
                     return Promise.resolve();
                 }
             });
+        },
+
+        toggleFilter(field, value) {
+            const idx = this.filter[field].indexOf(value);
+            if (idx !== -1) {
+                this.filter[field].splice(idx, 1);
+            } else {
+                this.filter[field].push(value);
+            }
+            this.handleSearch();
+        },
+
+        handleSearch() {
+            this.pagination.page = 1;
+            this.fetchUserList();
+        },
+
+        resetFilter() {
+            this.filter.keyword = '';
+            this.filter.statusList = [];
+            this.filter.roleList = [];
+            this.handleSearch();
         },
 
         handlePageChange(page) {
