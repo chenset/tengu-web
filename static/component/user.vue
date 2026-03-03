@@ -123,7 +123,7 @@
                             <td class="px-4 py-3 text-sm text-gray-900 border-b">{{ user.id }}</td>
                             <td class="px-4 text-sm text-gray-900 border-b">{{ user.email }}
                                 <br>
-                                <small class="text-gray-400">
+                                <small class="text-gray-400 cursor-pointer hover:text-blue-500 hover:underline" @dblclick="showEditNicknameDialog(user)" title="双击修改昵称">
                                     {{ user.nickname || '-' }}
                                 </small>
                             </td>
@@ -539,6 +539,61 @@ module.exports = {
                 confirmText: '关闭',
                 onConfirm: function () {
                     return Promise.resolve();
+                }
+            });
+        },
+
+        showEditNicknameDialog(user) {
+            const self = this;
+            const inputId = 'edit-nickname-input';
+
+            const content = `
+                <div style="padding: 20px;">
+                    <p style="margin-bottom: 12px; font-size: 14px; color: #606266;">
+                        修改用户 <strong>${user.email}</strong> 的昵称：
+                    </p>
+                    <input id="${inputId}" type="text" value="${user.nickname || ''}" placeholder="请输入昵称"
+                        style="width: 100%; padding: 8px 12px; border: 1px solid #dcdfe6; border-radius: 4px; font-size: 14px; outline: none; box-sizing: border-box;" />
+                </div>
+            `;
+
+            window.$dialog({
+                title: '修改昵称',
+                content: content,
+                width: 'w-96',
+                showFooter: true,
+                cancelText: '取消',
+                confirmText: '保存',
+                onConfirm: async function () {
+                    const input = document.getElementById(inputId);
+                    const nickName = input ? input.value.trim() : '';
+
+                    try {
+                        const response = await fetchWithToken(self.apiBaseUrl + '/tengu/account/user/update', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                id: user.id,
+                                nickName: nickName
+                            })
+                        });
+
+                        const result = await response.json();
+
+                        if (result.resultCode === 1) {
+                            window.$message('昵称修改成功', 'success');
+                            self.fetchUserList();
+                        } else {
+                            window.$message(result.message || '昵称修改失败', 'error');
+                            throw new Error(result.message || '昵称修改失败');
+                        }
+                    } catch (error) {
+                        console.error('修改昵称错误:', error);
+                        window.$message('昵称修改失败: ' + error.message, 'error');
+                        throw error;
+                    }
                 }
             });
         },
