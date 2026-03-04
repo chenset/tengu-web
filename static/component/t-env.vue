@@ -59,7 +59,7 @@
     <div class="iframe-container">
         <div class="drag-overlay" :class="{ active: isDragging }"></div>
         <div class="control-panel-container"
-            :class="{ 'bg-orange-300': this.payload?.containerScene === 'R_WAN', 'bg-green-400': this.payload?.containerScene === 'R_LAN' }"
+            :class="{ 'bg-orange-300': this.payload?.containerScene === 'R_WAN', 'bg-green-500': this.payload?.containerScene === 'R_LAN' }"
             ref="controlPanel" @mousedown="startDrag" v-show="this.controlPanel.costStr"
             :style="{ top: position.y + 'px', left: position.x + 'px', right: 'auto', zIndex: isDragging ? 10000 : 1000 }">
             <div class="control-panel-cost text-xs">
