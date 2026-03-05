@@ -827,7 +827,7 @@ module.exports = {
                 { value: 'Restarting', label: '重启中' },
                 { value: 'Updating', label: '更新中' },
                 { value: 'Terminating', label: '终止中' },
-                { value: 'Expired', label: '过期' },
+                { value: 'Expired', label: '已过期' },
                 { value: 'Terminated', label: '已终止' }
             ],
             zoneIdMap: {
@@ -1101,7 +1101,7 @@ module.exports = {
                 '创建失败': 'bg-red-100 text-red-800',
                 '终止中': 'bg-yellow-100 text-yellow-800',
                 '已终止': 'bg-gray-100 text-gray-800',
-                '过期': 'bg-gray-100 text-gray-800'
+                '已过期': 'bg-orange-100 text-orange-800'
             };
             return classMap[status] || 'bg-gray-100 text-gray-800';
         },
@@ -1277,7 +1277,7 @@ module.exports = {
                 'Restarting': '重启中',
                 'Updating': '更新中',
                 'Terminating': '终止中',
-                'Expired': '过期',
+                'Expired': '已过期',
                 'Terminated': '已终止'
             };
             return statusMap[status] || status;
