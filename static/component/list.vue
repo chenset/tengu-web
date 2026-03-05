@@ -592,7 +592,7 @@
                                     <template v-if="!item.rawData.deleteTime">
                                         <span v-if="!item.rawData.containerGroupId"> - </span>
                                         <span v-else>
-                                             {{ getTimeElapsed(item.rawData.createTime, new Date().getTime()) }}
+                                            {{ getTimeElapsed(item.rawData.createTime, new Date().getTime()) }}
                                         </span>
                                     </template>
 
@@ -647,7 +647,7 @@
                     <div>
                         <p class="text-sm text-gray-700">
                             第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
-                            }}</span> 条，
+                                }}</span> 条，
                             共 <span class="font-medium">{{ totalItems }}</span> 条
                         </p>
                     </div>
@@ -680,7 +680,7 @@
                         <!-- 对话框头部 -->
                         <div class="el-dialog-header-custom">
                             <span class="el-dialog-title-custom">事件详情 - {{ currentEventsItem?.containerGroupName
-                                }}</span>
+                            }}</span>
                             <button @click="closeEventsDialog" class="el-dialog-close-custom">
                                 <svg viewBox="0 0 1024 1024" width="16" height="16">
                                     <path fill="currentColor"
@@ -1193,23 +1193,23 @@ module.exports = {
             if (!rows || rows.length === 0) {
                 return;
             }
-            let containerGroupIdList = rows.map(item => item.containerGroupId)
-            if (containerGroupIdList.length === 0) {
+            let hostIpList = rows.map(item => item.host)
+            if (hostIpList.length === 0) {
                 return;
             }
 
             this.monitorMetrics = {}
-            for (let key of containerGroupIdList) {
+            for (let key of hostIpList) {
                 this.monitorMetrics[key] = {}
             }
 
-            const response = await fetchWithToken(`${this.apiBaseUrl}/tengu/instance/describeContainerGroupMetric`, {
+            const response = await fetchWithToken(`${this.apiBaseUrl}/tengu/instance/ContainerGroupMetric`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    containerGroupIdList: containerGroupIdList
+                    hostIpList: hostIpList
                 })
             });
 
@@ -1221,17 +1221,17 @@ module.exports = {
                 return
             }
 
-            for (let key in result.data) {
-                let metrics = result.data[key];
-                //load
-                if (metrics?.limit && metrics?.load >= 0) {
-                    this.monitorMetrics[key].loadStr = Math.round(metrics.load / metrics.limit * 1000) / 10 + "%"
-                }
-                //mem
-                if (metrics?.availableBytes >= 0 && metrics?.rss >= 0 && metrics?.cache >= 0) {
-                    this.monitorMetrics[key].memStr = Math.round(metrics.rss / (metrics.availableBytes - metrics.cache + metrics.rss) * 1000) / 10 + "%"
-                }
-            }
+            // for (let key in result.data) {
+            //     let metrics = result.data[key];
+            //     //load
+            //     if (metrics?.limit && metrics?.load >= 0) {
+            //         this.monitorMetrics[key].loadStr = Math.round(metrics.load / metrics.limit * 1000) / 10 + "%"
+            //     }
+            //     //mem
+            //     if (metrics?.availableBytes >= 0 && metrics?.rss >= 0 && metrics?.cache >= 0) {
+            //         this.monitorMetrics[key].memStr = Math.round(metrics.rss / (metrics.availableBytes - metrics.cache + metrics.rss) * 1000) / 10 + "%"
+            //     }
+            // }
 
 
 
