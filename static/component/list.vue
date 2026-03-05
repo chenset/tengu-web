@@ -547,7 +547,26 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 <div v-if="this.monitorMetrics[item.rawData.host]" class="text-sm font-medium"
                                     style="width:67px">
-                                    负载 {{ this.monitorMetrics[item.rawData.host]?.loadStr || '-' }} <br> 内存
+                                   CPU 
+
+                                    <template v-if="this.monitorMetrics[item.rawData.host]?.CPUS?.length > 0">
+                                        <span style="display: inline-block;width: 35px;" :style="{
+                                            color: 'hsl(' +
+                                                (100 - ((this.monitorMetrics[item.rawData.host]?.CPUS?.slice(-3)?.reduce(function (a, b) { return a + b; }, 0)) / this.monitorMetrics[item.rawData.host]?.CPUS?.slice(-3)?.length))
+                                                + ', 100%, 35%)'
+                                        }">
+                                            {{ ((this.monitorMetrics[item.rawData.host]?.CPUS?.slice(-3)?.reduce(function (a, b) {
+                                                return a
+                                                    + b;
+                                            }, 0)) /
+                                            this.monitorMetrics[item.rawData.host]?.CPUS?.slice(-3)?.length).toFixed(1) }}%
+                                        </span>
+                                    </template>
+                                    <span v-else>-</span>
+
+
+                                    <!-- {{ this.monitorMetrics[item.rawData.host]?.loadStr || '-' }} -->
+                                    <br> 内存
 
                                     <template v-if="this.monitorMetrics[item.rawData.host]?.MemTotal">
                                         <span :style="{
@@ -559,7 +578,7 @@
                                             {{ ((this.monitorMetrics[item.rawData.host]?.MemTotal -
                                                 this.monitorMetrics[item.rawData.host]?.MemAvail) /
                                                 this.monitorMetrics[item.rawData.host]?.MemTotal
-                                            * 100).toFixed(1) }}%
+                                                * 100).toFixed(1) }}%
                                         </span>
                                     </template>
                                     <span v-else="">-</span>
@@ -663,7 +682,7 @@
                     <div>
                         <p class="text-sm text-gray-700">
                             第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
-                                }}</span> 条，
+                            }}</span> 条，
                             共 <span class="font-medium">{{ totalItems }}</span> 条
                         </p>
                     </div>
@@ -696,7 +715,7 @@
                         <!-- 对话框头部 -->
                         <div class="el-dialog-header-custom">
                             <span class="el-dialog-title-custom">事件详情 - {{ currentEventsItem?.containerGroupName
-                            }}</span>
+                                }}</span>
                             <button @click="closeEventsDialog" class="el-dialog-close-custom">
                                 <svg viewBox="0 0 1024 1024" width="16" height="16">
                                     <path fill="currentColor"
@@ -1234,151 +1253,151 @@ module.exports = {
             }
             let result = await response.json();
 
-            result = {
-                "resultCode": 1,
-                "data": {
-                    "172.16.162.146": {
-                        "Name": "chenliangzhi-finadina-ai-181",
-                        "RSS": 12197888,
-                        "Load": "0.19 0.10 0.08",
-                        "Uptime": 12020,
-                        "MemAvail": 2503933952,
-                        "MemTotal": 3949785088,
-                        "Login": 0,
-                        "TCP": 34,
-                        "UDP": 3,
-                        "DiskRead": [
-                            887,
-                            0,
-                            0,
-                            0,
-                            0,
-                            68,
-                            0,
-                            0,
-                            0,
-                            1160,
-                            608665,
-                            0,
-                            0,
-                            0,
-                            0
-                        ],
-                        "DiskWrite": [
-                            16725,
-                            9557,
-                            8738,
-                            10308,
-                            9966,
-                            12424,
-                            11946,
-                            10649,
-                            9830,
-                            8260,
-                            48264,
-                            13107,
-                            8738,
-                            10854,
-                            10171
-                        ],
-                        "NetRead": [
-                            1376,
-                            1331,
-                            1325,
-                            1337,
-                            1352,
-                            1441,
-                            1377,
-                            1351,
-                            1327,
-                            1383,
-                            136023,
-                            2338,
-                            2257,
-                            2390,
-                            2328
-                        ],
-                        "NetWrite": [
-                            6555,
-                            5563,
-                            5473,
-                            5518,
-                            5515,
-                            6672,
-                            5532,
-                            5526,
-                            5474,
-                            5449,
-                            100427,
-                            6463,
-                            6293,
-                            6262,
-                            6169
-                        ],
-                        "NetReadNum": [
-                            7,
-                            7,
-                            7,
-                            7,
-                            7,
-                            8,
-                            8,
-                            7,
-                            7,
-                            8,
-                            152,
-                            13,
-                            13,
-                            15,
-                            15
-                        ],
-                        "NetWriteNum": [
-                            13,
-                            13,
-                            12,
-                            12,
-                            13,
-                            13,
-                            13,
-                            13,
-                            12,
-                            13,
-                            93,
-                            19,
-                            18,
-                            18,
-                            17
-                        ],
-                        "CPUS": [
-                            2.01,
-                            2.01,
-                            2.01,
-                            2.01,
-                            2.01,
-                            2.01,
-                            2.01,
-                            2.01,
-                            2.01,
-                            2.01,
-                            9.55,
-                            3.52,
-                            2.51,
-                            2.51,
-                            2.51
-                        ],
-                        "Time": 730857
-                    }
-                }
-            };
+            // result = {
+            //     "resultCode": 1,
+            //     "data": {
+            //         "172.16.162.146": {
+            //             "Name": "chenliangzhi-finadina-ai-181",
+            //             "RSS": 12197888,
+            //             "Load": "0.19 0.10 0.08",
+            //             "Uptime": 12020,
+            //             "MemAvail": 2503933952,
+            //             "MemTotal": 3949785088,
+            //             "Login": 0,
+            //             "TCP": 34,
+            //             "UDP": 3,
+            //             "DiskRead": [
+            //                 887,
+            //                 0,
+            //                 0,
+            //                 0,
+            //                 0,
+            //                 68,
+            //                 0,
+            //                 0,
+            //                 0,
+            //                 1160,
+            //                 608665,
+            //                 0,
+            //                 0,
+            //                 0,
+            //                 0
+            //             ],
+            //             "DiskWrite": [
+            //                 16725,
+            //                 9557,
+            //                 8738,
+            //                 10308,
+            //                 9966,
+            //                 12424,
+            //                 11946,
+            //                 10649,
+            //                 9830,
+            //                 8260,
+            //                 48264,
+            //                 13107,
+            //                 8738,
+            //                 10854,
+            //                 10171
+            //             ],
+            //             "NetRead": [
+            //                 1376,
+            //                 1331,
+            //                 1325,
+            //                 1337,
+            //                 1352,
+            //                 1441,
+            //                 1377,
+            //                 1351,
+            //                 1327,
+            //                 1383,
+            //                 136023,
+            //                 2338,
+            //                 2257,
+            //                 2390,
+            //                 2328
+            //             ],
+            //             "NetWrite": [
+            //                 6555,
+            //                 5563,
+            //                 5473,
+            //                 5518,
+            //                 5515,
+            //                 6672,
+            //                 5532,
+            //                 5526,
+            //                 5474,
+            //                 5449,
+            //                 100427,
+            //                 6463,
+            //                 6293,
+            //                 6262,
+            //                 6169
+            //             ],
+            //             "NetReadNum": [
+            //                 7,
+            //                 7,
+            //                 7,
+            //                 7,
+            //                 7,
+            //                 8,
+            //                 8,
+            //                 7,
+            //                 7,
+            //                 8,
+            //                 152,
+            //                 13,
+            //                 13,
+            //                 15,
+            //                 15
+            //             ],
+            //             "NetWriteNum": [
+            //                 13,
+            //                 13,
+            //                 12,
+            //                 12,
+            //                 13,
+            //                 13,
+            //                 13,
+            //                 13,
+            //                 12,
+            //                 13,
+            //                 93,
+            //                 19,
+            //                 18,
+            //                 18,
+            //                 17
+            //             ],
+            //             "CPUS": [
+            //                 2.01,
+            //                 2.01,
+            //                 2.01,
+            //                 2.01,
+            //                 2.01,
+            //                 2.01,
+            //                 2.01,
+            //                 2.01,
+            //                 2.01,
+            //                 2.01,
+            //                 9.55,
+            //                 3.52,
+            //                 2.51,
+            //                 2.51,
+            //                 2.51
+            //             ],
+            //             "Time": 730857
+            //         }
+            //     }
+            // };
             if (result.resultCode !== 1) {
                 return
             }
 
             for (let key in result.data) {
-                let metrics = result.data[key];
-                this.monitorMetrics[key] = metrics
-                console.log(this.monitorMetrics[key])
-                console.log(this.monitorMetrics[key].MemTotal)
+                // let metrics = result.data[key];
+                this.monitorMetrics[key] =result.data[key]
+                // console.log(this.monitorMetrics[key])
+                // console.log(this.monitorMetrics[key].MemTotal)
                 // //load
                 // if (metrics?.limit && metrics?.load >= 0) {
                 //     this.monitorMetrics[key].loadStr = Math.round(metrics.load / metrics.limit * 1000) / 10 + "%"
