@@ -68,7 +68,7 @@
                 <span v-if="this.payload?.containerScene === 'R_LAN'">[内网]</span>
                 CPU:
                 <template v-if="this.controlPanel.trace?.CPUTotal">
-                    {{((this.controlPanel.trace?.CPUIdle/this.controlPanel.trace?.CPUTotal)*100).toFixed(1)}}%
+                    {{((this.controlPanel.trace?.CPUTotal-this.controlPanel.trace?.CPUIdle)/this.controlPanel.trace?.CPUTotal*100).toFixed(1)}}%
                 </template>
                 <span v-else>-</span>
                 /
