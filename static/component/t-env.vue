@@ -66,8 +66,49 @@
 
                 <span v-if="this.payload?.containerScene === 'R_WAN'">[公网]</span>
                 <span v-if="this.payload?.containerScene === 'R_LAN'">[内网]</span>
-                负载: {{ this.controlPanel.loadStr }} /
-                内存: {{ this.controlPanel.memStr }} /
+                CPU:
+                <template v-if="this.controlPanel.trace?.CPUS?.length">
+                    {{ ((this.controlPanel.trace?.CPUS?.slice(-3)?.reduce(function (a, b) {
+                        return a
+                            + b;
+                    }, 0)) /
+                        this.controlPanel.trace?.CPUS?.slice(-3)?.length).toFixed(1) }}%
+                </template>
+                <span v-else>-</span>
+
+                /
+                内存:
+                <template v-if="this.controlPanel.trace?.MemTotal">
+                    {{ ((this.controlPanel.trace?.MemTotal -
+                        this.controlPanel.trace?.MemAvail) /
+                        this.controlPanel.trace?.MemTotal
+                        * 100).toFixed(1) }}%
+                </template>
+                <span v-else>-</span>
+                /
+                NET:
+                <template v-if="this.controlPanel.trace?.NetRead?.length">
+                    {{ byteFormat((this.controlPanel.trace?.NetRead?.slice(-3)?.reduce(function (a, b) {
+                        return a
+                            + b;
+                    }, 0)) / 3) }}|{{ byteFormat((this.controlPanel.trace?.NetWrite?.slice(-3)?.reduce(function (a, b) {
+                        return a
+                            + b;
+                    }, 0)) / 3) }}
+                </template>
+                <span v-else>-</span>
+                /
+                DISK:
+                <template v-if="this.controlPanel.trace?.DiskRead?.length">
+                    {{ byteFormat((this.controlPanel.trace?.DiskRead?.slice(-3)?.reduce(function (a, b) {
+                        return a + b;
+                    }, 0)) / 3) }}|{{ byteFormat((this.controlPanel.trace?.DiskWrite?.slice(-3)?.reduce(function (a, b) {
+                        return a + b;
+                    }, 0)) / 3) }}
+                </template>
+                <span v-else>-</span>
+
+                /
                 <!-- 需要展示 cpu/内存/磁盘/网络（丢包率）/时间/成本  -->
                 消费:{{ this.controlPanel.costStr }} / {{ this.controlPanel.statusStr }}:{{
                     this.controlPanel.timeElapsedStr }}
@@ -108,8 +149,9 @@ module.exports = {
                 count: 0,
                 break: false, //break the loop
                 sleepMs: 1000,
-                loadStr: "-",
-                memStr: "-",
+                // loadStr: "-",
+                // memStr: "-",
+                trace: {},
                 costStr: "",
                 statusStr: "",
                 timeElapsedStr: "",
@@ -218,15 +260,110 @@ module.exports = {
                     }
 
                 }
+                result.data.trace = {
+                    "RSS": 12152832,
+                    "Load": "0.07 0.04 0.03",
+                    "Uptime": 764,
+                    "MemAvail": 1426731008,
+                    "MemTotal": 1971650560,
+                    "Login": 0,
+                    "TCP": 34,
+                    "UDP": 3,
+                    "DiskRead": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        1575731,
+                        197085,
+                        125064,
+                        12970,
+                        42325,
+                        546,
+                        13789,
+                        0,
+                        0,
+                        341,
+                        0
+                    ],
+                    "DiskWrite": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        423116,
+                        7509,
+                        9830,
+                        9216,
+                        13789,
+                        6894,
+                        9284,
+                        9489,
+                        9011,
+                        14813,
+                        6621
+                    ],
+                    "NetRead": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        133499,
+                        1530,
+                        1563,
+                        1440,
+                        1458,
+                        1425,
+                        1446,
+                        1364,
+                        1287,
+                        613,
+                        527
+                    ],
+                    "NetWrite": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        106998,
+                        5533,
+                        5527,
+                        5436,
+                        5481,
+                        6373,
+                        5481,
+                        5350,
+                        5300,
+                        4486,
+                        4283
+                    ],
+                    "CPUS": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        12.06,
+                        2.01,
+                        2.01,
+                        2.01,
+                        2.01,
+                        1.51,
+                        2.01,
+                        1.51,
+                        2.01,
+                        1.01,
+                        1.01
+                    ],
+                    "Time": 653295
+                };
+                if (result.data?.trace) {
+                    // this.controlPanel.loadStr = Math.round(result.data.metrics.load / result.data.metrics.limit * 1000) / 10 + "%"
+                    this.controlPanel.trace = result.data?.trace
+                }
 
-                //load
-                if (result.data?.metrics?.limit && result.data?.metrics?.load >= 0) {
-                    this.controlPanel.loadStr = Math.round(result.data.metrics.load / result.data.metrics.limit * 1000) / 10 + "%"
-                }
-                //mem
-                if (result.data?.metrics?.availableBytes>=0 && result.data?.metrics?.rss >= 0 && result.data?.metrics?.cache>=0) {
-                    this.controlPanel.memStr = Math.round(result.data.metrics.rss / (result.data.metrics.availableBytes-result.data.metrics.cache+result.data.metrics.rss) * 1000) / 10 + "%"
-                }
+                // if (result.data?.metrics?.availableBytes >= 0 && result.data?.metrics?.rss >= 0 && result.data?.metrics?.cache >= 0) {
+                // this.controlPanel.memStr = Math.round(result.data.metrics.rss / (result.data.metrics.availableBytes - result.data.metrics.cache + result.data.metrics.rss) * 1000) / 10 + "%"
+                // }
 
                 this.controlPanel.statusStr = this.statusDict[result.data.status] || result.data.status
                 if (result.data.status === "Terminated") {
