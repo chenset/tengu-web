@@ -552,14 +552,13 @@
                                     <template v-if="this.monitorMetrics[item.rawData.host]?.CPUS?.length > 0">
                                         <span style="display: inline-block;width: 35px;" :style="{
                                             color: 'hsl(' +
-                                                (100 - ((this.monitorMetrics[item.rawData.host]?.CPUS?.slice(-3)?.reduce(function (a, b) { return a + b; }, 0)) / this.monitorMetrics[item.rawData.host]?.CPUS?.slice(-3)?.length))
+                                                (100 - ((this.monitorMetrics[item.rawData.host]?.CPUS?.slice(-1)?.reduce(function (a, b) { return a + b; }, 0)) / this.monitorMetrics[item.rawData.host]?.CPUS?.slice(-1)?.length))
                                                 + ', 100%, 35%)'
                                         }">
-                                            {{ ((this.monitorMetrics[item.rawData.host]?.CPUS?.slice(-3)?.reduce(function (a, b) {
+                                            {{ ((this.monitorMetrics[item.rawData.host]?.CPUS?.slice(-1)?.reduce(function (a, b) {
                                                 return a
                                                     + b;
-                                            }, 0)) /
-                                            this.monitorMetrics[item.rawData.host]?.CPUS?.slice(-3)?.length).toFixed(1) }}%
+                                            }, 0)) /1).toFixed(1) }}%
                                         </span>
                                     </template>
                                     <span v-else>-</span>
