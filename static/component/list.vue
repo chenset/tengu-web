@@ -552,10 +552,10 @@
                                     <template v-if="this.monitorMetrics[item.rawData.host]?.CPUTotal">
                                         <span style="display: inline-block;width: 35px;" :style="{
                                             color: 'hsl(' +
-                                                (100 - (((this.controlPanel.trace?.CPUTotal-this.monitorMetrics[item.rawData.host]?.CPUIdle)/this.monitorMetrics[item.rawData.host]?.CPUTotal)*100))
+                                                (100 - (((this.monitorMetrics[item.rawData.host]?.CPUTotal-this.monitorMetrics[item.rawData.host]?.CPUIdle)/this.monitorMetrics[item.rawData.host]?.CPUTotal)*100))
                                                 + ', 100%, 35%)'
                                         }">
-                                            {{ (((this.controlPanel.trace?.CPUTotal-this.monitorMetrics[item.rawData.host]?.CPUIdle)/this.monitorMetrics[item.rawData.host]?.CPUTotal)*100).toFixed(1) }}%
+                                            {{ (((this.monitorMetrics[item.rawData.host]?.CPUTotal-this.monitorMetrics[item.rawData.host]?.CPUIdle)/this.monitorMetrics[item.rawData.host]?.CPUTotal)*100).toFixed(1) }}%
                                         </span>
                                     </template>
                                     <span v-else>-</span>
