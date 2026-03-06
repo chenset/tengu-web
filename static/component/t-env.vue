@@ -67,12 +67,8 @@
                 <span v-if="this.payload?.containerScene === 'R_WAN'">[公网]</span>
                 <span v-if="this.payload?.containerScene === 'R_LAN'">[内网]</span>
                 CPU:
-                <template v-if="this.controlPanel.trace?.CPUS?.length">
-                    {{ ((this.controlPanel.trace?.CPUS?.slice(-1)?.reduce(function (a, b) {
-                        return a
-                            + b;
-                    }, 0)) /
-                        this.controlPanel.trace?.CPUS?.slice(-1)?.length).toFixed(1) }}%
+                <template v-if="this.controlPanel.trace?.CPUTotal">
+                    {{((this.controlPanel.trace?.CPUIdle/this.controlPanel.trace?.CPUTotal)*100).toFixed(1)}}%
                 </template>
                 <span v-else>-</span>
                 /

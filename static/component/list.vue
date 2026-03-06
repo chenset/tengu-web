@@ -549,16 +549,13 @@
                                     style="width:67px">
                                    CPU 
 
-                                    <template v-if="this.monitorMetrics[item.rawData.host]?.CPUS?.length > 0">
+                                    <template v-if="this.monitorMetrics[item.rawData.host]?.CPUTotal">
                                         <span style="display: inline-block;width: 35px;" :style="{
                                             color: 'hsl(' +
-                                                (100 - ((this.monitorMetrics[item.rawData.host]?.CPUS?.slice(-1)?.reduce(function (a, b) { return a + b; }, 0)) / this.monitorMetrics[item.rawData.host]?.CPUS?.slice(-1)?.length))
+                                                (100 - ((this.monitorMetrics[item.rawData.host]?.CPUIdle/this.monitorMetrics[item.rawData.host]?.CPUTotal)*100))
                                                 + ', 100%, 35%)'
                                         }">
-                                            {{ ((this.monitorMetrics[item.rawData.host]?.CPUS?.slice(-1)?.reduce(function (a, b) {
-                                                return a
-                                                    + b;
-                                            }, 0)) /1).toFixed(1) }}%
+                                            {{ ((this.monitorMetrics[item.rawData.host]?.CPUIdle/this.monitorMetrics[item.rawData.host]?.CPUTotal)*100).toFixed(1) }}%
                                         </span>
                                     </template>
                                     <span v-else>-</span>
