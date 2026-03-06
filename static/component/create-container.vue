@@ -395,7 +395,7 @@
                                         </div>
 
                                         <!-- 重启策略 -->
-                                        <div class="col-span-2">
+                                        <div class="col-span-2" v-show="false">
                                             <label class="block text-sm font-medium text-gray-700">重启策略 <span
                                                     class="text-red-500">*</span></label>
                                             <select v-model="formData.restartPolicy"
@@ -415,7 +415,7 @@
 
 
                                 <!-- 基础配置 -->
-                                <div class="border-b pb-4">
+                                <div class="border-b pb-4" v-show="false">
                                     <h4 class="text-md font-semibold text-gray-700 mb-3">基础配置</h4>
                                     <div class="grid grid-cols-1 gap-4">
                                         <!-- 容器组名称 -->
@@ -514,7 +514,7 @@
                                     <h4 class="text-md font-semibold text-gray-700 mb-3">容器配置</h4>
                                     <div class="space-y-4 border border-gray-200 rounded-md p-4 bg-gray-50">
                                         <!-- 容器名称 -->
-                                        <div>
+                                        <div v-show="false">
                                             <label class="block text-sm font-medium text-gray-700">容器名称 <span
                                                     class="text-red-500">*</span></label>
                                             <input v-model="container.name" type="text" required
@@ -534,7 +534,7 @@
                                         </div>
 
                                         <!-- 镜像拉取策略 -->
-                                        <div>
+                                        <div v-show="false">
                                             <label class="block text-sm font-medium text-gray-700">镜像拉取策略</label>
                                             <select v-model="container.imagePullPolicy"
                                                 :disabled="readonlyFields.imagePullPolicy"
@@ -549,7 +549,7 @@
                                         </div>
 
                                         <!-- 启动命令 -->
-                                        <div>
+                                        <div v-show="false">
                                             <label class="block text-sm font-medium text-gray-700">启动命令</label>
                                             <div class="space-y-2">
                                                 <div v-for="(cmd, index) in container.command" :key="'cmd-' + index"
@@ -570,7 +570,7 @@
                                         </div>
 
                                         <!-- 启动参数 -->
-                                        <div>
+                                        <div v-show="false">
                                             <label class="block text-sm font-medium text-gray-700">启动参数</label>
                                             <div class="space-y-2">
                                                 <div v-for="(arg, index) in container.args" :key="'arg-' + index"
