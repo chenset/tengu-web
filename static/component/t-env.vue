@@ -68,14 +68,13 @@
                 <span v-if="this.payload?.containerScene === 'R_LAN'">[内网]</span>
                 CPU:
                 <template v-if="this.controlPanel.trace?.CPUS?.length">
-                    {{ ((this.controlPanel.trace?.CPUS?.slice(-3)?.reduce(function (a, b) {
+                    {{ ((this.controlPanel.trace?.CPUS?.slice(-1)?.reduce(function (a, b) {
                         return a
                             + b;
                     }, 0)) /
-                        this.controlPanel.trace?.CPUS?.slice(-3)?.length).toFixed(1) }}%
+                        this.controlPanel.trace?.CPUS?.slice(-1)?.length).toFixed(1) }}%
                 </template>
                 <span v-else>-</span>
-
                 /
                 内存:
                 <template v-if="this.controlPanel.trace?.MemTotal">
@@ -88,26 +87,25 @@
                 /
                 NET:
                 <template v-if="this.controlPanel.trace?.NetRead?.length">
-                    {{ byteFormat((this.controlPanel.trace?.NetRead?.slice(-3)?.reduce(function (a, b) {
+                    {{ byteFormat((this.controlPanel.trace?.NetRead?.slice(-1)?.reduce(function (a, b) {
                         return a
                             + b;
-                    }, 0)) / 3) }}|{{ byteFormat((this.controlPanel.trace?.NetWrite?.slice(-3)?.reduce(function (a, b) {
+                    }, 0)) / 1) }}|{{ byteFormat((this.controlPanel.trace?.NetWrite?.slice(-1)?.reduce(function (a, b) {
                         return a
                             + b;
-                    }, 0)) / 3) }}
+                    }, 0)) / 1) }}
                 </template>
                 <span v-else>-</span>
                 /
                 DISK:
                 <template v-if="this.controlPanel.trace?.DiskRead?.length">
-                    {{ byteFormat((this.controlPanel.trace?.DiskRead?.slice(-3)?.reduce(function (a, b) {
+                    {{ byteFormat((this.controlPanel.trace?.DiskRead?.slice(-1)?.reduce(function (a, b) {
                         return a + b;
-                    }, 0)) / 3) }}|{{ byteFormat((this.controlPanel.trace?.DiskWrite?.slice(-3)?.reduce(function (a, b) {
+                    }, 0)) / 1) }}|{{ byteFormat((this.controlPanel.trace?.DiskWrite?.slice(-1)?.reduce(function (a, b) {
                         return a + b;
-                    }, 0)) / 3) }}
+                    }, 0)) / 1) }}
                 </template>
                 <span v-else>-</span>
-
                 /
                 <!-- 需要展示 cpu/内存/磁盘/网络（丢包率）/时间/成本  -->
                 消费:{{ this.controlPanel.costStr }} / {{ this.controlPanel.statusStr }}:{{
