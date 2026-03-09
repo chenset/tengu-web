@@ -490,7 +490,7 @@
                                         {{ item.containerGroupName }}
                                     </template>
                                     <template v-if="item.rawData.remark">
-                                        {{ item.rawData.remark }}
+                                        {{ item.rawData.remark.length > 10 ? item.rawData.remark.substring(0, 10) + '..' : item.rawData.remark }}
                                     </template>
 
                                     <span v-if="item?.rawData?.spotStrategy === 'SpotAsPriceGo'" title="抢占式"
