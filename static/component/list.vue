@@ -440,7 +440,7 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                容器组ID/名称</th>
+                                容器名称</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Email</th>
                             <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -484,7 +484,15 @@
                                     </span>
                                     {{ item.containerGroupId }}
                                 </div>
-                                <div class="text-sm text-gray-500">{{ item.containerGroupName }}
+                                <div class="text-sm text-gray-500">
+
+                                    <template v-if="!item.rawData.remark">
+                                        {{ item.containerGroupName }}
+                                    </template>
+                                    <template v-if="item.rawData.remark">
+                                        {{ item.rawData.remark }}
+                                    </template>
+
                                     <span v-if="item?.rawData?.spotStrategy === 'SpotAsPriceGo'" title="抢占式"
                                         class="bg-green-100 text-green-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
                                         抢占式
