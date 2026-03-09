@@ -627,7 +627,7 @@
                                     <div>
                                         <input v-model="formData.remark" type="text"
                                             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                            placeholder="选填，备注信息">
+                                            placeholder="选填，备注信息，20个字以内" maxlength="20">
                                     </div>
                                 </div>
                             </form>
