@@ -620,6 +620,16 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- 备注 -->
+                                <div class="border-b pb-4">
+                                    <h4 class="text-md font-semibold text-gray-700 mb-3">备注</h4>
+                                    <div>
+                                        <input v-model="formData.remark" type="text"
+                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                            placeholder="选填，备注信息">
+                                    </div>
+                                </div>
                             </form>
                         </div>
 
@@ -701,7 +711,8 @@ module.exports = {
                 spotStrategy: '',
                 spotPriceLimit: null,
                 restartPolicy: '',
-                autoMatchImageCache: 1
+                autoMatchImageCache: 1,
+                remark: ''
             },
             // 容器配置
             container: {
@@ -886,7 +897,8 @@ module.exports = {
                 spotStrategy: '',
                 spotPriceLimit: null,
                 restartPolicy: '',
-                autoMatchImageCache: 1
+                autoMatchImageCache: 1,
+                remark: ''
             };
             this.container = {
                 name: '',
@@ -991,7 +1003,9 @@ module.exports = {
                     return p.port;
                 });
             }
-
+            if (self.formData.remark) {
+                requestData.remark = self.formData.remark;
+            }
 
             self.submitting = true;
             try {
