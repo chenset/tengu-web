@@ -68,7 +68,7 @@
                 <span v-if="this.payload?.containerScene === 'R_LAN'">[内网]</span>
                 CPU:
                 <template v-if="this.controlPanel.trace?.CPUTotal">
-                    {{((this.controlPanel.trace?.CPUTotal-this.controlPanel.trace?.CPUIdle)/this.controlPanel.trace?.CPUTotal*100).toFixed(1)}}%
+                    {{ ((this.controlPanel.trace?.CPUTotal - this.controlPanel.trace?.CPUIdle) / this.controlPanel.trace?.CPUTotal * 100).toFixed(1) }}%
                 </template>
                 <span v-else>-</span>
                 /
@@ -364,7 +364,11 @@ module.exports = {
                     this.controlPanel.sleepMs = 600000
                 }
 
-                document.title = `${result.data.cpu}核${result.data.memory}G [ ${this.controlPanel.statusStr} ] ${this.controlPanel.timeElapsedStr}`
+                if (result.data.remark) {
+                    document.title = `${result.data.remark} ${result.data.cpu}核${result.data.memory}G [ ${this.controlPanel.statusStr} ] ${this.controlPanel.timeElapsedStr}`
+                } else {
+                    document.title = `${result.data.cpu}核${result.data.memory}G [ ${this.controlPanel.statusStr} ] ${this.controlPanel.timeElapsedStr}`
+                }
 
                 this.constrainPosition();
             } catch (ignore) {
