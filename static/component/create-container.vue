@@ -645,7 +645,17 @@
                                     {{ priceInfo.errorMsg }}
                                 </span>
                                 <span v-else-if="priceInfo.soldOut" class="el-price-error">
-                                    当前实例规格暂无库存
+
+                                    <template v-if="formData.spotStrategy === 'NoSpot'">
+                                        付费模式[按量付费]的当前实例规格暂无库存
+                                    </template>
+                                    <template v-else-if="formData.spotStrategy === 'SpotAsPriceGo'">
+                                        付费模式[抢占式]的当前实例规格暂无库存
+                                    </template>
+                                    <template v-else>
+                                        当前实例规格暂无库存
+                                    </template>
+
                                 </span>
                                 <div v-else-if="priceInfo.isRange" class="el-price-text">
                                     <!-- <div>{{ priceInfo.minPrice }}~{{ priceInfo.maxPrice }} {{ priceInfo.currency }}/秒 </div> -->
@@ -655,7 +665,7 @@
                                 <div v-else class="el-price-text">
                                     <!-- <div>{{ priceInfo.minPrice }} {{ priceInfo.currency }}/秒</div> -->
                                     <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }} {{ priceInfo.currency
-                                    }}/小时</div>
+                                        }}/小时</div>
                                 </div>
                             </div>
 
@@ -734,7 +744,7 @@ module.exports = {
                 maxPrice: 0,
                 errorMsg: "",
                 isRange: false,
-                soldOut:false
+                soldOut: false
             },
             // 只读字段映射
             readonlyFields: {
