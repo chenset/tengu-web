@@ -644,6 +644,9 @@
                                 <span v-else-if="priceInfo.errorMsg" class="el-price-error">
                                     {{ priceInfo.errorMsg }}
                                 </span>
+                                <span v-else-if="priceInfo.soldOut" class="el-price-error">
+                                    当前实例规格暂无库存
+                                </span>
                                 <div v-else-if="priceInfo.isRange" class="el-price-text">
                                     <!-- <div>{{ priceInfo.minPrice }}~{{ priceInfo.maxPrice }} {{ priceInfo.currency }}/秒 </div> -->
                                     <div class="el-price-hour">{{ priceInfo.minPrice * 3600 }}~{{ priceInfo.maxPrice *
@@ -730,7 +733,8 @@ module.exports = {
                 minPrice: 0,
                 maxPrice: 0,
                 errorMsg: "",
-                isRange: false
+                isRange: false,
+                soldOut:false
             },
             // 只读字段映射
             readonlyFields: {
@@ -1096,6 +1100,7 @@ module.exports = {
 
             self.priceInfo.errorMsg = "";
             self.priceInfo.loading = true;
+            self.priceInfo.soldOut = false;
             try {
                 var response = await fetchWithToken(self.apiBaseUrl + '/tengu/instance/describeContainerGroupPrice', {
                     method: 'POST',
@@ -1136,6 +1141,7 @@ module.exports = {
                         self.priceInfo.minPrice = 0;
                         self.priceInfo.maxPrice = 0;
                         self.priceInfo.isRange = false;
+                        self.priceInfo.soldOut = true;
                         if (requestData.instanceType) {
                             window.$message('当前实例规格 [ ' + requestData.instanceType + ' ] 暂无库存', 'warning');
                         } else {
@@ -1148,6 +1154,7 @@ module.exports = {
                     self.priceInfo.minPrice = 0;
                     self.priceInfo.maxPrice = 0;
                     self.priceInfo.isRange = false;
+                    self.priceInfo.soldOut = true;
                 }
             } catch (error) {
                 self.priceInfo.errorMsg = error;
