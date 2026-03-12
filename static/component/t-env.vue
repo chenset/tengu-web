@@ -68,7 +68,8 @@
                 <span v-if="this.payload?.containerScene === 'R_LAN'">[内网]</span>
                 CPU:
                 <template v-if="this.controlPanel.trace?.CPUTotal">
-                    {{ ((this.controlPanel.trace?.CPUTotal - this.controlPanel.trace?.CPUIdle) / this.controlPanel.trace?.CPUTotal * 100).toFixed(1) }}%
+                    {{ ((this.controlPanel.trace?.CPUTotal - this.controlPanel.trace?.CPUIdle) /
+                        this.controlPanel.trace?.CPUTotal * 100).toFixed(1) }}%
                 </template>
                 <span v-else>-</span>
                 /
@@ -171,17 +172,19 @@ module.exports = {
 
                 //todo 控制 sleep
                 //todo 控制退出
-
                 if (this.controlPanel.break) {
                     break
                 }
 
-                await this.refreshControlPanel()
-                if (this.controlPanel.sleepMs < 10000) {
-                    this.controlPanel.sleepMs += 100
+                if (window.isVisibility()) { //只在页面可见时刷新数据，减少不必要的请求
+                    await this.refreshControlPanel()
+                    if (this.controlPanel.sleepMs < 10000) {
+                        this.controlPanel.sleepMs += 100
+                    }
                 }
+
             }
-        }, 10)
+        }, 100)
 
     },
     unmounted() {

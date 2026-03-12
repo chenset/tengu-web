@@ -801,7 +801,9 @@ function getTimeElapsedDiffMs(diffMs) {
     return result;
 }
 
-
+function isVisibility() {
+    return document.visibilityState === 'visible'
+}
 
 // 时间戳格式化函数 (13位毫秒时间戳)
 function formatTimestamp(timestamp) {
@@ -852,4 +854,4 @@ function fetchWithToken(url, options) {
     return res
 }
 
-const mixins = { methods: { byteFormat, getTimeElapsed, getTimeElapsedDiffMs } }
+const mixins = { methods: { byteFormat, getTimeElapsed, getTimeElapsedDiffMs, isVisibility } }
