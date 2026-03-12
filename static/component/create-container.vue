@@ -1136,6 +1136,7 @@ module.exports = {
                         self.priceInfo.minPrice = 0;
                         self.priceInfo.maxPrice = 0;
                         self.priceInfo.isRange = false;
+                        window.$message('当前实例规格暂无库存', 'warning');
                     }
                 } else {
                     console.error('查询价格失败:', result);
