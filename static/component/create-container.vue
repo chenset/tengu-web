@@ -1137,7 +1137,7 @@ module.exports = {
                         self.priceInfo.maxPrice = 0;
                         self.priceInfo.isRange = false;
                         if (requestData.instanceType) {
-                            window.$message('当前实例规格[' + requestData.instanceType + ']暂无库存', 'warning');
+                            window.$message('当前实例规格 [ ' + requestData.instanceType + ' ] 暂无库存', 'warning');
                         } else {
                             window.$message('当前实例规格暂无库存', 'warning');
                         }
