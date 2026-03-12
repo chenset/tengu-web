@@ -647,13 +647,30 @@
                                 <span v-else-if="priceInfo.soldOut" class="el-price-error">
 
                                     <template v-if="formData.spotStrategy === 'NoSpot'">
-                                        付费模式[按量付费]的当前实例规格暂无库存
+                                        付费模式[
+                                        <span class="text-red-600 font-bold">
+                                        按量付费
+                                        </span>
+                                        ]的当前实例规格 
+                                        <span class="text-red-600 font-bold">
+                                        暂无库存
+                                        </span>
                                     </template>
                                     <template v-else-if="formData.spotStrategy === 'SpotAsPriceGo'">
-                                        付费模式[抢占式]的当前实例规格暂无库存
+                                        付费模式[
+                                        <span class="text-red-600 font-bold">
+                                        抢占式
+                                        </span>
+                                        ]的当前实例规格 
+                                        <span class="text-red-600 font-bold">
+                                        暂无库存
+                                        </span>
                                     </template>
                                     <template v-else>
-                                        当前实例规格暂无库存
+                                        当前实例规格
+                                        <span class="text-red-600 font-bold">
+                                        暂无库存
+                                        </span>
                                     </template>
 
                                 </span>
