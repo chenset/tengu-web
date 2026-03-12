@@ -280,8 +280,8 @@
                         <!-- 对话框头部 -->
                         <div class="el-dialog-header-custom">
                             <span class="el-dialog-title-custom">
-                                <span v-if=" this.containerScene==='R_LAN'" class="text-green-600">创建容器组【内网】实例</span>
-                                <span v-if=" this.containerScene==='R_WAN'" class="text-orange-600">创建容器组【公网】实例</span>
+                                <span v-if="this.containerScene === 'R_LAN'" class="text-green-600">创建容器组【内网】实例</span>
+                                <span v-if="this.containerScene === 'R_WAN'" class="text-orange-600">创建容器组【公网】实例</span>
                             </span>
                             <button @click="closeCreateDialog" class="el-dialog-close-custom">
                                 <svg viewBox="0 0 1024 1024" width="16" height="16">
@@ -1136,7 +1136,11 @@ module.exports = {
                         self.priceInfo.minPrice = 0;
                         self.priceInfo.maxPrice = 0;
                         self.priceInfo.isRange = false;
-                        window.$message('当前实例规格暂无库存', 'warning');
+                        if (requestData.instanceType) {
+                            window.$message('当前实例规格[' + requestData.instanceType + ']暂无库存', 'warning');
+                        } else {
+                            window.$message('当前实例规格暂无库存', 'warning');
+                        }
                     }
                 } else {
                     console.error('查询价格失败:', result);
