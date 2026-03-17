@@ -195,14 +195,7 @@ module.exports = {
         document.removeEventListener('mouseup', this.stopDrag);
         window.removeEventListener('resize', this.onWindowResize);
     },
-    // watch: {
-    //     'controlPanel.costStr': function() {
-    //         // 内容变化时，确保面板位置仍在可视区域内
-    //         this.$nextTick(() => {
-    //             this.constrainPosition();
-    //         });
-    //     }
-    // },
+
     methods: {
         async refreshControlPanel() {
             try {
@@ -257,110 +250,11 @@ module.exports = {
                     }
 
                 }
-                // result.data.trace = {
-                //     "RSS": 12152832,
-                //     "Load": "0.07 0.04 0.03",
-                //     "Uptime": 764,
-                //     "MemAvail": 1426731008,
-                //     "MemTotal": 1971650560,
-                //     "Login": 0,
-                //     "TCP": 34,
-                //     "UDP": 3,
-                //     "DiskRead": [
-                //         0,
-                //         0,
-                //         0,
-                //         0,
-                //         1575731,
-                //         197085,
-                //         125064,
-                //         12970,
-                //         42325,
-                //         546,
-                //         13789,
-                //         0,
-                //         0,
-                //         341,
-                //         0
-                //     ],
-                //     "DiskWrite": [
-                //         0,
-                //         0,
-                //         0,
-                //         0,
-                //         423116,
-                //         7509,
-                //         9830,
-                //         9216,
-                //         13789,
-                //         6894,
-                //         9284,
-                //         9489,
-                //         9011,
-                //         14813,
-                //         6621
-                //     ],
-                //     "NetRead": [
-                //         0,
-                //         0,
-                //         0,
-                //         0,
-                //         133499,
-                //         1530,
-                //         1563,
-                //         1440,
-                //         1458,
-                //         1425,
-                //         1446,
-                //         1364,
-                //         1287,
-                //         613,
-                //         527
-                //     ],
-                //     "NetWrite": [
-                //         0,
-                //         0,
-                //         0,
-                //         0,
-                //         106998,
-                //         5533,
-                //         5527,
-                //         5436,
-                //         5481,
-                //         6373,
-                //         5481,
-                //         5350,
-                //         5300,
-                //         4486,
-                //         4283
-                //     ],
-                //     "CPUS": [
-                //         0,
-                //         0,
-                //         0,
-                //         0,
-                //         12.06,
-                //         2.01,
-                //         2.01,
-                //         2.01,
-                //         2.01,
-                //         1.51,
-                //         2.01,
-                //         1.51,
-                //         2.01,
-                //         1.01,
-                //         1.01
-                //     ],
-                //     "Time": 653295
-                // };
+         
                 if (result.data?.trace) {
                     // this.controlPanel.loadStr = Math.round(result.data.metrics.load / result.data.metrics.limit * 1000) / 10 + "%"
                     this.controlPanel.trace = result.data?.trace
                 }
-
-                // if (result.data?.metrics?.availableBytes >= 0 && result.data?.metrics?.rss >= 0 && result.data?.metrics?.cache >= 0) {
-                // this.controlPanel.memStr = Math.round(result.data.metrics.rss / (result.data.metrics.availableBytes - result.data.metrics.cache + result.data.metrics.rss) * 1000) / 10 + "%"
-                // }
 
                 this.controlPanel.statusStr = this.statusDict[result.data.status] || result.data.status
                 if (result.data.status === "Terminated") {
