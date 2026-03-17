@@ -178,7 +178,7 @@ module.exports = {
 
                 if (window.isVisibility()) { //只在页面可见时刷新数据，减少不必要的请求
                     await this.refreshControlPanel()
-                    if (this.controlPanel.sleepMs < 10000) {
+                    if (this.controlPanel.sleepMs < 5000) {
                         this.controlPanel.sleepMs += 100
                     }
                 }
