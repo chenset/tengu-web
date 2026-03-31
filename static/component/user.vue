@@ -4,7 +4,7 @@
         <app-header title="用户管理"></app-header>
 
         <!-- 创建用户部分 -->
-        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
             <h2 class="text-xl font-semibold text-gray-800 mb-4">创建用户</h2>
             <form @submit.prevent="handleCreateUser" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
@@ -44,7 +44,7 @@
         </div>
 
         <!-- 用户列表部分 -->
-        <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="bg-white rounded-lg shadow p-6">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-semibold text-gray-800">用户列表</h2>
                 <!-- <button @click="fetchUserList"
