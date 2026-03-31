@@ -1,5 +1,5 @@
 //dark mode toggle
-if (document.cookie.split(';').filter((item) => item.includes('darkMode=1')).length) {
+if (document.cookie.split(';').filter((item) => item?.includes('darkMode=1')).length) {
     darkModeToggle()
 }
 
@@ -289,7 +289,7 @@ function popupWindowClose() {
 function getQueryParam(key) {
     let queryString = window.location.search // 尝试 HTML5 模式
 
-    if (!queryString && window.location.hash && window.location.hash.includes("?")) {
+    if (!queryString && window.location.hash && window.location?.hash?.includes("?")) {
         // 尝试 hash 模式
         queryString = window.location.hash.substring(window.location.hash.indexOf("?"))
     }

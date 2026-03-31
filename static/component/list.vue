@@ -355,7 +355,7 @@
                             @click.stop>
                             <div v-for="option in regionOptions" :key="option.value" @click="toggleRegion(option.value)"
                                 class="flex items-center px-3 py-2 cursor-pointer hover:bg-gray-100">
-                                <input type="checkbox" :checked="filterParams.regionIdList.includes(option.value)"
+                                <input type="checkbox" :checked="filterParams?.regionIdList?.includes(option.value)"
                                     class="h-4 w-4 text-indigo-600 border-gray-300 rounded mr-2 pointer-events-none">
                                 <span class="text-sm text-gray-900">{{ option.label }}</span>
                             </div>
