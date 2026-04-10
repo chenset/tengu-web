@@ -13,6 +13,7 @@
                     </label>
                     <input
                         type="email"
+                        name="email"
                         v-model="form.email"
                         required
                         placeholder="请输入邮箱"
@@ -26,6 +27,7 @@
                     </label>
                     <input
                         type="password"
+                        name="password"
                         v-model="form.password"
                         required
                         placeholder="请输入密码"
