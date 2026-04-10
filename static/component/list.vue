@@ -657,7 +657,7 @@
                                 <!-- class="text-indigo-600 hover:text-indigo-900 mr-3">详情</button> -->
                                 <button @click="openItem(item)" v-if="item.rawData.host"
                                     class=" hover:text-green-600 mr-3 cursor-pointer"
-                                    :class="{ 'text-green-600': item.rawData.status === 'Running', 'text-gray-400': item.rawData.status !== 'Running' && !this.monitorMetrics[item.rawData.host]?.CPUTotal }">打开</button>
+                                    :class="{ 'text-green-600': item.rawData.status === 'Running' || this.monitorMetrics[item.rawData.host]?.CPUTotal, 'text-gray-400': item.rawData.status !== 'Running' && !this.monitorMetrics[item.rawData.host]?.CPUTotal }">打开</button>
                                 <button @click="refreshItem(item)"
                                     class="text-blue-600 hover:text-blue-900 mr-3 cursor-pointer">刷新</button>
                                 <button @click="viewLog(item)" v-if="this.currentLoginAccount?.role === 'admin'"
