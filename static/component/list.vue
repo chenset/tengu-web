@@ -688,6 +688,7 @@
                             第 <span class="font-medium">{{ startItem }}</span> 到 <span class="font-medium">{{ endItem
                             }}</span> 条，
                             共 <span class="font-medium">{{ totalItems }}</span> 条
+                            <span class="font-medium">{{ costMsg }}</span>
                         </p>
                     </div>
                     <div>
@@ -840,6 +841,7 @@ module.exports = {
             pageSize: 20,
             tableData: [],
             totalItems: 0,
+            costMsg: "",
             loading: false,
             // 筛选参数
             filterParams: {
@@ -1219,6 +1221,7 @@ module.exports = {
                     this.tableData = [];
                     this.totalItems = 0;
                 }
+                this.costMsg = result?.message || '';
             } catch (error) {
                 console.error('加载列表数据失败:', error);
                 window.$message('加载数据失败: ' + error.message, 'error');
