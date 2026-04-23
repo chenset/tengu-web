@@ -527,8 +527,12 @@
                                         <div>
                                             <label class="block text-sm font-medium text-gray-700">镜像地址 <span
                                                     class="text-red-500">*</span></label>
-                                            <!-- :disabled="readonlyFields.containers" -->
-                                            <input v-model="container.image" type="text" required
+                                            <select v-if="container.images && container.images.length > 0"
+                                                v-model="container.image" required
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                <option v-for="img in container.images" :key="img" :value="img">{{ img }}</option>
+                                            </select>
+                                            <input v-else v-model="container.image" type="text" required
                                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm  disabled:bg-gray-100 disabled:cursor-not-allowed"
                                                 placeholder="请输入镜像地址">
                                         </div>
@@ -748,6 +752,7 @@ module.exports = {
             container: {
                 name: '',
                 image: '',
+                images: [],
                 imagePullPolicy: '',
                 command: [],
                 args: [],
@@ -934,6 +939,7 @@ module.exports = {
             this.container = {
                 name: '',
                 image: '',
+                images: [],
                 imagePullPolicy: '',
                 command: [],
                 args: [],
@@ -1341,7 +1347,10 @@ module.exports = {
             if (containerDefaults.name) {
                 this.container.name = containerDefaults.name;
             }
-            if (containerDefaults.image) {
+            if (containerDefaults.images && Array.isArray(containerDefaults.images) && containerDefaults.images.length > 0) {
+                this.container.images = containerDefaults.images.slice();
+                this.container.image = containerDefaults.images[0];
+            } else if (containerDefaults.image) {
                 this.container.image = containerDefaults.image;
             }
             if (containerDefaults.imagePullPolicy) {
