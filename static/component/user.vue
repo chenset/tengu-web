@@ -245,7 +245,7 @@ module.exports = {
         return {
             permissionOptions: {
                 R_LAN: "风控部门内网权限组",
-                R_WAN: "风控部门外网权限组",
+                R_WAN: "通用外网权限组",
             },
             createForm: {
                 email: '',
