@@ -342,14 +342,14 @@
                                     <!-- 规格模式切换 Tab -->
                                     <div class="el-spec-tabs">
                                         <button type="button" class="el-spec-tab"
-                                            :class="{ 'is-active': specMode === 'basic' }"
-                                            @click="switchSpecMode('basic')">
-                                            基础模式
-                                        </button>
-                                        <button type="button" class="el-spec-tab"
                                             :class="{ 'is-active': specMode === 'instanceType' }"
                                             @click="switchSpecMode('instanceType')">
                                             指定规格
+                                        </button>
+                                        <button type="button" class="el-spec-tab"
+                                            :class="{ 'is-active': specMode === 'basic' }"
+                                            @click="switchSpecMode('basic')">
+                                            基础模式
                                         </button>
                                     </div>
 
@@ -864,7 +864,8 @@ module.exports = {
             submitting: false,
             dictOptions: [],
             // 规格模式：basic=基础模式（自选CPU/内存）, instanceType=指定规格模式
-            specMode: 'basic',
+            // specMode: 'basic',
+            specMode: 'instanceType',
             // 基础模式下的规格选择
             basicSpec: {
                 cpu: 2,
@@ -1095,7 +1096,8 @@ module.exports = {
         // 重置表单
         resetForm: function () {
             // 默认停留在基础模式
-            this.specMode = 'basic';
+            // this.specMode = 'basic';
+            this.specMode = 'instanceType';
             this.basicSpec = {
                 cpu: 2,
                 memory: 4
