@@ -179,6 +179,36 @@
     gap: 12px;
 }
 
+/* 规格模式 Tab 样式 */
+.el-spec-tabs {
+    display: flex;
+    border-bottom: 2px solid #e4e7ed;
+    margin-bottom: 16px;
+}
+
+.el-spec-tab {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #606266;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    margin-bottom: -2px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s;
+}
+
+.el-spec-tab:hover {
+    color: #409eff;
+}
+
+.el-spec-tab.is-active {
+    color: #409eff;
+    border-bottom-color: #409eff;
+}
+
 .el-btn {
     padding: 9px 20px;
     font-size: 14px;
@@ -308,49 +338,86 @@
                                 <!-- 规格配置 -->
                                 <div class="border-b pb-4">
                                     <h4 class="text-md font-semibold text-gray-700 mb-3">规格配置</h4>
+
+                                    <!-- 规格模式切换 Tab -->
+                                    <div class="el-spec-tabs">
+                                        <button type="button" class="el-spec-tab"
+                                            :class="{ 'is-active': specMode === 'basic' }"
+                                            @click="switchSpecMode('basic')">
+                                            基础模式
+                                        </button>
+                                        <button type="button" class="el-spec-tab"
+                                            :class="{ 'is-active': specMode === 'instanceType' }"
+                                            @click="switchSpecMode('instanceType')">
+                                            指定规格
+                                        </button>
+                                    </div>
+
                                     <div class="grid grid-cols-2 gap-4">
-                                        <!-- CPU规格 -->
-                                        <!-- <div>
-                                            <label class="block text-sm font-medium text-gray-700">CPU规格</label>
-                                            <select v-model="formData.cpu" @change="onCpuChange"
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                <option value="">请选择CPU</option>
-                                                <option v-for="option in getOptions('cpu')" :key="option.dictValue"
-                                                    :value="option.dictValue">
-                                                    {{ option.dictName }} <span v-if="option.remark"
-                                                        class="text-gray-500">({{ option.remark }})</span>
-                                                </option>
-                                            </select>
-                                        </div> -->
+                                        <!-- ===== 基础模式：CPU + 内存 ===== -->
+                                        <template v-if="specMode === 'basic'">
+                                            <div class="col-span-2">
+                                                <span class="block text-sm font-medium text-gray-400">
+                                                    基础模式：自行选择期望的 CPU 与内存组合（如 32C 64G），由云平台自动匹配可用的实例规格。
+                                                </span>
+                                            </div>
 
-                                        <!-- 内存规格（级联） -->
-                                        <!-- <div>
-                                            <label class="block text-sm font-medium text-gray-700">内存规格</label>
-                                            <select v-model="formData.memory" :disabled="!formData.cpu"
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100">
-                                                <option value="">请选择内存</option>
-                                                <option v-for="option in memoryOptions" :key="option.dictValue"
-                                                    :value="option.dictValue">
-                                                    {{ option.dictName }}
-                                                </option>
-                                            </select>
-                                        </div> -->
+                                            <!-- CPU规格 -->
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700">CPU <span
+                                                        class="text-red-500">*</span></label>
+                                                <select v-model.number="basicSpec.cpu" @change="onBasicCpuChange"
+                                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                    <option v-for="c in cpuChoices" :key="'cpu-' + c" :value="c">
+                                                        {{ c }} vCPU
+                                                    </option>
+                                                </select>
+                                            </div>
 
-                                        <!-- ECS实例规格 -->
-                                        <div class="col-span-2">
-                                            <label class="block text-sm font-medium text-gray-700">ECS实例规格 <span
-                                                    class="text-red-500">*</span></label>
-                                            <select v-model="formData.instanceType"
-                                                :disabled="readonlyFields.instanceType" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
-                                                <option value="">请选择实例规格</option>
-                                                <option v-for="option in getOptions('instanceType')"
-                                                    :key="option.dictValue" :value="option.dictValue">
-                                                    {{ option.dictName }} <span v-if="option.remark"
-                                                        class="text-gray-500">({{ option.remark }})</span>
-                                                </option>
-                                            </select>
-                                        </div>
+                                            <!-- 内存规格（随CPU级联） -->
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700">内存 <span
+                                                        class="text-red-500">*</span></label>
+                                                <select v-model.number="basicSpec.memory"
+                                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                    <option v-for="m in memoryChoices" :key="'mem-' + m" :value="m">
+                                                        {{ m }} GiB
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-span-2">
+                                                <span class="block text-sm text-gray-500">
+                                                    当前配置：
+                                                    <strong class="text-indigo-600">
+                                                        {{ basicSpec.cpu }}C {{ basicSpec.memory }}G
+                                                    </strong>
+                                                    <span class="text-gray-400">
+                                                        （{{ basicSpec.cpu }} vCPU 可选内存范围
+                                                        {{ memoryChoices.length ? memoryChoices[0] : '-' }}G ~
+                                                        {{ memoryChoices.length ? memoryChoices[memoryChoices.length - 1] : '-' }}G）
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </template>
+
+                                        <!-- ===== 指定规格模式：ECS实例规格 ===== -->
+                                        <template v-else>
+                                            <div class="col-span-2">
+                                                <label class="block text-sm font-medium text-gray-700">ECS实例规格 <span
+                                                        class="text-red-500">*</span></label>
+                                                <select v-model="formData.instanceType"
+                                                    :disabled="readonlyFields.instanceType"
+                                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
+                                                    <option value="">请选择实例规格</option>
+                                                    <option v-for="option in getOptions('instanceType')"
+                                                        :key="option.dictValue" :value="option.dictValue">
+                                                        {{ option.dictName }} <span v-if="option.remark"
+                                                            class="text-gray-500">({{ option.remark }})</span>
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </template>
 
 
                                         <div class="col-span-2">
@@ -671,7 +738,7 @@
                                         </span>
                                     </template>
                                     <template v-else>
-                                        当前实例规格
+                                        当前{{ specMode === 'basic' ? '规格配置' : '实例规格' }}
                                         <span class="text-red-600 font-bold">
                                         暂无库存
                                         </span>
@@ -711,6 +778,71 @@
 </template>
 
 <script>
+// ===== 基础模式：CPU / 内存 级联规则 =====
+// CPU 取值范围 2C ~ 256C，内存取值范围 2G ~ 1024G
+var CPU_MIN = 2;
+var CPU_MAX = 256;
+var MEMORY_MIN = 2;
+var MEMORY_MAX = 1024;
+// 可选的 CPU 档位（阿里云 ECI 支持的 vCPU 规格）
+var CPU_STEPS = [2, 4, 6, 8, 12, 16, 24, 32, 48, 52, 64, 96, 104, 128, 192, 256];
+// 内存与 CPU 的比例区间：内存 >= cpu * 1，内存 <= cpu * 8
+var MEMORY_RATIO_MIN = 1;
+var MEMORY_RATIO_MAX = 8;
+
+// 根据 CPU 计算可选内存档位（级联）
+// 例如：2C  -> 2G ~ 16G，  64C -> 64G ~ 512G
+function buildMemoryChoices(cpu) {
+    var c = parseFloat(cpu);
+    if (!c || c <= 0) return [];
+
+    var lower = Math.max(MEMORY_MIN, c * MEMORY_RATIO_MIN);
+    var upper = Math.min(MEMORY_MAX, c * MEMORY_RATIO_MAX);
+    if (upper < lower) return [];
+
+    // 内存越大步长越大，避免选项过多
+    var list = [];
+    var m = lower;
+    while (m <= upper) {
+        list.push(m);
+        if (m < 16) {
+            m += 1;
+        } else if (m < 64) {
+            m += 2;
+        } else if (m < 256) {
+            m += 8;
+        } else {
+            m += 32;
+        }
+    }
+    // 保证上界一定包含在选项里
+    if (list[list.length - 1] !== upper) {
+        list.push(upper);
+    }
+    return list;
+}
+
+// 在给定 CPU 下把内存吸附到最近的合法档位
+function clampMemoryToCpu(cpu, memory) {
+    var choices = buildMemoryChoices(cpu);
+    if (!choices.length) return null;
+    var target = parseFloat(memory);
+    if (!target) return choices[0];
+    // 已经是合法档位则保持不变
+    if (choices.indexOf(target) !== -1) return target;
+    // 否则取最接近的档位
+    var best = choices[0];
+    var bestDiff = Math.abs(choices[0] - target);
+    for (var i = 1; i < choices.length; i++) {
+        var diff = Math.abs(choices[i] - target);
+        if (diff < bestDiff) {
+            bestDiff = diff;
+            best = choices[i];
+        }
+    }
+    return best;
+}
+
 module.exports = {
     props: {
         visible: {
@@ -731,6 +863,13 @@ module.exports = {
             loadingDictOptions: false,
             submitting: false,
             dictOptions: [],
+            // 规格模式：basic=基础模式（自选CPU/内存）, instanceType=指定规格模式
+            specMode: 'basic',
+            // 基础模式下的规格选择
+            basicSpec: {
+                cpu: 2,
+                memory: 4
+            },
             // 表单数据
             formData: {
                 channelCode: 'ALIYUN-CHEN',
@@ -792,8 +931,24 @@ module.exports = {
             if (!this.formData.cpu) return [];
             var cpuDict = this.dictOptions.find(function (d) { return d.dictCode === 'cpu'; });
             if (!cpuDict) return [];
-            var cpuOption = cpuDict.options.find(function (o) { return o.dictValue === this.formData.cpu; });
+            var self = this;
+            var cpuOption = cpuDict.options.find(function (o) { return o.dictValue === self.formData.cpu; });
             return cpuOption && cpuOption.children ? cpuOption.children : [];
+        },
+        // 基础模式：可选的 CPU 列表（2C ~ 256C）
+        cpuChoices: function () {
+            var list = [];
+            for (var i = 0; i < CPU_STEPS.length; i++) {
+                var c = CPU_STEPS[i];
+                if (c >= CPU_MIN && c <= CPU_MAX) {
+                    list.push(c);
+                }
+            }
+            return list;
+        },
+        // 基础模式：内存列表（随所选 CPU 级联，2G ~ 1024G）
+        memoryChoices: function () {
+            return buildMemoryChoices(this.basicSpec.cpu);
         }
     },
     watch: {
@@ -857,6 +1012,21 @@ module.exports = {
             if (this.visible) {
                 this.fetchContainerGroupPrice();
             }
+        },
+        'basicSpec.cpu': function () {
+            if (this.visible && this.specMode === 'basic') {
+                this.fetchContainerGroupPrice();
+            }
+        },
+        'basicSpec.memory': function () {
+            if (this.visible && this.specMode === 'basic') {
+                this.fetchContainerGroupPrice();
+            }
+        },
+        specMode: function () {
+            if (this.visible) {
+                this.fetchContainerGroupPrice();
+            }
         }
     },
     methods: {
@@ -895,6 +1065,10 @@ module.exports = {
                     self.applyDefaultValues();
                     // 设置为只读 readonly
                     self.applyReadonly();
+                    // 后端锁定了实例规格时，直接停留在"指定规格"模式
+                    if (self.readonlyFields.instanceType && self.formData.instanceType) {
+                        self.specMode = 'instanceType';
+                    }
                     // 加载默认值后查询价格
                     self.$nextTick(function () {
                         self.fetchContainerGroupPrice();
@@ -920,6 +1094,12 @@ module.exports = {
         },
         // 重置表单
         resetForm: function () {
+            // 默认停留在基础模式
+            this.specMode = 'basic';
+            this.basicSpec = {
+                cpu: 2,
+                memory: 4
+            };
             this.formData = {
                 channelCode: 'ALIYUN-CHEN',
                 containerGroupName: '',
@@ -990,6 +1170,16 @@ module.exports = {
                 window.$message('请输入镜像地址', 'warning');
                 return;
             }
+            // 规格校验：按当前模式分别校验
+            if (self.specMode === 'basic') {
+                if (!self.basicSpec.cpu || !self.basicSpec.memory) {
+                    window.$message('请选择 CPU 和内存', 'warning');
+                    return;
+                }
+            } else if (!self.formData.instanceType) {
+                window.$message('请选择实例规格', 'warning');
+                return;
+            }
 
             // 构建请求数据
             var requestData = {
@@ -1000,7 +1190,6 @@ module.exports = {
                 vpcId: self.formData.vpcId,
                 vSwitchId: self.formData.vSwitchId,
                 securityGroupId: self.formData.securityGroupId,
-                instanceType: self.formData.instanceType,
                 spotStrategy: self.formData.spotStrategy,
                 restartPolicy: self.formData.restartPolicy,
                 autoMatchImageCache: self.formData.autoMatchImageCache,
@@ -1012,13 +1201,10 @@ module.exports = {
                 ]
             };
 
+            // 规格参数（基础模式传 cpu/memory，指定规格模式传 instanceType）
+            self.applySpecToRequest(requestData);
+
             // 可选字段
-            if (self.formData.cpu) {
-                requestData.cpu = parseFloat(self.formData.cpu);
-            }
-            if (self.formData.memory) {
-                requestData.memory = parseFloat(self.formData.memory);
-            }
             if (self.formData.spotStrategy === 'SpotWithPriceLimit' && self.formData.spotPriceLimit) {
                 requestData.spotPriceLimit = self.formData.spotPriceLimit;
             }
@@ -1090,7 +1276,6 @@ module.exports = {
                 vpcId: self.formData.vpcId,
                 vSwitchId: self.formData.vSwitchId,
                 securityGroupId: self.formData.securityGroupId,
-                instanceType: self.formData.instanceType,
                 spotStrategy: self.formData.spotStrategy,
                 restartPolicy: self.formData.restartPolicy,
                 autoMatchImageCache: self.formData.autoMatchImageCache,
@@ -1102,13 +1287,10 @@ module.exports = {
                 ]
             };
 
+            // 规格参数（基础模式传 cpu/memory，指定规格模式传 instanceType）
+            self.applySpecToRequest(requestData);
+
             // 可选字段
-            if (self.formData.cpu) {
-                requestData.cpu = parseFloat(self.formData.cpu);
-            }
-            if (self.formData.memory) {
-                requestData.memory = parseFloat(self.formData.memory);
-            }
             if (self.formData.spotStrategy === 'SpotWithPriceLimit' && self.formData.spotPriceLimit) {
                 requestData.spotPriceLimit = self.formData.spotPriceLimit;
             }
@@ -1177,6 +1359,8 @@ module.exports = {
                         self.priceInfo.soldOut = true;
                         if (requestData.instanceType) {
                             window.$message('当前实例规格 [ ' + requestData.instanceType + ' ] 暂无库存', 'warning');
+                        } else if (requestData.cpu && requestData.memory) {
+                            window.$message('当前规格配置 [ ' + requestData.cpu + 'C ' + requestData.memory + 'G ] 暂无库存', 'warning');
                         } else {
                             window.$message('当前实例规格暂无库存', 'warning');
                         }
@@ -1203,6 +1387,26 @@ module.exports = {
         // CPU改变时重置内存
         onCpuChange: function () {
             this.formData.memory = '';
+        },
+        // 切换规格模式（基础模式 / 指定规格）
+        switchSpecMode: function (mode) {
+            if (this.specMode === mode) return;
+            this.specMode = mode;
+        },
+        // 基础模式：CPU 改变时，把内存吸附到该 CPU 下的合法档位
+        onBasicCpuChange: function () {
+            this.basicSpec.memory = clampMemoryToCpu(this.basicSpec.cpu, this.basicSpec.memory);
+        },
+        // 按当前规格模式填充规格相关请求参数
+        applySpecToRequest: function (requestData) {
+            if (this.specMode === 'basic') {
+                // 基础模式：只传 cpu / memory，由云平台自动匹配规格
+                requestData.cpu = parseFloat(this.basicSpec.cpu);
+                requestData.memory = parseFloat(this.basicSpec.memory);
+            } else {
+                // 指定规格模式：只传 instanceType
+                requestData.instanceType = this.formData.instanceType;
+            }
         },
         // 付费模式改变
         onSpotStrategyChange: function () {
@@ -1313,6 +1517,18 @@ module.exports = {
                             self.formData.cpu = dict.defaultOptionsDictValue;
                             // CPU改变时需要更新内存选项
                             self.updateMemoryOptionsForDefaultCpu(dict.defaultOptionsDictValue);
+                            // 基础模式沿用后端给的默认 CPU，并把内存吸附到合法档位
+                            var defaultCpu = parseFloat(dict.defaultOptionsDictValue);
+                            if (defaultCpu >= CPU_MIN && defaultCpu <= CPU_MAX) {
+                                self.basicSpec.cpu = defaultCpu;
+                                self.basicSpec.memory = clampMemoryToCpu(defaultCpu, self.basicSpec.memory);
+                            }
+                            break;
+                        case 'memory':
+                            var defaultMemory = parseFloat(dict.defaultOptionsDictValue);
+                            if (defaultMemory >= MEMORY_MIN && defaultMemory <= MEMORY_MAX) {
+                                self.basicSpec.memory = clampMemoryToCpu(self.basicSpec.cpu, defaultMemory);
+                            }
                             break;
                         case 'instanceType':
                             self.formData.instanceType = dict.defaultOptionsDictValue;
