@@ -93,15 +93,15 @@
                 <table class="w-full border-collapse" style="min-width: 1400px;">
                     <thead>
                         <tr class="bg-gray-50">
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">ID</th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">用户</th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">角色</th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">权限</th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">总消耗</th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">状态</th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">登录/IP</th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b">创建/操作</th>
-                            <th class="px-4 py-3 text-center text-sm font-medium text-gray-700 border-b">操作</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b border-gray-200">ID</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b border-gray-200">用户</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b border-gray-200">角色</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b border-gray-200">权限</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b border-gray-200">总消耗</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b border-gray-200">状态</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b border-gray-200">登录/IP</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 border-b border-gray-200">创建/操作</th>
+                            <th class="px-4 py-3 text-center text-sm font-medium text-gray-700 border-b border-gray-200">操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -120,14 +120,14 @@
                         </tr>
                         <tr v-else v-for="user in userList" :key="user.id" class="hover:bg-gray-50 transition"
                             :class="{ 'opacity-50': user.status !== 1 }">
-                            <td class="px-4 py-3 text-sm text-gray-900 border-b">{{ user.id }}</td>
-                            <td class="px-4 text-sm text-gray-900 border-b">{{ user.email }}
+                            <td class="px-4 py-3 text-sm text-gray-900 border-b border-gray-200">{{ user.id }}</td>
+                            <td class="px-4 text-sm text-gray-900 border-b border-gray-200">{{ user.email }}
                                 <br>
                                 <small class="text-gray-400">
                                     {{ user.nickname || '-' }}
                                 </small>
                             </td>
-                            <td class="px-4 py-3 text-sm border-b">
+                            <td class="px-4 py-3 text-sm border-b border-gray-200">
                                 <span
                                     :class="user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'"
                                     class="px-2 py-1 rounded text-xs font-medium">
@@ -135,7 +135,7 @@
                                 </span>
                             </td>
 
-                            <td class="px-4 py-3 text-sm border-b">
+                            <td class="px-4 py-3 text-sm border-b border-gray-200">
                                 <span class="px-2 py-1 ml-1 rounded text-xs font-medium"
                                     :class="permission === 'R_WAN' ? 'bg-orange-100 text-orange-800' : 'bg-green-100 text-green-800'"
                                     v-for="permission in user.permissionList" :key="permission">
@@ -144,7 +144,7 @@
                                 <span v-if="user.permissionList.length === 0"> - </span>
                             </td>
 
-                            <td class="px-4 text-sm text-gray-900 border-b">
+                            <td class="px-4 text-sm text-gray-900 border-b border-gray-200">
                                 <span v-if="!user.statistics?.total">
                                     -
                                 </span>
@@ -169,28 +169,28 @@
                                 </span>
                             </td>
                             
-                            <td class="px-4 py-3 text-sm border-b">
+                            <td class="px-4 py-3 text-sm border-b border-gray-200">
                                 <span
                                     :class="user.status === 1 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
                                     class="px-2 py-1 rounded text-xs font-medium">
                                     {{ user.status === 1 ? '正常' : '禁用' }}
                                 </span>
                             </td>
-                            <td class="px-4 text-sm text-gray-600 border-b">
+                            <td class="px-4 text-sm text-gray-600 border-b border-gray-200">
                                 {{ formatTime(user.lastLoginTime) }}
                                 <small v-if="user.lastLoginIp" class="text-gray-400">
                                       <br>
                                     {{ user.lastLoginIp || '-' }}
                                 </small>
                             </td>
-                            <td class="px-4 text-sm text-gray-600 border-b">
+                            <td class="px-4 text-sm text-gray-600 border-b border-gray-200">
                                 {{ formatTime(user.createTime) }}
                                 <small v-if="user.lastActiveTime" class="text-gray-400">
                                     <br>
                                     {{ formatTime(user.lastActiveTime) }}
                                 </small>
                             </td>
-                            <td class="px-4 py-3 text-sm border-b">
+                            <td class="px-4 py-3 text-sm border-b border-gray-200">
                                 <div class="flex justify-center gap-2">
                                     <button @click="handleToggleStatus(user)"
                                         class="cursor-pointer bg-white hover:bg-gray-50 text-gray-700 font-medium py-1 px-3 border border-gray-300 rounded text-xs transition duration-200">
