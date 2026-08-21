@@ -393,9 +393,8 @@
                                                         {{ basicSpec.cpu }}C {{ basicSpec.memory }}G
                                                     </strong>
                                                     <span class="text-gray-400">
-                                                        （{{ basicSpec.cpu }} vCPU 可选内存范围
-                                                        {{ memoryChoices.length ? memoryChoices[0] : '-' }}G ~
-                                                        {{ memoryChoices.length ? memoryChoices[memoryChoices.length - 1] : '-' }}G）
+                                                        （{{ basicSpec.cpu }} vCPU 可选内存
+                                                        {{ memoryChoices.join('、') }}G）
                                                     </span>
                                                 </span>
                                             </div>
@@ -778,48 +777,33 @@
 </template>
 
 <script>
-// ===== 基础模式：CPU / 内存 级联规则 =====
-// CPU 取值范围 2C ~ 256C，内存取值范围 2G ~ 1024G
-var CPU_MIN = 2;
-var CPU_MAX = 256;
-var MEMORY_MIN = 2;
-var MEMORY_MAX = 1024;
-// 可选的 CPU 档位（阿里云 ECI 支持的 vCPU 规格）
-var CPU_STEPS = [2, 4, 6, 8, 12, 16, 24, 32, 48, 52, 64, 96, 104, 128, 192, 256];
-// 内存与 CPU 的比例区间：内存 >= cpu * 1，内存 <= cpu * 8
-var MEMORY_RATIO_MIN = 1;
-var MEMORY_RATIO_MAX = 8;
+// ===== 基础模式：vCPU / 内存 规格映射表 =====
+// 每个 vCPU 对应的内存档位由云平台限定（非公式推导），直接按映射表提供
+var BASIC_SPEC_MAP = {
+    1: [2, 4, 8],
+    2: [1, 2, 4, 8, 16],
+    4: [2, 4, 8, 16, 32],
+    8: [4, 8, 16, 32, 64],
+    12: [12, 24, 48, 96],
+    16: [16, 32, 64, 128],
+    24: [24, 48, 96, 192],
+    32: [32, 64, 128, 256],
+    52: [96, 192, 384],
+    64: [128, 256, 512]
+};
+// 可选的 CPU 档位
+var CPU_STEPS = [1, 2, 4, 8, 12, 16, 24, 32, 52, 64];
+var CPU_MIN = 1;
+var CPU_MAX = 64;
+// 支持的 vCPU 值（用于后端默认值校验）
+var MEMORY_MIN = 1;
+var MEMORY_MAX = 512;
 
-// 根据 CPU 计算可选内存档位（级联）
-// 例如：2C  -> 2G ~ 16G，  64C -> 64G ~ 512G
+// 根据 CPU 返回该档位下支持的可选内存列表
 function buildMemoryChoices(cpu) {
     var c = parseFloat(cpu);
-    if (!c || c <= 0) return [];
-
-    var lower = Math.max(MEMORY_MIN, c * MEMORY_RATIO_MIN);
-    var upper = Math.min(MEMORY_MAX, c * MEMORY_RATIO_MAX);
-    if (upper < lower) return [];
-
-    // 内存越大步长越大，避免选项过多
-    var list = [];
-    var m = lower;
-    while (m <= upper) {
-        list.push(m);
-        if (m < 16) {
-            m += 1;
-        } else if (m < 64) {
-            m += 2;
-        } else if (m < 256) {
-            m += 8;
-        } else {
-            m += 32;
-        }
-    }
-    // 保证上界一定包含在选项里
-    if (list[list.length - 1] !== upper) {
-        list.push(upper);
-    }
-    return list;
+    if (!c || !BASIC_SPEC_MAP[c]) return [];
+    return BASIC_SPEC_MAP[c].slice();
 }
 
 // 在给定 CPU 下把内存吸附到最近的合法档位
@@ -936,7 +920,7 @@ module.exports = {
             var cpuOption = cpuDict.options.find(function (o) { return o.dictValue === self.formData.cpu; });
             return cpuOption && cpuOption.children ? cpuOption.children : [];
         },
-        // 基础模式：可选的 CPU 列表（2C ~ 256C）
+        // 基础模式：可选的 CPU 列表（1C ~ 64C）
         cpuChoices: function () {
             var list = [];
             for (var i = 0; i < CPU_STEPS.length; i++) {
@@ -947,7 +931,7 @@ module.exports = {
             }
             return list;
         },
-        // 基础模式：内存列表（随所选 CPU 级联，2G ~ 1024G）
+        // 基础模式：内存列表（随所选 CPU 级联，按映射表提供）
         memoryChoices: function () {
             return buildMemoryChoices(this.basicSpec.cpu);
         }
