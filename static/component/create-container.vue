@@ -1022,7 +1022,8 @@ module.exports = {
         },
         // 处理对话框遮罩点击
         handleDialogMaskClick: function () {
-            // 不允许点击遮罩关闭对话框，保持与之前逻辑一致
+            // 点击遮罩层关闭对话框
+            this.closeCreateDialog();
         },
         // 加载字典选项
         loadDictOptions: async function () {
