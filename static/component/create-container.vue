@@ -336,7 +336,7 @@
 
 
                                 <!-- 规格配置 -->
-                                <div class="border-b pb-4">
+                                <div class="border-b border-gray-200 pb-4">
                                     <h4 class="text-md font-semibold text-gray-700 mb-3">规格配置</h4>
 
                                     <!-- 规格模式切换 Tab -->
@@ -481,7 +481,7 @@
 
 
                                 <!-- 基础配置 -->
-                                <div class="border-b pb-4" v-show="false">
+                                <div class="border-b border-gray-200 pb-4" v-show="false">
                                     <h4 class="text-md font-semibold text-gray-700 mb-3">基础配置</h4>
                                     <div class="grid grid-cols-1 gap-4">
                                         <!-- 容器组名称 -->
@@ -692,7 +692,7 @@
                                 </div>
 
                                 <!-- 备注 -->
-                                <div class="border-b pb-4">
+                                <div class="border-b border-gray-200 pb-4">
                                     <h4 class="text-md font-semibold text-gray-700 mb-3">备注</h4>
                                     <div>
                                         <input v-model="formData.remark" type="text"
